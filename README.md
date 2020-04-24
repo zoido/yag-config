@@ -1,0 +1,1 @@
+# Yet Another Golang Config
