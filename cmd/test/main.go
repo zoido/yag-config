@@ -18,7 +18,7 @@ func main() {
 		Name: yag.String("nanana"),
 	}
 
-	// os.Args = []string{"-name=aaa"}
+	os.Args = []string{"-name=aaa"}
 	y.Add(&cfg.Name, "name", "sets the name")
 
 	err := y.Parse(os.Args)
