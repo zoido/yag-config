@@ -7,6 +7,8 @@ warningCode = 0
 [line-length-limit]
   arguments = [100]
 
+[rule.unhandled-error]
+  arguments = ["fmt.Printf"]
 
 [rule.blank-imports]
 [rule.confusing-naming]
@@ -37,7 +39,6 @@ warningCode = 0
 [rule.superfluous-else]
 [rule.time-naming]
 [rule.unexported-return]
-[rule.unhandled-error]
 [rule.unnecessary-stmt]
 [rule.unreachable-code]
 [rule.unused-parameter]

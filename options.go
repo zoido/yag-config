@@ -18,12 +18,6 @@ func WithEnvPrefix(prefix string) YagOption {
 
 type VarOption func(v *variable)
 
-func Required() VarOption {
-	return func(v *variable) {
-		v.required = true
-	}
-}
-
 func FromEnv(envName string) VarOption {
 	return func(v *variable) {
 		v.envName = envName
