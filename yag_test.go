@@ -31,7 +31,7 @@ func (s *YagTestSuite) TestNew_Ok() {
 
 func (s *YagTestSuite) TestParse_Flags() {
 	// Given
-	var str string
+	str := "default value"
 
 	y := yag.New()
 	y.Register(&str, "test_string", "sets test string value")
@@ -46,7 +46,7 @@ func (s *YagTestSuite) TestParse_Flags() {
 
 func (s *YagTestSuite) TestParse_Env() {
 	// Given
-	var str string
+	str := "default value"
 
 	y := yag.New()
 	y.Register(&str, "test_string", "sets test string value")
@@ -62,7 +62,7 @@ func (s *YagTestSuite) TestParse_Env() {
 
 func (s *YagTestSuite) TestParse_WithEnvPrefix_Effective() {
 	// Given
-	var str string
+	str := "default value"
 
 	y := yag.New(yag.WithEnvPrefix("MY_TEST_PREFIX_"))
 	y.Register(&str, "test_string", "sets test string value")
@@ -79,7 +79,7 @@ func (s *YagTestSuite) TestParse_WithEnvPrefix_Effective() {
 
 func (s *YagTestSuite) TestParse_FromEnv_Effective() {
 	// Given
-	var str string
+	str := "default value"
 
 	y := yag.New()
 	y.Register(&str, "test_string", "sets test string value", yag.FromEnv("DIFFERENT_TEST_ENV"))
@@ -115,7 +115,7 @@ func (s *YagTestSuite) TestParseFlags() {
 
 func (s *YagTestSuite) TestParseEnv() {
 	// Given
-	var str string
+	str := "default value"
 
 	y := yag.New()
 	y.Register(&str, "test_string", "sets test string value")
@@ -131,7 +131,7 @@ func (s *YagTestSuite) TestParseEnv() {
 
 func (s *YagTestSuite) TestParseEnv_WithEnvPrefix_Effective() {
 	// Given
-	var str string
+	str := "default value"
 
 	y := yag.New(yag.WithEnvPrefix("MY_TEST_PREFIX_"))
 	y.Register(&str, "test_string", "sets test string value")
@@ -148,7 +148,7 @@ func (s *YagTestSuite) TestParseEnv_WithEnvPrefix_Effective() {
 
 func (s *YagTestSuite) TestParse_FlagsTakePrecedence() {
 	// Given
-	var str string
+	str := "default value"
 
 	y := yag.New()
 	y.Register(&str, "test_string", "sets test string value")
