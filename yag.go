@@ -27,9 +27,7 @@ func New(options ...ParserOption) *Parser {
 	for _, opt := range options {
 		opt(y)
 	}
-	if y.flagSet == nil {
-		y.flagSet = &flag.FlagSet{}
-	}
+	y.flagSet = &flag.FlagSet{}
 	return y
 }
 
@@ -42,9 +40,6 @@ type value struct {
 
 // Register registers new variable for parsing.
 func (y *Parser) Register(ref interface{}, name, help string, options ...VarOption) {
-	if y.err != nil {
-		return
-	}
 	switch x := ref.(type) {
 	case *string:
 		y.addVar(newStringValue(x), name, help, options...)
