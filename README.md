@@ -64,3 +64,8 @@ fmt.Printf("baz: %v\n", cfg.Qux)
 - `str`
 - `int`
 - more to come…
+
+## Credits
+
+Inspired by configuration processing
+of [Consul agent](https://github.com/hashicorp/consul).
