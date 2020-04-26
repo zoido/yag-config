@@ -1,6 +1,9 @@
 package yag
 
-import "flag"
+import (
+	"flag"
+	"strconv"
+)
 
 type flagValue interface {
 	flag.Value
@@ -37,6 +40,33 @@ func (s *stringValue) Set(val string) error {
 func (s *stringValue) String() string {
 	if s.isSet() {
 		return *s.dest
+	}
+	return ""
+}
+
+func newIntValue(dest *int) *intValue {
+	return &intValue{dest: dest}
+}
+
+type intValue struct {
+	isSetHelper
+	dest *int
+}
+
+func (s *intValue) Set(val string) error {
+	num, err := strconv.Atoi(val)
+	if err != nil {
+		return err
+	}
+
+	*s.dest = num
+	s.setIsSet()
+	return nil
+}
+
+func (s *intValue) String() string {
+	if s.isSet() {
+		return strconv.Itoa(*s.dest)
 	}
 	return ""
 }

@@ -43,6 +43,8 @@ func (y *Parser) Register(ref interface{}, name, help string, options ...VarOpti
 	switch x := ref.(type) {
 	case *string:
 		y.addVar(newStringValue(x), name, help, options...)
+	case *int:
+		y.addVar(newIntValue(x), name, help, options...)
 	default:
 		msg := fmt.Sprintf("unsupported type: %s(%T)", name, ref)
 		if y.err == nil {
