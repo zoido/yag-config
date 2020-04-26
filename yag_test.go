@@ -60,6 +60,23 @@ func (s *YagTestSuite) TestParse_Env() {
 	s.Require().Equal("env value", str)
 }
 
+func (s *YagTestSuite) TestParse_WithEnvPrefixEffective() {
+	// Given
+	var str string
+
+	y := yag.New(yag.WithEnvPrefix("MY_TEST_PREFIX_"))
+	y.Register(&str, "test_string", "sets test string value")
+	os.Setenv("TEST_STRING", "env without prefix")
+	os.Setenv("MY_TEST_PREFIX_TEST_STRING", "env with prefix")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("env with prefix", str)
+}
+
 func (s *YagTestSuite) TestParseFlags() {
 	// Given
 	var str1, str2 string
@@ -95,6 +112,23 @@ func (s *YagTestSuite) TestParseEnv() {
 	s.Require().Equal("env value", str)
 }
 
+func (s *YagTestSuite) TestParseEnv_WithEnvPrefixEffective() {
+	// Given
+	var str string
+
+	y := yag.New(yag.WithEnvPrefix("MY_TEST_PREFIX_"))
+	y.Register(&str, "test_string", "sets test string value")
+	os.Setenv("TEST_STRING", "env without prefix")
+	os.Setenv("MY_TEST_PREFIX_TEST_STRING", "env with prefix")
+
+	// When
+	err := y.ParseEnv()
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("env with prefix", str)
+}
+
 func (s *YagTestSuite) TestParse_FlagsTakePrecedence() {
 	// Given
 	var str string
@@ -105,6 +139,24 @@ func (s *YagTestSuite) TestParse_FlagsTakePrecedence() {
 
 	// When
 	err := y.Parse([]string{"-test_string=flag value"})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("flag value", str)
+}
+
+func (s *YagTestSuite) TestParse_FlagsAlwaysTakePrecedence() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.Register(&str, "test_string", "sets test string value")
+	os.Setenv("TEST_STRING", "env value")
+
+	// When
+	err := y.ParseFlags([]string{"-test_string=flag value"})
+	s.Require().NoError(err)
+	err = y.ParseEnv()
 
 	// Then
 	s.Require().NoError(err)
