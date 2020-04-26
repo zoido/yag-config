@@ -8,17 +8,17 @@ import (
 )
 
 type config struct {
-	Foo *string
-	Bar *string
-	Baz *string
-	Qux *string
+	Foo string
+	Bar string
+	Baz string
+	Qux string
 }
 
 func Example() {
 	y := yag.NewYag(yag.WithEnvPrefix("MY_APP_"))
 	cfg := &config{
-		Foo: yag.String("default foo value"),
-		Bar: yag.String("default bra value"),
+		Foo: "default foo value",
+		Bar: "default bra value",
 	}
 
 	y.Add(&cfg.Foo, "foo", "sets Foo")
@@ -37,14 +37,14 @@ func Example() {
 		os.Exit(2)
 	}
 
-	fmt.Printf("foo: %v\n", *cfg.Foo)
-	fmt.Printf("bar: %v\n", *cfg.Bar)
-	fmt.Printf("baz: %v\n", *cfg.Baz)
+	fmt.Printf("foo: %v\n", cfg.Foo)
+	fmt.Printf("bar: %v\n", cfg.Bar)
+	fmt.Printf("baz: %v\n", cfg.Baz)
 	fmt.Printf("baz: %v\n", cfg.Qux)
 
 	// Output:
 	// foo: foo flag value
 	// bar: bar env value
 	// baz: baz env value
-	// baz: <nil>
+	// baz:
 }

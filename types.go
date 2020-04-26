@@ -1,28 +1,33 @@
 package yag
 
-// stringPtrValue is a flag.Value which stores the value in a *string.
-// If the value was not set the pointer is nil.
-type stringPtrValue struct {
-	v **string
-	b bool
+import "flag"
+
+type flagValue interface {
+	flag.Value
+	IsSet() bool
 }
 
-func newStringPtrValue(p **string) *stringPtrValue {
-	return &stringPtrValue{p, false}
+func newStringValue(dest *string) *stringValue {
+	return &stringValue{dest: dest}
 }
 
-func (s *stringPtrValue) Set(val string) error {
-	*s.v, s.b = &val, true
+type stringValue struct {
+	dest  *string
+	isSet bool
+}
+
+func (s *stringValue) Set(val string) error {
+	*s.dest, s.isSet = val, true
 	return nil
 }
 
-func (s *stringPtrValue) String() string {
-	if s.b {
-		return **s.v
+func (s *stringValue) String() string {
+	if s.isSet {
+		return *s.dest
 	}
 	return ""
 }
 
-func String(s string) *string {
-	return &s
+func (s *stringValue) IsSet() bool {
+	return s.isSet
 }
