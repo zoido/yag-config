@@ -8,10 +8,20 @@ import (
 	"strings"
 )
 
-func NewYag(options ...YagOption) *Yag {
-	vars := make(map[string]*variable, 10)
+// Parser registers and parses configuration values.
+type Parser struct {
+	envPrefix string
+	flagSet   *flag.FlagSet
 
-	y := &Yag{
+	err  error
+	vars map[string]*value
+}
+
+// New returns new instance of the Yag.
+func New(options ...ParserOption) *Parser {
+	vars := make(map[string]*value, 10)
+
+	y := &Parser{
 		vars: vars,
 	}
 	for _, opt := range options {
@@ -23,35 +33,33 @@ func NewYag(options ...YagOption) *Yag {
 	return y
 }
 
-type Yag struct {
-	envPrefix string
-	flagSet   *flag.FlagSet
-
-	err  error
-	vars map[string]*variable
-}
-
-type variable struct {
+type value struct {
 	envName  string
 	flagVal  flagValue
 	help     string
 	required bool
 }
 
-func (y *Yag) Add(p interface{}, name, help string, options ...VarOption) {
+// Register registers new variable for parsing.
+func (y *Parser) Register(ref interface{}, name, help string, options ...VarOption) {
 	if y.err != nil {
 		return
 	}
-	switch x := p.(type) {
+	switch x := ref.(type) {
 	case *string:
 		y.addVar(newStringValue(x), name, help, options...)
 	default:
-		y.err = fmt.Errorf("unsupported type: %T; %w", p, y.err)
+		msg := fmt.Sprintf("unsupported type: %s(%T)", name, ref)
+		if y.err == nil {
+			y.err = fmt.Errorf(msg)
+		} else {
+			y.err = fmt.Errorf("%s, %s", y.err.Error(), msg)
+		}
 	}
 }
 
-func (y *Yag) addVar(val flagValue, name, help string, options ...VarOption) {
-	variable := &variable{
+func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) {
+	variable := &value{
 		flagVal: val,
 		envName: strings.ToUpper(fmt.Sprintf("%s%s", y.envPrefix, name)),
 		help:    help,
@@ -63,39 +71,40 @@ func (y *Yag) addVar(val flagValue, name, help string, options ...VarOption) {
 	y.flagSet.Var(val, name, help)
 }
 
-func (y *Yag) validate() error {
+func (*Parser) validate() error {
 	return nil
 }
 
-func (y *Yag) ParseFlags(args []string) error {
-	if err := y.parseFlags(args); err != nil {
+// ParseFlags parses configuration values from commandline flags.
+func (y *Parser) ParseFlags(args []string) error {
+	if err := y.doParseFlags(args); err != nil {
 		return err
 	}
 	return y.validate()
 }
 
-func (y *Yag) parseFlags(args []string) error {
+func (y *Parser) doParseFlags(args []string) error {
 	if y.err != nil {
 		return y.err
 	}
 	return y.flagSet.Parse(args)
 }
 
-func (y *Yag) ParseEnv() error {
-	if err := y.parseEnv(); err != nil {
+// ParseEnv parses configuration values from environment variables.
+func (y *Parser) ParseEnv() error {
+	if err := y.doParseEnv(); err != nil {
 		return err
 	}
 	return y.validate()
-
 }
 
-func (y *Yag) parseEnv() error {
+func (y *Parser) doParseEnv() error {
 	if y.err != nil {
 		return y.err
 	}
 
 	for envName, variable := range y.vars {
-		if value, envIsSet := os.LookupEnv(envName); envIsSet && !variable.flagVal.IsSet() {
+		if value, envIsSet := os.LookupEnv(envName); envIsSet && !variable.flagVal.isSet() {
 			if err := variable.flagVal.Set(value); err != nil {
 				return err
 			}
@@ -104,12 +113,14 @@ func (y *Yag) parseEnv() error {
 	return nil
 }
 
-func (y *Yag) Parse(args []string) error {
+// Parse parses configuration values from flags and environment variables.
+// Flags values always override environment variable value.
+func (y *Parser) Parse(args []string) error {
 	if y.err != nil {
 		return y.err
 	}
-	if err := y.parseFlags(args); err != nil {
+	if err := y.doParseFlags(args); err != nil {
 		return err
 	}
-	return y.parseEnv()
+	return y.doParseEnv()
 }

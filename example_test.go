@@ -15,16 +15,16 @@ type config struct {
 }
 
 func Example() {
-	y := yag.NewYag(yag.WithEnvPrefix("MY_APP_"))
+	y := yag.New(yag.WithEnvPrefix("MY_APP_"))
 	cfg := &config{
 		Foo: "default foo value",
 		Bar: "default bra value",
 	}
 
-	y.Add(&cfg.Foo, "foo", "sets Foo")
-	y.Add(&cfg.Bar, "bar", "sets Bar")
-	y.Add(&cfg.Baz, "baz", "sets Baz", yag.FromEnv("MY_BAZ_VALUE"))
-	y.Add(&cfg.Qux, "qux", "sets Qux")
+	y.Register(&cfg.Foo, "foo", "sets Foo")
+	y.Register(&cfg.Bar, "bar", "sets Bar")
+	y.Register(&cfg.Baz, "baz", "sets Baz", yag.FromEnv("MY_BAZ_VALUE"))
+	y.Register(&cfg.Qux, "qux", "sets Qux")
 
 	args := []string{"-foo=foo flag value"}
 

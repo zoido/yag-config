@@ -1,25 +1,23 @@
 package yag
 
-import "flag"
+// ParserOption configures the Parser.
+type ParserOption func(c *Parser)
 
-type YagOption func(c *Yag)
-
-func WithFlagSet(fs *flag.FlagSet) YagOption {
-	return func(c *Yag) {
-		c.flagSet = fs
-	}
-}
-
-func WithEnvPrefix(prefix string) YagOption {
-	return func(c *Yag) {
+// WithEnvPrefix configures the prefix of the environment variable names that will be used for the
+// lookup of the values. Default without prefix.
+func WithEnvPrefix(prefix string) ParserOption {
+	return func(c *Parser) {
 		c.envPrefix = prefix
 	}
 }
 
-type VarOption func(v *variable)
+// VarOption configures handling of registered variables.
+type VarOption func(v *value)
 
+// FromEnv overrides the environment variable name thad will be used to obtain the set value of the
+// registered variable.
 func FromEnv(envName string) VarOption {
-	return func(v *variable) {
+	return func(v *value) {
 		v.envName = envName
 	}
 }

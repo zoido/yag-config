@@ -7,16 +7,16 @@ type flagValue interface {
 	isSet() bool
 }
 
-type setterHelper struct {
-	isSet bool
+type isSetHelper struct {
+	b bool
 }
 
-func (s *setterHelper) setStatus() {
-	s.isSet = true
+func (s *isSetHelper) setIsSet() {
+	s.b = true
 }
 
-func (s *setterHelper) IsSet() bool {
-	return s.isSet
+func (s *isSetHelper) isSet() bool {
+	return s.b
 }
 
 func newStringValue(dest *string) *stringValue {
@@ -24,18 +24,18 @@ func newStringValue(dest *string) *stringValue {
 }
 
 type stringValue struct {
-	setterHelper
+	isSetHelper
 	dest *string
 }
 
 func (s *stringValue) Set(val string) error {
 	*s.dest = val
-	s.setStatus()
+	s.setIsSet()
 	return nil
 }
 
 func (s *stringValue) String() string {
-	if s.IsSet() {
+	if s.isSet() {
 		return *s.dest
 	}
 	return ""
