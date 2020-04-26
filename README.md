@@ -1,6 +1,9 @@
 # Yet Another Golang Config Library
 
 ![Go](https://github.com/zoido/yag-config/workflows/Go/badge.svg)
+[![codecov](https://codecov.io/gh/zoido/yag-config/branch/master/graph/badge.svg)](https://codecov.io/gh/zoido/yag-config)
+[![GoDoc](https://godoc.org/github.com/zoido/yag-config?status.svg)](https://godoc.org/github.com/zoido/yag-config)
+[![Go Report Card](https://goreportcard.com/badge/github.com/zoido/yag-config)](https://goreportcard.com/report/github.com/zoido/yag-config)
 
 ## Overview
 
