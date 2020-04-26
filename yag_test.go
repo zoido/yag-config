@@ -60,7 +60,7 @@ func (s *YagTestSuite) TestParse_Env() {
 	s.Require().Equal("env value", str)
 }
 
-func (s *YagTestSuite) TestParse_WithEnvPrefixEffective() {
+func (s *YagTestSuite) TestParse_WithEnvPrefix_Effective() {
 	// Given
 	var str string
 
@@ -75,6 +75,23 @@ func (s *YagTestSuite) TestParse_WithEnvPrefixEffective() {
 	// Then
 	s.Require().NoError(err)
 	s.Require().Equal("env with prefix", str)
+}
+
+func (s *YagTestSuite) TestParse_FromEnv_Effective() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.Register(&str, "test_string", "sets test string value", yag.FromEnv("DIFFERENT_TEST_ENV"))
+	os.Setenv("TEST_STRING", "wrong env to look for")
+	os.Setenv("DIFFERENT_TEST_ENV", "correct value")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("correct value", str)
 }
 
 func (s *YagTestSuite) TestParseFlags() {
@@ -112,7 +129,7 @@ func (s *YagTestSuite) TestParseEnv() {
 	s.Require().Equal("env value", str)
 }
 
-func (s *YagTestSuite) TestParseEnv_WithEnvPrefixEffective() {
+func (s *YagTestSuite) TestParseEnv_WithEnvPrefix_Effective() {
 	// Given
 	var str string
 
@@ -173,6 +190,42 @@ func (s *YagTestSuite) TestRegister_UnsupportedType_ParseError() {
 
 	// When
 	err := y.Parse([]string{})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "unsupported type")
+	s.Require().Contains(err.Error(), "test_type")
+	s.Require().Contains(err.Error(), "testType")
+}
+
+func (s *YagTestSuite) TestRegister_UnsupportedType_ParseEnvError() {
+	// Given
+	type testType struct{}
+	testVar := &testType{}
+
+	y := yag.New()
+	y.Register(testVar, "test_type", "sets test type var")
+
+	// When
+	err := y.ParseEnv()
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "unsupported type")
+	s.Require().Contains(err.Error(), "test_type")
+	s.Require().Contains(err.Error(), "testType")
+}
+
+func (s *YagTestSuite) TestRegister_UnsupportedType_ParseFlagsError() {
+	// Given
+	type testType struct{}
+	testVar := &testType{}
+
+	y := yag.New()
+	y.Register(testVar, "test_type", "sets test type var")
+
+	// When
+	err := y.ParseFlags([]string{})
 
 	// Then
 	s.Require().Error(err)
