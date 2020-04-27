@@ -15,12 +15,12 @@ type Parser struct {
 	flagSet   *flag.FlagSet
 
 	err  error
-	vars map[string]*value
+	vars []*value
 }
 
 // New returns new instance of the Yag.
 func New(options ...ParserOption) *Parser {
-	vars := make(map[string]*value, 10)
+	vars := make([]*value, 0, 10)
 
 	y := &Parser{
 		vars: vars,
@@ -28,7 +28,7 @@ func New(options ...ParserOption) *Parser {
 	for _, opt := range options {
 		opt(y)
 	}
-	y.flagSet = &flag.FlagSet{}
+	y.flagSet = &flag.FlagSet{Usage: func() {}}
 	return y
 }
 
@@ -71,7 +71,7 @@ func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) 
 	for _, opt := range options {
 		opt(variable)
 	}
-	y.vars[variable.envName] = variable
+	y.vars = append(y.vars, variable)
 	y.flagSet.Var(val, name, help)
 }
 
@@ -112,9 +112,9 @@ func (y *Parser) doParseEnv() error {
 		return y.err
 	}
 
-	for envName, variable := range y.vars {
-		if value, envIsSet := os.LookupEnv(envName); envIsSet && !variable.flagVal.isSet() {
-			if err := variable.flagVal.Set(value); err != nil {
+	for _, v := range y.vars {
+		if value, envIsSet := os.LookupEnv(v.envName); envIsSet && !v.flagVal.isSet() {
+			if err := v.flagVal.Set(value); err != nil {
 				return err
 			}
 		}
