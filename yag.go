@@ -136,3 +136,14 @@ func (y *Parser) Parse(args []string) error {
 	}
 	return y.validate()
 }
+
+// Usage outputs flag and environment value usage to the file.
+func (y *Parser) Usage(f *os.File) error {
+	for _, v := range y.vars {
+		_, err := fmt.Fprintf(f, "\t-%s ($%s)\n\t\t%s\n", v.name, v.envName, v.help)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
