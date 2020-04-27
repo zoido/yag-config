@@ -67,6 +67,7 @@ fmt.Printf("baz: %v\n", cfg.Qux)
 
 - `str`
 - `int`
+- `bool`
 - more to come…
 
 ## Credits

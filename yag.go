@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 // Parser registers and parses configuration values.
@@ -43,9 +44,13 @@ type value struct {
 func (y *Parser) Register(ref interface{}, name, help string, options ...VarOption) {
 	switch x := ref.(type) {
 	case *string:
-		y.addVar(newStringValue(x), name, help, options...)
+		y.addVar(&stringValue{dest: x}, name, help, options...)
 	case *int:
-		y.addVar(newIntValue(x), name, help, options...)
+		y.addVar(&intValue{dest: x}, name, help, options...)
+	case *bool:
+		y.addVar(&boolValue{dest: x}, name, help, options...)
+	case *time.Duration:
+		y.addVar(&durationValue{dest: x}, name, help, options...)
 	default:
 		msg := fmt.Sprintf("unsupported type: %s(%T)", name, ref)
 		if y.err == nil {

@@ -3,6 +3,7 @@ package yag
 import (
 	"flag"
 	"strconv"
+	"time"
 )
 
 type flagValue interface {
@@ -22,30 +23,22 @@ func (s *isSetHelper) isSet() bool {
 	return s.b
 }
 
-func newStringValue(dest *string) *stringValue {
-	return &stringValue{dest: dest}
-}
-
 type stringValue struct {
 	isSetHelper
 	dest *string
 }
 
-func (s *stringValue) Set(val string) error {
-	*s.dest = val
-	s.setIsSet()
+func (sv *stringValue) Set(val string) error {
+	*sv.dest = val
+	sv.setIsSet()
 	return nil
 }
 
-func (s *stringValue) String() string {
-	if s.isSet() {
-		return *s.dest
+func (sv *stringValue) String() string {
+	if sv.isSet() {
+		return *sv.dest
 	}
 	return ""
-}
-
-func newIntValue(dest *int) *intValue {
-	return &intValue{dest: dest}
 }
 
 type intValue struct {
@@ -53,20 +46,70 @@ type intValue struct {
 	dest *int
 }
 
-func (s *intValue) Set(val string) error {
+func (iv *intValue) Set(val string) error {
 	num, err := strconv.Atoi(val)
 	if err != nil {
 		return err
 	}
 
-	*s.dest = num
-	s.setIsSet()
+	*iv.dest = num
+	iv.setIsSet()
 	return nil
 }
 
-func (s *intValue) String() string {
-	if s.isSet() {
-		return strconv.Itoa(*s.dest)
+func (iv *intValue) String() string {
+	if iv.isSet() {
+		return strconv.Itoa(*iv.dest)
+	}
+	return ""
+}
+
+type boolValue struct {
+	isSetHelper
+	dest *bool
+}
+
+func (*boolValue) IsBoolFlag() bool {
+	return true
+}
+
+func (bv *boolValue) Set(val string) error {
+	b, err := strconv.ParseBool(val)
+	if err != nil {
+		return err
+	}
+
+	*bv.dest = b
+	bv.setIsSet()
+	return nil
+}
+
+func (bv *boolValue) String() string {
+	if bv.isSet() {
+		return strconv.FormatBool(*bv.dest)
+	}
+	return ""
+}
+
+type durationValue struct {
+	isSetHelper
+	dest *time.Duration
+}
+
+func (dv *durationValue) Set(val string) error {
+	duration, err := time.ParseDuration(val)
+	if err != nil {
+		return err
+	}
+
+	*dv.dest = duration
+	dv.setIsSet()
+	return nil
+}
+
+func (dv *durationValue) String() string {
+	if dv.isSet() {
+		return dv.dest.String()
 	}
 	return ""
 }
