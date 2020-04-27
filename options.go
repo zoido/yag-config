@@ -21,3 +21,11 @@ func FromEnv(envName string) VarOption {
 		v.envName = envName
 	}
 }
+
+// Required sets the variable as required. Parsing will fail when the variable is not set via flags
+// nor environment.
+func Required() VarOption {
+	return func(v *value) {
+		v.required = true
+	}
+}

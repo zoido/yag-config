@@ -180,6 +180,79 @@ func (s *YagTestSuite) TestParse_FlagsAlwaysTakePrecedence() {
 	s.Require().Equal("flag value", str)
 }
 
+func (s *YagTestSuite) TestParse_Required_FailsOnParse() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.Register(&str, "test_string", "sets test string value", yag.Required())
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "required")
+	s.Require().Contains(err.Error(), "test_string")
+}
+
+func (s *YagTestSuite) TestParse_Required_EnvEnough() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.Register(&str, "test_string", "sets test string value", yag.Required())
+	os.Setenv("TEST_STRING", "env value")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+}
+
+func (s *YagTestSuite) TestParse_Required_FlagEnough() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.Register(&str, "test_string", "sets test string value", yag.Required())
+
+	// When
+	err := y.Parse([]string{"-test_string=flag value"})
+
+	// Then
+	s.Require().NoError(err)
+}
+
+func (s *YagTestSuite) TestParseEnv_Required_FailsOnParse() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.Register(&str, "test_string", "sets test string value", yag.Required())
+
+	// When
+	err := y.ParseEnv()
+
+	// Then
+	s.Require().Error(err)
+}
+
+func (s *YagTestSuite) TestParseFlags_Required_FailsOnParse() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.Register(&str, "test_string", "sets test string value", yag.Required())
+
+	// When
+	err := y.ParseFlags([]string{})
+
+	// Then
+	s.Require().Error(err)
+}
+
 func (s *YagTestSuite) TestRegister_UnsupportedType_ParseError() {
 	// Given
 	type testType struct{}

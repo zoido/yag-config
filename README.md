@@ -13,6 +13,7 @@
 - define defaults in the native type
 - option define environment variable prefix
 - option to override the environment variable name
+- options to mark options as required
 
 ## Example
 
@@ -33,9 +34,9 @@ cfg := &config{
 }
 
 y.Register(&cfg.Foo, "foo", "sets Foo")
-y.Register(&cfg.Bar, "bar", "sets Bar")
+y.Register(&cfg.Bar, "bar", "sets Bar", yag.Required())
 y.Register(&cfg.Baz, "baz", "sets Baz", yag.FromEnv("MY_BAZ_VALUE"))
-y.Register(&cfg.Qux, "qux", "sets Qux")
+y.Register(&cfg.Qux, "qux", "sets Qux",)
 
 args := []string{"-foo=foo flag value"}
 

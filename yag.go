@@ -32,6 +32,7 @@ func New(options ...ParserOption) *Parser {
 }
 
 type value struct {
+	name     string
 	envName  string
 	flagVal  flagValue
 	help     string
@@ -59,6 +60,7 @@ func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) 
 	variable := &value{
 		flagVal: val,
 		envName: strings.ToUpper(fmt.Sprintf("%s%s", y.envPrefix, name)),
+		name:    name,
 		help:    help,
 	}
 	for _, opt := range options {
@@ -68,7 +70,12 @@ func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) 
 	y.flagSet.Var(val, name, help)
 }
 
-func (*Parser) validate() error {
+func (y *Parser) validate() error {
+	for _, variable := range y.vars {
+		if variable.required && !variable.flagVal.isSet() {
+			return fmt.Errorf("config option '%s' is required", variable.name)
+		}
+	}
 	return nil
 }
 
@@ -119,5 +126,8 @@ func (y *Parser) Parse(args []string) error {
 	if err := y.doParseFlags(args); err != nil {
 		return err
 	}
-	return y.doParseEnv()
+	if err := y.doParseEnv(); err != nil {
+		return err
+	}
+	return y.validate()
 }
