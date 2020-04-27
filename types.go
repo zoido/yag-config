@@ -3,12 +3,8 @@ package yag
 import (
 	"flag"
 	"strconv"
+	"time"
 )
-
-// TODO:
-//  [x] bool
-//  [ ] string slice
-//  [ ] Duration?
 
 type flagValue interface {
 	flag.Value
@@ -91,6 +87,29 @@ func (bv *boolValue) Set(val string) error {
 func (bv *boolValue) String() string {
 	if bv.isSet() {
 		return strconv.FormatBool(*bv.dest)
+	}
+	return ""
+}
+
+type durationValue struct {
+	isSetHelper
+	dest *time.Duration
+}
+
+func (dv *durationValue) Set(val string) error {
+	duration, err := time.ParseDuration(val)
+	if err != nil {
+		return err
+	}
+
+	*dv.dest = duration
+	dv.setIsSet()
+	return nil
+}
+
+func (dv *durationValue) String() string {
+	if dv.isSet() {
+		return dv.dest.String()
 	}
 	return ""
 }

@@ -2,6 +2,7 @@ package yag_test
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/suite"
 
@@ -153,4 +154,51 @@ func (s *TypesTestSuite) TestBool_ParseError() {
 	s.Require().Contains(err.Error(), "invalid boolean value")
 	s.Require().Contains(err.Error(), "yes")
 	s.Require().Contains(err.Error(), "-bool")
+}
+
+func (s *TypesTestSuite) TestDuration() {
+	// Given
+	var dur time.Duration
+
+	y := yag.New()
+	y.Register(&dur, "dur", "")
+
+	// When
+	err := y.Parse([]string{"-dur=10s"})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(10, dur.Seconds())
+}
+
+func (s *TypesTestSuite) TestDuration_DefaultValue() {
+	// Given
+	dur := time.Minute
+
+	y := yag.New()
+	y.Register(&dur, "int", "")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(60, dur.Seconds())
+}
+
+func (s *TypesTestSuite) TestDuration_ParseError() {
+	// Given
+	var dur time.Duration
+
+	y := yag.New()
+	y.Register(&dur, "dur", "")
+
+	// When
+	err := y.Parse([]string{"-dur=10x"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "invalid value")
+	s.Require().Contains(err.Error(), "10x")
+	s.Require().Contains(err.Error(), "-dur")
 }

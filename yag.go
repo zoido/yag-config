@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 // Parser registers and parses configuration values.
@@ -48,6 +49,8 @@ func (y *Parser) Register(ref interface{}, name, help string, options ...VarOpti
 		y.addVar(&intValue{dest: x}, name, help, options...)
 	case *bool:
 		y.addVar(&boolValue{dest: x}, name, help, options...)
+	case *time.Duration:
+		y.addVar(&durationValue{dest: x}, name, help, options...)
 	default:
 		msg := fmt.Sprintf("unsupported type: %s(%T)", name, ref)
 		if y.err == nil {
