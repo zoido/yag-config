@@ -168,7 +168,7 @@ func (s *TypesTestSuite) TestDuration() {
 
 	// Then
 	s.Require().NoError(err)
-	s.Require().Equal(10, dur.Seconds())
+	s.Require().Equal(float64(10), dur.Seconds())
 }
 
 func (s *TypesTestSuite) TestDuration_DefaultValue() {
@@ -183,7 +183,7 @@ func (s *TypesTestSuite) TestDuration_DefaultValue() {
 
 	// Then
 	s.Require().NoError(err)
-	s.Require().Equal(60, dur.Seconds())
+	s.Require().Equal(float64(60), dur.Seconds())
 }
 
 func (s *TypesTestSuite) TestDuration_ParseError() {
