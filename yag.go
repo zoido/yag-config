@@ -92,7 +92,6 @@ func (y *Parser) doParseFlags(args []string) error {
 		return y.err
 	}
 	return y.flagSet.Parse(args)
-
 }
 
 // ParseEnv parses configuration values from environment variables.
