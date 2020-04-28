@@ -43,6 +43,8 @@ jobs:
         uses: morphy2k/revive-action@v1
         with:
           config: ci/revive.toml
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: markdownlint
         uses: nosborn/github-action-markdown-cli@v1.1.1
