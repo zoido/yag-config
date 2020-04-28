@@ -9,6 +9,8 @@ import (
 	"time"
 )
 
+const XXX = 4
+
 // Parser registers and parses configuration values.
 type Parser struct {
 	envPrefix string
