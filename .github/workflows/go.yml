@@ -30,8 +30,7 @@ jobs:
       - name: install linters
         run: |
           go get \
-            golang.org/x/tools/cmd/goimports \
-            github.com/mgechev/revive
+            golang.org/x/tools/cmd/goimports
         if: steps.cachelinters.outputs.cache-hit != 'true'
 
       - name: check out code
@@ -41,7 +40,9 @@ jobs:
         run: goimports -d .
 
       - name: revive
-        run: revive -config ci/revive.toml ./...
+        uses: morphy2k/revive-action@v1
+        with:
+          config: ci/revive.toml
 
       - name: markdownlint
         uses: nosborn/github-action-markdown-cli@v1.1.1
