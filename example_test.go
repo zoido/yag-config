@@ -3,61 +3,69 @@ package yag_test
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/zoido/yag-config"
 )
 
-type config struct {
-	Foo string
-	Bar string
-	Baz string
-	Qux string
-}
-
 func Example() {
-	y := yag.New(yag.WithEnvPrefix("MY_APP_"))
-	cfg := &config{
-		Foo: "default foo value",
-		Bar: "default bra value",
+	type config struct {
+		Str      string
+		Bool     bool
+		Int      int
+		Duration time.Duration
 	}
 
-	y.Register(&cfg.Foo, "foo", "sets Foo")
-	y.Register(&cfg.Bar, "bar", "sets Bar")
-	y.Register(&cfg.Baz, "baz", "sets Baz", yag.FromEnv("MY_BAZ_VALUE"))
-	y.Register(&cfg.Qux, "qux", "sets Qux")
+	y := yag.New(yag.WithEnvPrefix("MY_APP_"))
+	cfg := &config{
+		Str: "default str value",
+		Int: 42,
+	}
 
-	args := []string{"-foo=foo flag value"}
+	y.String(&cfg.Str, "str", "sets Str")
+	y.Bool(&cfg.Bool, "bool", "sets Bool")
+	y.Duration(&cfg.Duration, "duration", "sets Duration", yag.FromEnv("MY_DURATION_VALUE"))
+	y.Int(&cfg.Int, "int", "sets Qux")
 
-	_ = os.Setenv("MY_APP_FOO", "foo env value")
-	_ = os.Setenv("MY_APP_BAR", "bar env value")
-	_ = os.Setenv("MY_BAZ_VALUE", "baz env value")
+	args := []string{"-str=str flag value"}
+
+	_ = os.Setenv("MY_APP_STR", "str env value")
+	_ = os.Setenv("MY_APP_INT", "4")
+	_ = os.Setenv("MY_DURATION_VALUE", "1h")
 
 	err := y.Parse(args)
 	if err != nil {
 		os.Exit(2)
 	}
 
-	fmt.Printf("foo: %v\n", cfg.Foo)
-	fmt.Printf("bar: %v\n", cfg.Bar)
-	fmt.Printf("baz: %v\n", cfg.Baz)
-	fmt.Printf("baz: %v\n", cfg.Qux)
+	fmt.Printf("config.Str: %v\n", cfg.Str)
+	fmt.Printf("config.Int: %v\n", cfg.Int)
+	fmt.Printf("config.Bool %v\n", cfg.Bool)
+	fmt.Printf("config.Duration: %v\n", cfg.Duration)
 
 	// Output:
-	// foo: foo flag value
-	// bar: bar env value
-	// baz: baz env value
-	// baz:
+	// config.Str: str flag value
+	// config.Int: 4
+	// config.Bool: false
+	// config.Duration: 1h0m0s
+
+	//
 }
 
 func ExampleParser_Usage() {
+	type config struct {
+		Foo string
+		Bar string
+	}
+
 	y := yag.New(yag.WithEnvPrefix("MY_APP_"))
 	cfg := &config{
 		Foo: "default foo value",
 		Bar: "default bra value",
 	}
 
-	y.Register(&cfg.Foo, "foo", "sets Foo")
-	y.Register(&cfg.Bar, "bar", "sets Bar", yag.FromEnv("MY_BAR"))
+	y.String(&cfg.Foo, "foo", "sets Foo")
+	y.String(&cfg.Bar, "bar", "sets Bar", yag.FromEnv("MY_BAR"))
 
 	err := y.Usage(os.Stdout)
 	if err != nil {
