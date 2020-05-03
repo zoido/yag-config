@@ -21,44 +21,44 @@
 
 ```go
 type config struct {
-	Foo string
-	Bar string
-	Baz string
-	Qux string
+	Str      string
+	Bool     bool
+	Int      int
+	Duration time.Duration
 }
 
 y := yag.New(yag.WithEnvPrefix("MY_APP_"))
 cfg := &config{
-    Foo: "default foo value",
-    Bar: "default bra value",
+	Str: "default str value",
+	Int: 42,
 }
 
-y.Register(&cfg.Foo, "foo", "sets Foo")
-y.Register(&cfg.Bar, "bar", "sets Bar", yag.Required())
-y.Register(&cfg.Baz, "baz", "sets Baz", yag.FromEnv("MY_BAZ_VALUE"))
-y.Register(&cfg.Qux, "qux", "sets Qux",)
+y.String(&cfg.Str, "str", "sets Str")
+y.Bool(&cfg.Bool, "bool", "sets Bool")
+y.Duration(&cfg.Duration, "duration", "sets Duration", yag.FromEnv("MY_DURATION_VALUE"))
+y.Int(&cfg.Int, "int", "sets Qux")
 
-args := []string{"-foo=foo flag value"}
+args := []string{"-str=str flag value"}
 
-os.Setenv("MY_APP_FOO", "foo env value")
-os.Setenv("MY_APP_BAR", "bar env value")
-os.Setenv("MY_BAZ_VALUE", "baz env value")
+_ = os.Setenv("MY_APP_STR", "str env value")
+_ = os.Setenv("MY_APP_INT", "4")
+_ = os.Setenv("MY_DURATION_VALUE", "1h")
 
 err := y.Parse(args)
 if err != nil {
-    os.Exit(2)
+	os.Exit(2)
 }
 
-fmt.Printf("foo: %v\n", cfg.Foo)
-fmt.Printf("bar: %v\n", cfg.Bar)
-fmt.Printf("baz: %v\n", cfg.Baz)
-fmt.Printf("baz: %v\n", cfg.Qux)
+fmt.Printf("config.Str: %v\n", cfg.Str)
+fmt.Printf("config.Int: %v\n", cfg.Int)
+fmt.Printf("config.Bool %v\n", cfg.Bool)
+fmt.Printf("config.Duration: %v\n", cfg.Duration)
 
 // Output:
-// foo: foo flag value
-// bar: bar env value
-// baz: baz env value
-// baz:
+// config.Str: str flag value
+// config.Int: 4
+	// config.Bool: false
+// config.Duration: 1h0m0s
 ```
 
 <!-- markdownlint-enable MD010 -->
