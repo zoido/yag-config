@@ -22,7 +22,7 @@ func (s *TypesTestSuite) TestString() {
 	str := "default value"
 
 	y := yag.New()
-	y.Register(&str, "string", "")
+	y.String(&str, "string", "")
 
 	// When
 	err := y.Parse([]string{"-string=value"})
@@ -37,7 +37,7 @@ func (s *TypesTestSuite) TestString_DefaultValue() {
 	str := "default value"
 
 	y := yag.New()
-	y.Register(&str, "string", "")
+	y.String(&str, "string", "")
 
 	// When
 	err := y.Parse([]string{})
@@ -52,7 +52,7 @@ func (s *TypesTestSuite) TestInt() {
 	num := 128
 
 	y := yag.New()
-	y.Register(&num, "int", "")
+	y.Int(&num, "int", "")
 
 	// When
 	err := y.Parse([]string{"-int=42"})
@@ -67,7 +67,7 @@ func (s *TypesTestSuite) TestInt_DefaultValue() {
 	num := 128
 
 	y := yag.New()
-	y.Register(&num, "int", "")
+	y.Int(&num, "int", "")
 
 	// When
 	err := y.Parse([]string{})
@@ -82,7 +82,7 @@ func (s *TypesTestSuite) TestInt_ParseError() {
 	num := 128
 
 	y := yag.New()
-	y.Register(&num, "int", "")
+	y.Int(&num, "int", "")
 
 	// When
 	err := y.Parse([]string{"-int=3.14"})
@@ -99,7 +99,7 @@ func (s *TypesTestSuite) TestBool_BoolFlag() {
 	var b bool
 
 	y := yag.New()
-	y.Register(&b, "bool", "")
+	y.Bool(&b, "bool", "")
 
 	// When
 	err := y.Parse([]string{"-bool"})
@@ -114,7 +114,7 @@ func (s *TypesTestSuite) TestBool_FlagWinthValue() {
 	var b bool
 
 	y := yag.New()
-	y.Register(&b, "bool", "")
+	y.Bool(&b, "bool", "")
 
 	// When
 	err := y.Parse([]string{"-bool=true"})
@@ -129,7 +129,7 @@ func (s *TypesTestSuite) TestBool_DefaultValue() {
 	b := true
 
 	y := yag.New()
-	y.Register(&b, "bool", "")
+	y.Bool(&b, "bool", "")
 
 	// When
 	err := y.Parse([]string{})
@@ -144,7 +144,7 @@ func (s *TypesTestSuite) TestBool_ParseError() {
 	var b bool
 
 	y := yag.New()
-	y.Register(&b, "bool", "")
+	y.Bool(&b, "bool", "")
 
 	// When
 	err := y.Parse([]string{"-bool=yes"})
@@ -161,7 +161,7 @@ func (s *TypesTestSuite) TestDuration() {
 	var dur time.Duration
 
 	y := yag.New()
-	y.Register(&dur, "dur", "")
+	y.Duration(&dur, "dur", "")
 
 	// When
 	err := y.Parse([]string{"-dur=10s"})
@@ -176,7 +176,7 @@ func (s *TypesTestSuite) TestDuration_DefaultValue() {
 	dur := time.Minute
 
 	y := yag.New()
-	y.Register(&dur, "int", "")
+	y.Duration(&dur, "int", "")
 
 	// When
 	err := y.Parse([]string{})
@@ -191,7 +191,7 @@ func (s *TypesTestSuite) TestDuration_ParseError() {
 	var dur time.Duration
 
 	y := yag.New()
-	y.Register(&dur, "dur", "")
+	y.Duration(&dur, "dur", "")
 
 	// When
 	err := y.Parse([]string{"-dur=10x"})

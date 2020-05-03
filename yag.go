@@ -14,7 +14,6 @@ type Parser struct {
 	envPrefix string
 	flagSet   *flag.FlagSet
 
-	err  error
 	vars []*value
 }
 
@@ -40,25 +39,24 @@ type value struct {
 	required bool
 }
 
-// Register registers new variable for parsing.
-func (y *Parser) Register(ref interface{}, name, help string, options ...VarOption) {
-	switch x := ref.(type) {
-	case *string:
-		y.addVar(&stringValue{dest: x}, name, help, options...)
-	case *int:
-		y.addVar(&intValue{dest: x}, name, help, options...)
-	case *bool:
-		y.addVar(&boolValue{dest: x}, name, help, options...)
-	case *time.Duration:
-		y.addVar(&durationValue{dest: x}, name, help, options...)
-	default:
-		msg := fmt.Sprintf("unsupported type: %s(%T)", name, ref)
-		if y.err == nil {
-			y.err = fmt.Errorf(msg)
-		} else {
-			y.err = fmt.Errorf("%s, %s", y.err.Error(), msg)
-		}
-	}
+// String registers new string variable for parsing.
+func (y *Parser) String(s *string, name, help string, options ...VarOption) {
+	y.addVar(&stringValue{dest: s}, name, help, options...)
+}
+
+// Int registers new int variable for parsing.
+func (y *Parser) Int(i *int, name, help string, options ...VarOption) {
+	y.addVar(&intValue{dest: i}, name, help, options...)
+}
+
+// Bool registers new bool variable for parsing.
+func (y *Parser) Bool(b *bool, name, help string, options ...VarOption) {
+	y.addVar(&boolValue{dest: b}, name, help, options...)
+}
+
+// Duration registers new time.Duration variable for parsing.
+func (y *Parser) Duration(d *time.Duration, name, help string, options ...VarOption) {
+	y.addVar(&durationValue{dest: d}, name, help, options...)
 }
 
 func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) {
@@ -93,9 +91,6 @@ func (y *Parser) ParseFlags(args []string) error {
 }
 
 func (y *Parser) doParseFlags(args []string) error {
-	if y.err != nil {
-		return y.err
-	}
 	return y.flagSet.Parse(args)
 }
 
@@ -108,10 +103,6 @@ func (y *Parser) ParseEnv() error {
 }
 
 func (y *Parser) doParseEnv() error {
-	if y.err != nil {
-		return y.err
-	}
-
 	for _, v := range y.vars {
 		if value, envIsSet := os.LookupEnv(v.envName); envIsSet && !v.flagVal.isSet() {
 			if err := v.flagVal.Set(value); err != nil {
@@ -125,9 +116,6 @@ func (y *Parser) doParseEnv() error {
 // Parse parses configuration values from flags and environment variables.
 // Flags values always override environment variable value.
 func (y *Parser) Parse(args []string) error {
-	if y.err != nil {
-		return y.err
-	}
 	if err := y.doParseFlags(args); err != nil {
 		return err
 	}
