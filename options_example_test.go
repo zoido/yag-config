@@ -7,7 +7,9 @@ import (
 	"github.com/zoido/yag-config"
 )
 
-func Example_WithEnvPrefix() {
+func ExampleWithEnvPrefix() {
+	os.Clearenv()
+
 	type config struct {
 		Foo string
 	}
@@ -31,7 +33,9 @@ func Example_WithEnvPrefix() {
 	// Output: Foo from the variable with prefix
 }
 
-func Example_FromEnv() {
+func ExampleFromEnv() {
+	os.Clearenv()
+
 	type config struct {
 		Foo string
 	}
@@ -53,4 +57,66 @@ func Example_FromEnv() {
 	fmt.Printf(cfg.Foo)
 
 	// Output: Foo from different variable
+}
+
+func ExampleRequired_first() {
+	os.Clearenv()
+
+	type config struct {
+		Foo string
+	}
+
+	y := yag.New()
+	cfg := &config{}
+
+	y.String(&cfg.Foo, "foo", "sets Foo", yag.Required())
+
+	err := y.Parse([]string{})
+
+	fmt.Print(err)
+	// Output: config option 'foo' is required
+}
+
+func ExampleRequired_second() {
+	os.Clearenv()
+
+	type config struct {
+		Foo string
+	}
+
+	y := yag.New()
+	cfg := &config{}
+
+	y.String(&cfg.Foo, "foo", "sets Foo", yag.Required())
+
+	err := y.Parse([]string{"-foo=foo_value"})
+	if err != nil {
+		os.Exit(2)
+	}
+
+	fmt.Print(cfg.Foo)
+	// Output: foo_value
+}
+
+func ExampleRequired_third() {
+	os.Clearenv()
+
+	type config struct {
+		Foo string
+	}
+
+	y := yag.New()
+	cfg := &config{}
+
+	y.String(&cfg.Foo, "foo", "sets Foo", yag.Required())
+
+	_ = os.Setenv("FOO", "foo_value")
+
+	err := y.Parse([]string{})
+	if err != nil {
+		os.Exit(2)
+	}
+
+	fmt.Print(cfg.Foo)
+	// Output: foo_value
 }
