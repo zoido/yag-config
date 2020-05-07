@@ -252,3 +252,61 @@ func (s *YagTestSuite) TestParseFlags_Required_FailsOnParse() {
 	// Then
 	s.Require().Error(err)
 }
+
+func (s *YagTestSuite) TestParseFlags_ErrorNotSwallowed() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.String(&str, "test_string", "sets test string value")
+
+	// When
+	err := y.ParseFlags([]string{"--unknown_flag="})
+
+	// Then
+	s.Require().Error(err)
+}
+
+func (s *YagTestSuite) TestParseEnv_ErrorNotSwallowed() {
+	// Given
+	var num int
+
+	y := yag.New()
+	y.Int(&num, "test_num", "sets test num value")
+	os.Setenv("TEST_NUM", "invalid num value")
+
+	// When
+	err := y.ParseEnv()
+
+	// Then
+	s.Require().Error(err)
+}
+
+func (s *YagTestSuite) TestParse_Flags_ErrorNotSwallowed() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.String(&str, "test_string", "sets test string value")
+
+	// When
+	err := y.Parse([]string{"--unknown_flag="})
+
+	// Then
+	s.Require().Error(err)
+}
+
+func (s *YagTestSuite) TestParse_Env_ErrorNotSwallowed() {
+	// Given
+	var num int
+
+	y := yag.New()
+	y.Int(&num, "test_num", "sets test num value")
+	os.Setenv("TEST_NUM", "invalid num value")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().Error(err)
+}

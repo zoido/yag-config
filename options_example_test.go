@@ -74,6 +74,7 @@ func ExampleRequired_first() {
 	err := y.Parse([]string{})
 
 	fmt.Print(err)
+
 	// Output: config option 'foo' is required
 }
 
@@ -95,6 +96,7 @@ func ExampleRequired_second() {
 	}
 
 	fmt.Print(cfg.Foo)
+
 	// Output: foo_value
 }
 
@@ -118,5 +120,6 @@ func ExampleRequired_third() {
 	}
 
 	fmt.Print(cfg.Foo)
+
 	// Output: foo_value
 }
