@@ -13,7 +13,7 @@
 - define defaults in the native type
 - option define environment variable prefix
 - option to override the environment variable name
-- options to mark options as required
+- option to mark options as required
 
 ## Example
 
@@ -57,7 +57,7 @@ fmt.Printf("config.Duration: %v\n", cfg.Duration)
 // Output:
 // config.Str: str flag value
 // config.Int: 4
-	// config.Bool: false
+// config.Bool: false
 // config.Duration: 1h0m0s
 ```
 
@@ -68,9 +68,10 @@ fmt.Printf("config.Duration: %v\n", cfg.Duration)
 - `str`
 - `int`
 - `bool`
+- `time.Duration`
 - more to come…
 
 ## Credits
 
-Inspired by configuration processing
-of [Consul agent](https://github.com/hashicorp/consul).
+Originally inspired by flags processing in of
+[Consul agent](https://github.com/hashicorp/consul).
