@@ -30,3 +30,27 @@ func Example_WithEnvPrefix() {
 
 	// Output: Foo from the variable with prefix
 }
+
+func Example_FromEnv() {
+	type config struct {
+		Foo string
+	}
+
+	y := yag.New()
+	cfg := &config{}
+
+	y.String(&cfg.Foo, "foo", "sets Foo", yag.FromEnv("DIFFERENT_FOO_VARIABLE"))
+
+	_ = os.Setenv("DIFFERENT_FOO_VARIABLE", "Foo from different variable")
+	_ = os.Setenv("FOO", "Foo from the default variable")
+
+	err := y.Parse([]string{})
+
+	if err != nil {
+		os.Exit(2)
+	}
+
+	fmt.Printf(cfg.Foo)
+
+	// Output: Foo from different variable
+}
