@@ -39,24 +39,29 @@ type value struct {
 	required bool
 }
 
+// Value registers new generic flag.Value implementation for parsing.
+func (y *Parser) Value(v flag.Value, name, help string, options ...VarOption) {
+	y.addVar(&flagWrapper{dest: v}, name, help, options...)
+}
+
 // String registers new string variable for parsing.
 func (y *Parser) String(s *string, name, help string, options ...VarOption) {
-	y.addVar(&stringValue{dest: s}, name, help, options...)
+	y.Value(&stringValue{dest: s}, name, help, options...)
 }
 
 // Int registers new int variable for parsing.
 func (y *Parser) Int(i *int, name, help string, options ...VarOption) {
-	y.addVar(&intValue{dest: i}, name, help, options...)
+	y.Value(&intValue{dest: i}, name, help, options...)
 }
 
 // Bool registers new bool variable for parsing.
 func (y *Parser) Bool(b *bool, name, help string, options ...VarOption) {
-	y.addVar(&boolValue{dest: b}, name, help, options...)
+	y.Value(&boolValue{dest: b}, name, help, options...)
 }
 
 // Duration registers new time.Duration variable for parsing.
 func (y *Parser) Duration(d *time.Duration, name, help string, options ...VarOption) {
-	y.addVar(&durationValue{dest: d}, name, help, options...)
+	y.Value(&durationValue{dest: d}, name, help, options...)
 }
 
 func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) {

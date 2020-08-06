@@ -69,6 +69,7 @@ fmt.Printf("config.Duration: %v\n", cfg.Duration)
 - `int`
 - `bool`
 - `time.Duration`
+- any `flag.Value` implementation (e.g.[(github.com/sgreben/flagvar](https://github.com/sgreben/flagvar))
 - more to come…
 
 ## Credits

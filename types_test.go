@@ -202,3 +202,28 @@ func (s *TypesTestSuite) TestDuration_ParseError() {
 	s.Require().Contains(err.Error(), "10x")
 	s.Require().Contains(err.Error(), "-dur")
 }
+
+type testFlagValue struct{}
+
+func (tfv *testFlagValue) Set(val string) error {
+	return nil
+}
+
+func (tfv *testFlagValue) String() string {
+	return "test_flag_value"
+}
+
+func (s *TypesTestSuite) TestValue() {
+	// Given
+	val := &testFlagValue{}
+
+	y := yag.New()
+	y.Value(val, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=test_string"})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("test_flag_value", val.String())
+}
