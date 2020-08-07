@@ -11,38 +11,60 @@ type flagValue interface {
 	isSet() bool
 }
 
-type isSetHelper struct {
-	b bool
+// optional interface to indicate boolean flags that can be
+// supplied without "=value" text
+type boolFlag interface {
+	flag.Value
+	IsBoolFlag() bool
 }
 
-func (s *isSetHelper) setIsSet() {
-	s.b = true
+type flagWrapper struct {
+	dest flag.Value
+	b    bool
 }
 
-func (s *isSetHelper) isSet() bool {
-	return s.b
+func (fw *flagWrapper) Set(val string) error {
+	err := fw.dest.Set(val)
+	if err != nil {
+		return err
+	}
+
+	fw.b = true
+	return nil
+}
+
+func (fw *flagWrapper) String() string {
+	if fw.isSet() {
+		return fw.dest.String()
+	}
+	return ""
+}
+
+func (fw *flagWrapper) IsBoolFlag() bool {
+	if fv, ok := fw.dest.(boolFlag); ok {
+		return fv.IsBoolFlag()
+	}
+	return false
+}
+
+func (fw *flagWrapper) isSet() bool {
+	return fw.b
 }
 
 type stringValue struct {
-	isSetHelper
 	dest *string
 }
 
 func (sv *stringValue) Set(val string) error {
 	*sv.dest = val
-	sv.setIsSet()
 	return nil
 }
 
 func (sv *stringValue) String() string {
-	if sv.isSet() {
-		return *sv.dest
-	}
-	return ""
+	return *sv.dest
 }
 
 type intValue struct {
-	isSetHelper
 	dest *int
 }
 
@@ -53,19 +75,14 @@ func (iv *intValue) Set(val string) error {
 	}
 
 	*iv.dest = num
-	iv.setIsSet()
 	return nil
 }
 
 func (iv *intValue) String() string {
-	if iv.isSet() {
-		return strconv.Itoa(*iv.dest)
-	}
-	return ""
+	return strconv.Itoa(*iv.dest)
 }
 
 type boolValue struct {
-	isSetHelper
 	dest *bool
 }
 
@@ -80,19 +97,14 @@ func (bv *boolValue) Set(val string) error {
 	}
 
 	*bv.dest = b
-	bv.setIsSet()
 	return nil
 }
 
 func (bv *boolValue) String() string {
-	if bv.isSet() {
-		return strconv.FormatBool(*bv.dest)
-	}
-	return ""
+	return strconv.FormatBool(*bv.dest)
 }
 
 type durationValue struct {
-	isSetHelper
 	dest *time.Duration
 }
 
@@ -103,13 +115,9 @@ func (dv *durationValue) Set(val string) error {
 	}
 
 	*dv.dest = duration
-	dv.setIsSet()
 	return nil
 }
 
 func (dv *durationValue) String() string {
-	if dv.isSet() {
-		return dv.dest.String()
-	}
-	return ""
+	return dv.dest.String()
 }
