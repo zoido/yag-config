@@ -47,53 +47,6 @@ func (s *TypesTestSuite) TestString_DefaultValue() {
 	s.Require().Equal("default value", str)
 }
 
-func (s *TypesTestSuite) TestInt() {
-	// Given
-	num := 128
-
-	y := yag.New()
-	y.Int(&num, "int", "")
-
-	// When
-	err := y.Parse([]string{"-int=42"})
-
-	// Then
-	s.Require().NoError(err)
-	s.Require().Equal(42, num)
-}
-
-func (s *TypesTestSuite) TestInt_DefaultValue() {
-	// Given
-	num := 128
-
-	y := yag.New()
-	y.Int(&num, "int", "")
-
-	// When
-	err := y.Parse([]string{})
-
-	// Then
-	s.Require().NoError(err)
-	s.Require().Equal(128, num)
-}
-
-func (s *TypesTestSuite) TestInt_ParseError() {
-	// Given
-	num := 128
-
-	y := yag.New()
-	y.Int(&num, "int", "")
-
-	// When
-	err := y.Parse([]string{"-int=3.14"})
-
-	// Then
-	s.Require().Error(err)
-	s.Require().Contains(err.Error(), "invalid value")
-	s.Require().Contains(err.Error(), "3.14")
-	s.Require().Contains(err.Error(), "-int")
-}
-
 func (s *TypesTestSuite) TestBool_BoolFlag() {
 	// Given
 	var b bool
@@ -109,7 +62,7 @@ func (s *TypesTestSuite) TestBool_BoolFlag() {
 	s.Require().True(b)
 }
 
-func (s *TypesTestSuite) TestBool_FlagWinthValue() {
+func (s *TypesTestSuite) TestBool_FlagWithValue() {
 	// Given
 	var b bool
 

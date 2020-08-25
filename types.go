@@ -64,24 +64,6 @@ func (sv *stringValue) String() string {
 	return *sv.dest
 }
 
-type intValue struct {
-	dest *int
-}
-
-func (iv *intValue) Set(val string) error {
-	num, err := strconv.Atoi(val)
-	if err != nil {
-		return err
-	}
-
-	*iv.dest = num
-	return nil
-}
-
-func (iv *intValue) String() string {
-	return strconv.Itoa(*iv.dest)
-}
-
 type boolValue struct {
 	dest *bool
 }
