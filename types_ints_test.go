@@ -53,7 +53,7 @@ func (s *TypesTestSuite) TestInt_ParseError() {
 
 func (s *TypesTestSuite) TestInt8() {
 	// Given
-	var num int8 = 42
+	var num int8 = 4
 
 	y := yag.New()
 	y.Int8(&num, "int8", "")
