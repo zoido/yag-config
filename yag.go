@@ -54,6 +54,11 @@ func (y *Parser) Int(i *int, name, help string, options ...VarOption) {
 	y.Value(&intValue{dest: i}, name, help, options...)
 }
 
+// Int8 registers new int8 variable for parsing.
+func (y *Parser) Int8(i *int8, name, help string, options ...VarOption) {
+	y.Value(&int8Value{dest: i}, name, help, options...)
+}
+
 // Int16 registers new int16 variable for parsing.
 func (y *Parser) Int16(i *int16, name, help string, options ...VarOption) {
 	y.Value(&int16Value{dest: i}, name, help, options...)
