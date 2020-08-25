@@ -94,6 +94,68 @@ func (s *TypesTestSuite) TestInt_ParseError() {
 	s.Require().Contains(err.Error(), "-int")
 }
 
+func (s *TypesTestSuite) TestInt32() {
+	// Given
+	var num int32 = 128
+
+	y := yag.New()
+	y.Int32(&num, "int32", "")
+
+	// When
+	err := y.Parse([]string{"-int32=2000000000"})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(int32(2_000_000_000), num)
+}
+
+func (s *TypesTestSuite) TestInt32_DefaultValue() {
+	// Given
+	var num int32 = 128
+
+	y := yag.New()
+	y.Int32(&num, "int", "")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(int32(128), num)
+}
+
+func (s *TypesTestSuite) TestInt32_ParseError() {
+	// Given
+	var num int32 = 128
+
+	y := yag.New()
+	y.Int32(&num, "int32", "")
+
+	// When
+	err := y.Parse([]string{"-int32=3.14"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "invalid value")
+	s.Require().Contains(err.Error(), "3.14")
+	s.Require().Contains(err.Error(), "-int32")
+}
+
+func (s *TypesTestSuite) TestInt32_ParseError_Overflow() {
+	// Given
+	var num int32 = 128
+
+	y := yag.New()
+	y.Int32(&num, "int32", "")
+
+	// When
+	err := y.Parse([]string{"-int32=3000000000"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "out of range")
+	s.Require().Contains(err.Error(), "-int32")
+}
 func (s *TypesTestSuite) TestInt64() {
 	// Given
 	var num int64 = 128
@@ -102,11 +164,11 @@ func (s *TypesTestSuite) TestInt64() {
 	y.Int64(&num, "int64", "")
 
 	// When
-	err := y.Parse([]string{"-int64=9223000111000111000"})
+	err := y.Parse([]string{"-int64=9000000000000000000"})
 
 	// Then
 	s.Require().NoError(err)
-	s.Require().Equal(int64(9_223_000_111_000_111_000), num)
+	s.Require().Equal(int64(9_000_000_000_000_000_000), num)
 }
 
 func (s *TypesTestSuite) TestInt64_DefaultValue() {
@@ -149,7 +211,7 @@ func (s *TypesTestSuite) TestInt64_ParseError_Overflow() {
 	y.Int64(&num, "int64", "")
 
 	// When
-	err := y.Parse([]string{"-int64=9000223000111000111000"})
+	err := y.Parse([]string{"-int64=10000000000000000000"})
 
 	// Then
 	s.Require().Error(err)
