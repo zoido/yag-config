@@ -94,6 +94,69 @@ func (s *TypesTestSuite) TestInt_ParseError() {
 	s.Require().Contains(err.Error(), "-int")
 }
 
+func (s *TypesTestSuite) TestInt64() {
+	// Given
+	var num int64 = 128
+
+	y := yag.New()
+	y.Int64(&num, "int64", "")
+
+	// When
+	err := y.Parse([]string{"-int64=9223000111000111000"})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(int64(9_223_000_111_000_111_000), num)
+}
+
+func (s *TypesTestSuite) TestInt64_DefaultValue() {
+	// Given
+	var num int64 = 128
+
+	y := yag.New()
+	y.Int64(&num, "int", "")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(int64(128), num)
+}
+
+func (s *TypesTestSuite) TestInt64_ParseError() {
+	// Given
+	var num int64 = 128
+
+	y := yag.New()
+	y.Int64(&num, "int64", "")
+
+	// When
+	err := y.Parse([]string{"-int64=3.14"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "invalid value")
+	s.Require().Contains(err.Error(), "3.14")
+	s.Require().Contains(err.Error(), "-int64")
+}
+
+func (s *TypesTestSuite) TestInt64_ParseError_Overflow() {
+	// Given
+	var num int64 = 128
+
+	y := yag.New()
+	y.Int64(&num, "int64", "")
+
+	// When
+	err := y.Parse([]string{"-int64=9000223000111000111000"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "out of range")
+	s.Require().Contains(err.Error(), "-int64")
+}
+
 func (s *TypesTestSuite) TestBool_BoolFlag() {
 	// Given
 	var b bool

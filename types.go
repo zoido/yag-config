@@ -82,6 +82,24 @@ func (iv *intValue) String() string {
 	return strconv.Itoa(*iv.dest)
 }
 
+type int64Value struct {
+	dest *int64
+}
+
+func (iv *int64Value) Set(val string) error {
+	num, err := strconv.ParseInt(val, 10, 64)
+	if err != nil {
+		return err
+	}
+
+	*iv.dest = num
+	return nil
+}
+
+func (iv *int64Value) String() string {
+	return strconv.FormatInt(*iv.dest, 10)
+}
+
 type boolValue struct {
 	dest *bool
 }
