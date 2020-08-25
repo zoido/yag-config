@@ -66,3 +66,66 @@ func (s *TypesTestSuite) TestFloat32_ParseError_Overflow() {
 	s.Require().Contains(err.Error(), "out of range")
 	s.Require().Contains(err.Error(), "-float32")
 }
+
+func (s *TypesTestSuite) TestFloat64() {
+	// Given
+	var num float64 = 6.626e-34
+
+	y := yag.New()
+	y.Float64(&num, "float64", "")
+
+	// When
+	err := y.Parse([]string{"-float64=3.14"})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(float64(3.14), num)
+}
+
+func (s *TypesTestSuite) TestFloat64_DefaultValue() {
+	// Given
+	var num float64 = 2.72
+
+	y := yag.New()
+	y.Float64(&num, "int", "")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(float64(2.72), num)
+}
+
+func (s *TypesTestSuite) TestFloat64_ParseError() {
+	// Given
+	var num float64 = 6.626e-34
+
+	y := yag.New()
+	y.Float64(&num, "float64", "")
+
+	// When
+	err := y.Parse([]string{"-float64=3.14f"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "invalid value")
+	s.Require().Contains(err.Error(), "3.14")
+	s.Require().Contains(err.Error(), "-float64")
+}
+
+func (s *TypesTestSuite) TestFloat64_ParseError_Overflow() {
+	// Given
+	var num float64 = 6.626e-34
+
+	y := yag.New()
+	y.Float64(&num, "float64", "")
+
+	// When
+	err := y.Parse([]string{"-float64=3e320"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "out of range")
+	s.Require().Contains(err.Error(), "-float64")
+}

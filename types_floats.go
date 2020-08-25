@@ -19,3 +19,21 @@ func (iv *float32Value) Set(val string) error {
 func (iv *float32Value) String() string {
 	return strconv.FormatFloat(float64(*iv.dest), 'G', -1, 32)
 }
+
+type float64Value struct {
+	dest *float64
+}
+
+func (iv *float64Value) Set(val string) error {
+	num, err := strconv.ParseFloat(val, 64)
+	if err != nil {
+		return err
+	}
+
+	*iv.dest = float64(num)
+	return nil
+}
+
+func (iv *float64Value) String() string {
+	return strconv.FormatFloat(float64(*iv.dest), 'G', -1, 64)
+}

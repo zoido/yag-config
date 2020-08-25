@@ -68,10 +68,10 @@ fmt.Printf("config.Duration: %v\n", cfg.Duration)
 - `str`
 - `int`, `int8`, `int16`, `int32`, `int64`
 - `uint`, `uint8`, `uint16`, `uint32`, `uint64`
-- `float32`
+- `float32`, `float64`
 - `bool`
 - `time.Duration`
-- any `flag.Value` implementation (e.g.[(github.com/sgreben/flagvar](https://github.com/sgreben/flagvar))
+- any `flag.Value` implementation (e.g. [(github.com/sgreben/flagvar](https://github.com/sgreben/flagvar))
 - more to come…
 
 ## Credits
