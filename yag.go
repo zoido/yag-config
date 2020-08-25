@@ -99,6 +99,11 @@ func (y *Parser) Uint64(i *uint64, name, help string, options ...VarOption) {
 	y.Value(&uint64Value{dest: i}, name, help, options...)
 }
 
+// Float32 registers new float32 variable for parsing.
+func (y *Parser) Float32(i *float32, name, help string, options ...VarOption) {
+	y.Value(&float32Value{dest: i}, name, help, options...)
+}
+
 // Bool registers new bool variable for parsing.
 func (y *Parser) Bool(b *bool, name, help string, options ...VarOption) {
 	y.Value(&boolValue{dest: b}, name, help, options...)
