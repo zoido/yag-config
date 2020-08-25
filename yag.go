@@ -54,6 +54,11 @@ func (y *Parser) Int(i *int, name, help string, options ...VarOption) {
 	y.Value(&intValue{dest: i}, name, help, options...)
 }
 
+// Int16 registers new int16 variable for parsing.
+func (y *Parser) Int16(i *int16, name, help string, options ...VarOption) {
+	y.Value(&int16Value{dest: i}, name, help, options...)
+}
+
 // Int32 registers new int32 variable for parsing.
 func (y *Parser) Int32(i *int32, name, help string, options ...VarOption) {
 	y.Value(&int32Value{dest: i}, name, help, options...)

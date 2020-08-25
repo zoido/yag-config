@@ -94,6 +94,69 @@ func (s *TypesTestSuite) TestInt_ParseError() {
 	s.Require().Contains(err.Error(), "-int")
 }
 
+func (s *TypesTestSuite) TestInt16() {
+	// Given
+	var num int16 = 128
+
+	y := yag.New()
+	y.Int16(&num, "int16", "")
+
+	// When
+	err := y.Parse([]string{"-int16=-30000"})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(int16(-30000), num)
+}
+
+func (s *TypesTestSuite) TestInt16_DefaultValue() {
+	// Given
+	var num int16 = 128
+
+	y := yag.New()
+	y.Int16(&num, "int", "")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal(int16(128), num)
+}
+
+func (s *TypesTestSuite) TestInt16_ParseError() {
+	// Given
+	var num int16 = 128
+
+	y := yag.New()
+	y.Int16(&num, "int16", "")
+
+	// When
+	err := y.Parse([]string{"-int16=3.14"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "invalid value")
+	s.Require().Contains(err.Error(), "3.14")
+	s.Require().Contains(err.Error(), "-int16")
+}
+
+func (s *TypesTestSuite) TestInt16_ParseError_Overflow() {
+	// Given
+	var num int16 = 128
+
+	y := yag.New()
+	y.Int16(&num, "int16", "")
+
+	// When
+	err := y.Parse([]string{"-int16=-64000"})
+
+	// Then
+	s.Require().Error(err)
+	s.Require().Contains(err.Error(), "out of range")
+	s.Require().Contains(err.Error(), "-int16")
+}
+
 func (s *TypesTestSuite) TestInt32() {
 	// Given
 	var num int32 = 128

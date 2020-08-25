@@ -20,6 +20,24 @@ func (iv *intValue) String() string {
 	return strconv.Itoa(*iv.dest)
 }
 
+type int16Value struct {
+	dest *int16
+}
+
+func (iv *int16Value) Set(val string) error {
+	num, err := strconv.ParseInt(val, 10, 16)
+	if err != nil {
+		return err
+	}
+
+	*iv.dest = int16(num)
+	return nil
+}
+
+func (iv *int16Value) String() string {
+	return strconv.FormatInt(int64(*iv.dest), 10)
+}
+
 type int32Value struct {
 	dest *int32
 }
