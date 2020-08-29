@@ -36,7 +36,7 @@ cfg := &config{
 y.String(&cfg.Str, "str", "sets Str")
 y.Bool(&cfg.Bool, "bool", "sets Bool")
 y.Duration(&cfg.Duration, "duration", "sets Duration", yag.FromEnv("MY_DURATION_VALUE"))
-y.Int(&cfg.Int, "int", "sets Qux")
+y.Int(&cfg.Int, "int", "sets Int")
 
 args := []string{"-str=str flag value"}
 

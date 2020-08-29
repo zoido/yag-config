@@ -253,6 +253,69 @@ func (s *YagTestSuite) TestParseFlags_Required_FailsOnParse() {
 	s.Require().Error(err)
 }
 
+func (s *YagTestSuite) TestParse_NoFlag_EnvOk() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.String(&str, "test_string", "sets test string value", yag.NoFlag())
+
+	os.Setenv("TEST_STRING", "env value")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("env value", str)
+}
+
+func (s *YagTestSuite) TestParse_NoFlag_FlagInvalid() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.String(&str, "test_string", "sets test string value", yag.NoFlag())
+
+	// When
+	err := y.Parse([]string{"-test_string=flag value"})
+
+	// Then
+	s.Require().Error(err)
+}
+
+func (s *YagTestSuite) TestParse_NoEnv_FlagOk() {
+	// Given
+	var str string
+
+	y := yag.New()
+	y.String(&str, "test_string", "sets test string value", yag.NoEnv())
+
+	// When
+	err := y.Parse([]string{"-test_string=flag value"})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("flag value", str)
+}
+
+func (s *YagTestSuite) TestParse_NoEnv_EnvIgnored() {
+	// Given
+	str := "default value"
+
+	y := yag.New()
+	y.String(&str, "test_string", "sets test string value", yag.NoEnv())
+
+	os.Setenv("TEST_STRING", "env value")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("default value", str)
+}
+
 func (s *YagTestSuite) TestParseFlags_ErrorNotSwallowed() {
 	// Given
 	var str string
