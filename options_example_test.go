@@ -123,3 +123,47 @@ func ExampleRequired_envOnlyOk() {
 
 	// Output: foo_value
 }
+
+func ExampleNoFlag() {
+	os.Clearenv()
+
+	type config struct {
+		Foo string
+	}
+
+	y := yag.New()
+	cfg := &config{}
+
+	y.String(&cfg.Foo, "foo", "sets Foo", yag.NoFlag())
+
+	err := y.Parse([]string{"-foo=foo_value"})
+
+	fmt.Print(err)
+
+	// Output: flag provided but not defined: -foo
+}
+
+func ExampleNoEnv() {
+	os.Clearenv()
+
+	type config struct {
+		Foo string
+	}
+
+	y := yag.New()
+	cfg := &config{
+		Foo: "Default Foo value",
+	}
+
+	y.String(&cfg.Foo, "foo", "sets Foo", yag.NoEnv())
+
+	_ = os.Setenv("FOO", "Foo from the environment variable ")
+	err := y.Parse([]string{})
+	if err != nil {
+		os.Exit(2)
+	}
+
+	fmt.Printf(cfg.Foo)
+
+	// Output: Default Foo value
+}
