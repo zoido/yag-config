@@ -32,11 +32,13 @@ func New(options ...ParserOption) *Parser {
 }
 
 type value struct {
-	name     string
-	envName  string
-	flagVal  flagValue
-	help     string
-	required bool
+	name      string
+	envName   string
+	flagVal   flagValue
+	help      string
+	required  bool
+	parseFlag bool
+	parseEnv  bool
 }
 
 // Value registers new generic flag.Value implementation for parsing.
@@ -121,16 +123,20 @@ func (y *Parser) Duration(d *time.Duration, name, help string, options ...VarOpt
 
 func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) {
 	variable := &value{
-		flagVal: val,
-		envName: strings.ToUpper(fmt.Sprintf("%s%s", y.envPrefix, name)),
-		name:    name,
-		help:    help,
+		flagVal:   val,
+		envName:   strings.ToUpper(fmt.Sprintf("%s%s", y.envPrefix, name)),
+		name:      name,
+		help:      help,
+		parseEnv:  true,
+		parseFlag: true,
 	}
 	for _, opt := range options {
 		opt(variable)
 	}
 	y.vars = append(y.vars, variable)
-	y.flagSet.Var(val, name, help)
+	if variable.parseFlag {
+		y.flagSet.Var(val, name, help)
+	}
 }
 
 func (y *Parser) validate() error {
@@ -164,7 +170,12 @@ func (y *Parser) ParseEnv() error {
 
 func (y *Parser) doParseEnv() error {
 	for _, v := range y.vars {
-		if value, envIsSet := os.LookupEnv(v.envName); envIsSet && !v.flagVal.isSet() {
+		if !v.parseEnv {
+			continue
+		}
+
+		value, envIsSet := os.LookupEnv(v.envName)
+		if envIsSet && !v.flagVal.isSet() {
 			if err := v.flagVal.Set(value); err != nil {
 				return err
 			}

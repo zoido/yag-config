@@ -78,7 +78,7 @@ func ExampleRequired_first() {
 	// Output: config option 'foo' is required
 }
 
-func ExampleRequired_second() {
+func ExampleRequired_flagOk() {
 	os.Clearenv()
 
 	type config struct {
@@ -100,7 +100,7 @@ func ExampleRequired_second() {
 	// Output: foo_value
 }
 
-func ExampleRequired_third() {
+func ExampleRequired_envOnlyOk() {
 	os.Clearenv()
 
 	type config struct {

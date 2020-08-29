@@ -29,3 +29,18 @@ func Required() VarOption {
 		v.required = true
 	}
 }
+
+// NoEnv disables looking up of the variable value in the environment variables.
+func NoEnv() VarOption {
+	return func(v *value) {
+		v.parseEnv = false
+	}
+}
+
+// NoFlag disables the flag for the variable. Useful for the options that should not appear on
+// command line.
+func NoFlag() VarOption {
+	return func(v *value) {
+		v.parseFlag = false
+	}
+}
