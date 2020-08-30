@@ -41,6 +41,29 @@ type value struct {
 	parseEnv  bool
 }
 
+func (v *value) usage() string {
+	u := []string{"\t"}
+
+	if v.parseFlag {
+		u = append(u, "-", v.name)
+	}
+
+	if v.parseEnv && v.parseFlag {
+		u = append(u, " ($", v.envName, ")")
+	}
+
+	if v.parseEnv && !v.parseFlag {
+		u = append(u, "$", v.envName)
+	}
+
+	if v.required {
+		u = append(u, " [required]")
+	}
+	u = append(u, "\n\t\t", v.help)
+
+	return strings.Join(u, "")
+}
+
 // Value registers new generic flag.Value implementation for parsing.
 func (y *Parser) Value(v flag.Value, name, help string, options ...VarOption) {
 	y.addVar(&flagWrapper{dest: v}, name, help, options...)
@@ -196,13 +219,11 @@ func (y *Parser) Parse(args []string) error {
 	return y.validate()
 }
 
-// Usage outputs flag and environment value usage to the file.
-func (y *Parser) Usage(f *os.File) error {
+// Usage returns formatted string with usage help.
+func (y *Parser) Usage() string {
+	u := make([]string, 0, len(y.vars))
 	for _, v := range y.vars {
-		_, err := fmt.Fprintf(f, "\t-%s ($%s)\n\t\t%s\n", v.name, v.envName, v.help)
-		if err != nil {
-			return err
-		}
+		u = append(u, v.usage())
 	}
-	return nil
+	return strings.Join(u, "\n")
 }
