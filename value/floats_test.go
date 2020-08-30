@@ -63,6 +63,7 @@ func TestFloat64(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(float64(3.14), num)
+	r.Equal("3.14", v.String())
 }
 
 func TestFloat64_ParseError(t *testing.T) {
