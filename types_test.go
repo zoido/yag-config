@@ -4,161 +4,288 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/suite"
-
+	"github.com/stretchr/testify/require"
 	"github.com/zoido/yag-config"
 )
 
-type TypesTestSuite struct {
-	suite.Suite
-}
-
-func TestTypesTestSuite(t *testing.T) {
-	suite.Run(t, new(TypesTestSuite))
-}
-
-func (s *TypesTestSuite) TestString() {
+func TestString(t *testing.T) {
 	// Given
-	str := "default value"
+	var s string
 
 	y := yag.New()
-	y.String(&str, "string", "")
+	y.String(&s, "val", "")
 
 	// When
-	err := y.Parse([]string{"-string=value"})
+	err := y.Parse([]string{"-val=test_string"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("value", str)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("test_string", s)
 }
 
-func (s *TypesTestSuite) TestString_DefaultValue() {
+func TestInt(t *testing.T) {
 	// Given
-	str := "default value"
+	var n int
 
 	y := yag.New()
-	y.String(&str, "string", "")
+	y.Int(&n, "val", "")
 
 	// When
-	err := y.Parse([]string{})
+	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("default value", str)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(8, n)
 }
 
-func (s *TypesTestSuite) TestBool_BoolFlag() {
+func TestInt8(t *testing.T) {
+	// Given
+	var n int8
+
+	y := yag.New()
+	y.Int8(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(int8(8), n)
+}
+
+func TestInt16(t *testing.T) {
+	// Given
+	var n int16
+
+	y := yag.New()
+	y.Int16(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(int16(8), n)
+}
+
+func TestInt32(t *testing.T) {
+	// Given
+	var n int32
+
+	y := yag.New()
+	y.Int32(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(int32(8), n)
+}
+
+func TestInt64(t *testing.T) {
+	// Given
+	var n int64
+
+	y := yag.New()
+	y.Int64(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(int64(8), n)
+}
+
+func TestUint(t *testing.T) {
+	// Given
+	var n uint
+
+	y := yag.New()
+	y.Uint(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(uint(8), n)
+}
+
+func TestUint8(t *testing.T) {
+	// Given
+	var n uint8
+
+	y := yag.New()
+	y.Uint8(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(uint8(8), n)
+}
+
+func TestUint16(t *testing.T) {
+	// Given
+	var n uint16
+
+	y := yag.New()
+	y.Uint16(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(uint16(8), n)
+}
+
+func TestUint32(t *testing.T) {
+	// Given
+	var n uint32
+
+	y := yag.New()
+	y.Uint32(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(uint32(8), n)
+}
+
+func TestUint64(t *testing.T) {
+	// Given
+	var n uint64
+
+	y := yag.New()
+	y.Uint64(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=8"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(uint64(8), n)
+}
+
+func TestFloat32(t *testing.T) {
+	// Given
+	var n float32
+
+	y := yag.New()
+	y.Float32(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=6.626E-34"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(float32(6.626E-34), n)
+}
+
+func TestFloat64(t *testing.T) {
+	// Given
+	var n float64
+
+	y := yag.New()
+	y.Float64(&n, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=6.626E-34"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(float64(6.626E-34), n)
+}
+
+func TestDuration(t *testing.T) {
+	// Given
+	var d time.Duration
+
+	y := yag.New()
+	y.Duration(&d, "val", "")
+
+	// When
+	err := y.Parse([]string{"-val=10h30m15s"})
+
+	// Then
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(float64(10*60*60+30*60+15), d.Seconds())
+}
+
+func TestBool(t *testing.T) {
 	// Given
 	var b bool
 
 	y := yag.New()
-	y.Bool(&b, "bool", "")
+	y.Bool(&b, "val", "")
 
 	// When
-	err := y.Parse([]string{"-bool"})
+	err := y.Parse([]string{"-val=true"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().True(b)
+	r := require.New(t)
+	r.NoError(err)
+	r.True(b)
 }
 
-func (s *TypesTestSuite) TestBool_FlagWithValue() {
+func TestBool_BoolFlag(t *testing.T) {
 	// Given
 	var b bool
 
 	y := yag.New()
-	y.Bool(&b, "bool", "")
+	y.Bool(&b, "val", "")
 
 	// When
-	err := y.Parse([]string{"-bool=true"})
+	err := y.Parse([]string{"-val"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().True(b)
+	r := require.New(t)
+	r.NoError(err)
+	r.True(b)
 }
 
-func (s *TypesTestSuite) TestBool_DefaultValue() {
+func TestBool_False(t *testing.T) {
 	// Given
-	b := true
+	b := false
 
 	y := yag.New()
-	y.Bool(&b, "bool", "")
+	y.Bool(&b, "val", "")
 
 	// When
-	err := y.Parse([]string{})
+	err := y.Parse([]string{"-val=false"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().True(b)
+	r := require.New(t)
+	r.NoError(err)
+	r.False(b)
 }
 
-func (s *TypesTestSuite) TestBool_ParseError() {
-	// Given
-	var b bool
-
-	y := yag.New()
-	y.Bool(&b, "bool", "")
-
-	// When
-	err := y.Parse([]string{"-bool=yes"})
-
-	// Then
-	s.Require().Error(err)
-	s.Require().Contains(err.Error(), "invalid boolean value")
-	s.Require().Contains(err.Error(), "yes")
-	s.Require().Contains(err.Error(), "-bool")
+type testFlagValue struct {
+	called bool
 }
-
-func (s *TypesTestSuite) TestDuration() {
-	// Given
-	var dur time.Duration
-
-	y := yag.New()
-	y.Duration(&dur, "dur", "")
-
-	// When
-	err := y.Parse([]string{"-dur=10s"})
-
-	// Then
-	s.Require().NoError(err)
-	s.Require().Equal(float64(10), dur.Seconds())
-}
-
-func (s *TypesTestSuite) TestDuration_DefaultValue() {
-	// Given
-	dur := time.Minute
-
-	y := yag.New()
-	y.Duration(&dur, "int", "")
-
-	// When
-	err := y.Parse([]string{})
-
-	// Then
-	s.Require().NoError(err)
-	s.Require().Equal(float64(60), dur.Seconds())
-}
-
-func (s *TypesTestSuite) TestDuration_ParseError() {
-	// Given
-	var dur time.Duration
-
-	y := yag.New()
-	y.Duration(&dur, "dur", "")
-
-	// When
-	err := y.Parse([]string{"-dur=10x"})
-
-	// Then
-	s.Require().Error(err)
-	s.Require().Contains(err.Error(), "invalid value")
-	s.Require().Contains(err.Error(), "10x")
-	s.Require().Contains(err.Error(), "-dur")
-}
-
-type testFlagValue struct{}
 
 func (tfv *testFlagValue) Set(val string) error {
+	tfv.called = true
 	return nil
 }
 
@@ -166,7 +293,7 @@ func (tfv *testFlagValue) String() string {
 	return "test_flag_value"
 }
 
-func (s *TypesTestSuite) TestValue() {
+func TestValue(t *testing.T) {
 	// Given
 	val := &testFlagValue{}
 
@@ -177,6 +304,8 @@ func (s *TypesTestSuite) TestValue() {
 	err := y.Parse([]string{"-val=test_string"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("test_flag_value", val.String())
+	r := require.New(t)
+	r.NoError(err)
+	r.True(val.called)
+	r.Equal("test_flag_value", val.String())
 }
