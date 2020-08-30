@@ -1,4 +1,3 @@
-// Package yag is yet another configuration library for Go.
 package yag
 
 import (
@@ -16,12 +15,12 @@ type Parser struct {
 	envPrefix string
 	flagSet   *flag.FlagSet
 
-	vars []*yagValue
+	vars []*variable
 }
 
 // New returns new instance of the Yag.
 func New(options ...ParserOption) *Parser {
-	vars := make([]*yagValue, 0, 10)
+	vars := make([]*variable, 0, 10)
 
 	y := &Parser{
 		vars: vars,
@@ -33,38 +32,9 @@ func New(options ...ParserOption) *Parser {
 	return y
 }
 
-type yagValue struct {
-	name      string
-	envName   string
-	flagVal   flagValue
-	help      string
-	required  bool
-	parseFlag bool
-	parseEnv  bool
-}
-
-func (v *yagValue) usage() string {
-	u := []string{"\t"}
-	if v.parseFlag {
-		u = append(u, "-", v.name)
-	}
-	if v.parseEnv && v.parseFlag {
-		u = append(u, " ($", v.envName, ")")
-	}
-	if v.parseEnv && !v.parseFlag {
-		u = append(u, "$", v.envName)
-	}
-	if v.required {
-		u = append(u, " [required]")
-	}
-	u = append(u, "\n\t\t", v.help)
-
-	return strings.Join(u, "")
-}
-
 // Value registers new generic flag.Value implementation for parsing.
 func (y *Parser) Value(v flag.Value, name, help string, options ...VarOption) {
-	y.addVar(&flagWrapper{dest: v}, name, help, options...)
+	y.addVar(&wrapper{dest: v}, name, help, options...)
 }
 
 // String registers new string variable for parsing.
@@ -142,9 +112,9 @@ func (y *Parser) Duration(d *time.Duration, name, help string, options ...VarOpt
 	y.Value(value.Duration(d), name, help, options...)
 }
 
-func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) {
-	variable := &yagValue{
-		flagVal:   val,
+func (y *Parser) addVar(w *wrapper, name, help string, options ...VarOption) {
+	v := &variable{
+		flag:      w,
 		envName:   strings.ToUpper(fmt.Sprintf("%s%s", y.envPrefix, name)),
 		name:      name,
 		help:      help,
@@ -152,18 +122,18 @@ func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) 
 		parseFlag: true,
 	}
 	for _, opt := range options {
-		opt(variable)
+		opt(v)
 	}
-	y.vars = append(y.vars, variable)
-	if variable.parseFlag {
-		y.flagSet.Var(val, name, help)
+	y.vars = append(y.vars, v)
+	if v.parseFlag {
+		y.flagSet.Var(w, name, help)
 	}
 }
 
 func (y *Parser) validate() error {
-	for _, variable := range y.vars {
-		if variable.required && !variable.flagVal.isSet() {
-			return fmt.Errorf("config option '%s' is required", variable.name)
+	for _, v := range y.vars {
+		if v.required && !v.flag.isSet() {
+			return fmt.Errorf("config option '%s' is required", v.name)
 		}
 	}
 	return nil
@@ -195,9 +165,9 @@ func (y *Parser) doParseEnv() error {
 			continue
 		}
 
-		value, envIsSet := os.LookupEnv(v.envName)
-		if envIsSet && !v.flagVal.isSet() {
-			if err := v.flagVal.Set(value); err != nil {
+		envValue, envIsSet := os.LookupEnv(v.envName)
+		if envIsSet && !v.flag.isSet() {
+			if err := v.flag.Set(envValue); err != nil {
 				return err
 			}
 		}

@@ -60,6 +60,21 @@ func (s *YagTestSuite) TestParse_Env() {
 	s.Require().Equal("env value", str)
 }
 
+func (s *YagTestSuite) TestParse_DefaultValue() {
+	// Given
+	str := "default value"
+
+	y := yag.New()
+	y.String(&str, "test_string", "sets test string value")
+
+	// When
+	err := y.Parse([]string{})
+
+	// Then
+	s.Require().NoError(err)
+	s.Require().Equal("default value", str)
+}
+
 func (s *YagTestSuite) TestParse_WithEnvPrefix_Effective() {
 	// Given
 	str := "default value"
