@@ -1,34 +1,41 @@
 package yag_test
 
 import (
-	"os"
+	"fmt"
 
 	"github.com/zoido/yag-config"
 )
 
 func ExampleParser_Usage() {
 	type config struct {
-		Foo string
-		Bar string
+		RequiredOption  string
+		CustomEnvOption string
+		NoFlagOption    string
+		NoEnvOption     string
 	}
 
 	y := yag.New(yag.WithEnvPrefix("MY_APP_"))
-	cfg := &config{
-		Foo: "default foo value",
-		Bar: "default bra value",
-	}
+	cfg := &config{}
 
-	y.String(&cfg.Foo, "foo", "sets Foo")
-	y.String(&cfg.Bar, "bar", "sets Bar", yag.FromEnv("MY_BAR"))
+	y.String(&cfg.RequiredOption, "required_option", "sets required option", yag.Required())
+	y.String(
+		&cfg.CustomEnvOption,
+		"custom_env_option",
+		"sets custom env option",
+		yag.FromEnv("MY_OPTION_TWO"),
+	)
+	y.String(&cfg.NoFlagOption, "no_flag_option", "sets np flag option", yag.NoFlag())
+	y.String(&cfg.NoFlagOption, "no_env_option", "sets no env option", yag.NoEnv())
 
-	err := y.Usage(os.Stdout)
-	if err != nil {
-		os.Exit(2)
-	}
+	fmt.Print(y.Usage())
 
 	// Output:
-	// 	-foo ($MY_APP_FOO)
-	// 		sets Foo
-	// 	-bar ($MY_BAR)
-	// 		sets Bar
+	// 	-required_option ($MY_APP_REQUIRED_OPTION) [required]
+	// 		sets required option
+	// 	-custom_env_option ($MY_OPTION_TWO)
+	// 		sets custom env option
+	// 	$MY_APP_NO_FLAG_OPTION
+	// 		sets np flag option
+	// 	-no_env_option
+	// 		sets no env option
 }
