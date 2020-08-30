@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/zoido/yag-config/value"
 )
 
 // Parser registers and parses configuration values.
@@ -14,12 +16,12 @@ type Parser struct {
 	envPrefix string
 	flagSet   *flag.FlagSet
 
-	vars []*value
+	vars []*yagValue
 }
 
 // New returns new instance of the Yag.
 func New(options ...ParserOption) *Parser {
-	vars := make([]*value, 0, 10)
+	vars := make([]*yagValue, 0, 10)
 
 	y := &Parser{
 		vars: vars,
@@ -31,7 +33,7 @@ func New(options ...ParserOption) *Parser {
 	return y
 }
 
-type value struct {
+type yagValue struct {
 	name      string
 	envName   string
 	flagVal   flagValue
@@ -41,7 +43,7 @@ type value struct {
 	parseEnv  bool
 }
 
-func (v *value) usage() string {
+func (v *yagValue) usage() string {
 	u := []string{"\t"}
 	if v.parseFlag {
 		u = append(u, "-", v.name)
@@ -72,52 +74,52 @@ func (y *Parser) String(s *string, name, help string, options ...VarOption) {
 
 // Int registers new int variable for parsing.
 func (y *Parser) Int(i *int, name, help string, options ...VarOption) {
-	y.Value(&intValue{dest: i}, name, help, options...)
+	y.Value(value.Int(i), name, help, options...)
 }
 
 // Int8 registers new int8 variable for parsing.
 func (y *Parser) Int8(i *int8, name, help string, options ...VarOption) {
-	y.Value(&int8Value{dest: i}, name, help, options...)
+	y.Value(value.Int8(i), name, help, options...)
 }
 
 // Int16 registers new int16 variable for parsing.
 func (y *Parser) Int16(i *int16, name, help string, options ...VarOption) {
-	y.Value(&int16Value{dest: i}, name, help, options...)
+	y.Value(value.Int16(i), name, help, options...)
 }
 
 // Int32 registers new int32 variable for parsing.
 func (y *Parser) Int32(i *int32, name, help string, options ...VarOption) {
-	y.Value(&int32Value{dest: i}, name, help, options...)
+	y.Value(value.Int32(i), name, help, options...)
 }
 
 // Int64 registers new int64 variable for parsing.
 func (y *Parser) Int64(i *int64, name, help string, options ...VarOption) {
-	y.Value(&int64Value{dest: i}, name, help, options...)
+	y.Value(value.Int64(i), name, help, options...)
 }
 
 // Uint registers new uint variable for parsing.
 func (y *Parser) Uint(i *uint, name, help string, options ...VarOption) {
-	y.Value(&uintValue{dest: i}, name, help, options...)
+	y.Value(value.Uint(i), name, help, options...)
 }
 
 // Uint8 registers new uint8 variable for parsing.
 func (y *Parser) Uint8(i *uint8, name, help string, options ...VarOption) {
-	y.Value(&uint8Value{dest: i}, name, help, options...)
+	y.Value(value.Uint8(i), name, help, options...)
 }
 
 // Uint16 registers new uint16 variable for parsing.
 func (y *Parser) Uint16(i *uint16, name, help string, options ...VarOption) {
-	y.Value(&uint16Value{dest: i}, name, help, options...)
+	y.Value(value.Uint16(i), name, help, options...)
 }
 
 // Uint32 registers new uint32 variable for parsing.
 func (y *Parser) Uint32(i *uint32, name, help string, options ...VarOption) {
-	y.Value(&uint32Value{dest: i}, name, help, options...)
+	y.Value(value.Uint32(i), name, help, options...)
 }
 
 // Uint64 registers new uint64 variable for parsing.
 func (y *Parser) Uint64(i *uint64, name, help string, options ...VarOption) {
-	y.Value(&uint64Value{dest: i}, name, help, options...)
+	y.Value(value.Uint64(i), name, help, options...)
 }
 
 // Float32 registers new float32 variable for parsing.
@@ -141,7 +143,7 @@ func (y *Parser) Duration(d *time.Duration, name, help string, options ...VarOpt
 }
 
 func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) {
-	variable := &value{
+	variable := &yagValue{
 		flagVal:   val,
 		envName:   strings.ToUpper(fmt.Sprintf("%s%s", y.envPrefix, name)),
 		name:      name,
