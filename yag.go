@@ -43,19 +43,15 @@ type value struct {
 
 func (v *value) usage() string {
 	u := []string{"\t"}
-
 	if v.parseFlag {
 		u = append(u, "-", v.name)
 	}
-
 	if v.parseEnv && v.parseFlag {
 		u = append(u, " ($", v.envName, ")")
 	}
-
 	if v.parseEnv && !v.parseFlag {
 		u = append(u, "$", v.envName)
 	}
-
 	if v.required {
 		u = append(u, " [required]")
 	}
