@@ -69,7 +69,7 @@ func (y *Parser) Value(v flag.Value, name, help string, options ...VarOption) {
 
 // String registers new string variable for parsing.
 func (y *Parser) String(s *string, name, help string, options ...VarOption) {
-	y.Value(&stringValue{dest: s}, name, help, options...)
+	y.Value(value.String(s), name, help, options...)
 }
 
 // Int registers new int variable for parsing.
@@ -134,12 +134,12 @@ func (y *Parser) Float64(i *float64, name, help string, options ...VarOption) {
 
 // Bool registers new bool variable for parsing.
 func (y *Parser) Bool(b *bool, name, help string, options ...VarOption) {
-	y.Value(&boolValue{dest: b}, name, help, options...)
+	y.Value(value.Bool(b), name, help, options...)
 }
 
 // Duration registers new time.Duration variable for parsing.
 func (y *Parser) Duration(d *time.Duration, name, help string, options ...VarOption) {
-	y.Value(&durationValue{dest: d}, name, help, options...)
+	y.Value(value.Duration(d), name, help, options...)
 }
 
 func (y *Parser) addVar(val flagValue, name, help string, options ...VarOption) {

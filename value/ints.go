@@ -5,27 +5,27 @@ import (
 	"strconv"
 )
 
-// Int returns a new flag.Value for int type.
+// Int returns a new flag.Value for the int type.
 func Int(dest *int) flag.Value {
 	return &intValue{dest}
 }
 
-// Int8 returns a new flag.Value for int8 type.
+// Int8 returns a new flag.Value for the int8 type.
 func Int8(dest *int8) flag.Value {
 	return &int8Value{dest}
 }
 
-// Int16 returns a new flag.Value for int16 type.
+// Int16 returns a new flag.Value for the int16 type.
 func Int16(dest *int16) flag.Value {
 	return &int16Value{dest}
 }
 
-// Int32 returns a new flag.Value for int32 type.
+// Int32 returns a new flag.Value for the int32 type.
 func Int32(dest *int32) flag.Value {
 	return &int32Value{dest}
 }
 
-// Int64 returns a new flag.Value for int64 type.
+// Int64 returns a new flag.Value for the int64 type.
 func Int64(dest *int64) flag.Value {
 	return &int64Value{dest}
 }

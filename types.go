@@ -2,20 +2,13 @@ package yag
 
 import (
 	"flag"
-	"strconv"
-	"time"
+
+	"github.com/zoido/yag-config/value"
 )
 
 type flagValue interface {
 	flag.Value
 	isSet() bool
-}
-
-// optional interface to indicate boolean flags that can be
-// supplied without "=value" text
-type boolFlag interface {
-	flag.Value
-	IsBoolFlag() bool
 }
 
 type flagWrapper struct {
@@ -41,65 +34,9 @@ func (fw *flagWrapper) String() string {
 }
 
 func (fw *flagWrapper) IsBoolFlag() bool {
-	if fv, ok := fw.dest.(boolFlag); ok {
-		return fv.IsBoolFlag()
-	}
-	return false
+	return value.IsBoolFlag(fw.dest)
 }
 
 func (fw *flagWrapper) isSet() bool {
 	return fw.b
-}
-
-type stringValue struct {
-	dest *string
-}
-
-func (sv *stringValue) Set(val string) error {
-	*sv.dest = val
-	return nil
-}
-
-func (sv *stringValue) String() string {
-	return *sv.dest
-}
-
-type boolValue struct {
-	dest *bool
-}
-
-func (*boolValue) IsBoolFlag() bool {
-	return true
-}
-
-func (bv *boolValue) Set(val string) error {
-	b, err := strconv.ParseBool(val)
-	if err != nil {
-		return err
-	}
-
-	*bv.dest = b
-	return nil
-}
-
-func (bv *boolValue) String() string {
-	return strconv.FormatBool(*bv.dest)
-}
-
-type durationValue struct {
-	dest *time.Duration
-}
-
-func (dv *durationValue) Set(val string) error {
-	duration, err := time.ParseDuration(val)
-	if err != nil {
-		return err
-	}
-
-	*dv.dest = duration
-	return nil
-}
-
-func (dv *durationValue) String() string {
-	return dv.dest.String()
 }
