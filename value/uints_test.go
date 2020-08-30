@@ -19,6 +19,7 @@ func TestUint(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(uint(42), num)
+	r.Equal("42", v.String())
 }
 
 func TestUint_ParseError(t *testing.T) {
@@ -47,6 +48,7 @@ func TestUint8(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(uint8(42), num)
+	r.Equal("42", v.String())
 }
 
 func TestUint8_ParseError(t *testing.T) {
@@ -89,6 +91,7 @@ func TestUint16(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(uint16(60000), num)
+	r.Equal("60000", v.String())
 }
 
 func TestUint16_ParseError(t *testing.T) {
@@ -131,6 +134,7 @@ func TestUint32(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(uint32(4_000_000_000), num)
+	r.Equal("4000000000", v.String())
 }
 
 func TestUint32_ParseError(t *testing.T) {
@@ -173,6 +177,7 @@ func TestUint64(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(uint64(10_000_000_000_000_000_000), num)
+	r.Equal("10000000000000000000", v.String())
 }
 
 func TestUint64_ParseError(t *testing.T) {

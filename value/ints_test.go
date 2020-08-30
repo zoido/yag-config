@@ -19,6 +19,7 @@ func TestInt(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(-42, num)
+	r.Equal("-42", v.String())
 }
 
 func TestInt_ParseError(t *testing.T) {
@@ -47,6 +48,7 @@ func TestInt8(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(int8(-42), num)
+	r.Equal("-42", v.String())
 }
 
 func TestInt8_ParseError(t *testing.T) {
@@ -89,6 +91,7 @@ func TestInt16(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(int16(-30000), num)
+	r.Equal("-30000", v.String())
 }
 
 func TestInt16_ParseError(t *testing.T) {
@@ -131,6 +134,7 @@ func TestInt32(t *testing.T) {
 	r := require.New(t)
 	r.NoError(err)
 	r.Equal(int32(-2_000_000_000), num)
+	r.Equal("-2000000000", v.String())
 }
 
 func TestInt32_ParseError(t *testing.T) {
@@ -172,7 +176,7 @@ func TestInt64(t *testing.T) {
 	// Then
 	r := require.New(t)
 	r.NoError(err)
-	r.Equal(int64(-9_000_000_000_000_000_000), num)
+	r.Equal("-9000000000000000000", v.String())
 }
 
 func TestInt64_ParseError(t *testing.T) {
