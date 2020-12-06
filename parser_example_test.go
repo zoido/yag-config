@@ -39,3 +39,19 @@ func ExampleParser_Usage() {
 	// 	-no_env_option
 	// 		sets no env option
 }
+
+func ExampleErrHelp() {
+	var foo string
+
+	y := yag.New()
+
+	y.String(&foo, "foo", "sets Foo")
+
+	err := y.Parse([]string{"--help"})
+	if err == yag.ErrHelp {
+		fmt.Printf("--help flag passed")
+
+	}
+
+	// Output: --help flag passed
+}
