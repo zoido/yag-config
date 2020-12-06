@@ -1,9 +1,10 @@
 # Yet Another Golang Config Library
 
-![Go](https://github.com/zoido/yag-config/workflows/Go/badge.svg)
-[![codecov](https://codecov.io/gh/zoido/yag-config/branch/master/graph/badge.svg)](https://codecov.io/gh/zoido/yag-config)
-[![GoDoc](https://godoc.org/github.com/zoido/yag-config?status.svg)](https://godoc.org/github.com/zoido/yag-config)
-[![Go Report Card](https://goreportcard.com/badge/github.com/zoido/yag-config)](https://goreportcard.com/report/github.com/zoido/yag-config)
+<a href="https://pkg.go.dev/github.com/zoido/yag-config"><img src="https://pkg.go.dev/badge/github.com/zoido/yag-config"></a>
+<a href="https://github.com/zoido/yag-config/blob/master/LICENSE"><img src="https://img.shields.io/github/license/zoido/yag-config?style=flat-square"/></a>
+<img src="https://img.shields.io/github/workflow/status/zoido/yag-config/Go?style=flat-square&logoColor=white&logo=github"/>
+<a href="https://codecov.io/gh/zoido/yag-config"><img src="https://img.shields.io/codecov/c/github/zoido/yag-config?style=flat-square&logoColor=white&logo=codecov"/></a>
+<a href="https://goreportcard.com/report/github.com/zoido/yag-config"><img src="https://goreportcard.com/badge/github.com/zoido/yag-config?style=flat-square"></a>
 
 ## Overview
 
