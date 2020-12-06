@@ -197,7 +197,7 @@ func TestFloat32(t *testing.T) {
 	// Then
 	r := require.New(t)
 	r.NoError(err)
-	r.Equal(float32(6.626E-34), n)
+	r.Equal(float32(6.626e-34), n)
 }
 
 func TestFloat64(t *testing.T) {
@@ -213,7 +213,7 @@ func TestFloat64(t *testing.T) {
 	// Then
 	r := require.New(t)
 	r.NoError(err)
-	r.Equal(float64(6.626E-34), n)
+	r.Equal(float64(6.626e-34), n)
 }
 
 func TestDuration(t *testing.T) {
