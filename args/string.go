@@ -6,10 +6,7 @@ import (
 	"github.com/zoido/yag-config/value"
 )
 
-type Parser interface {
-	Parse(values []string) error
-}
-
+// Strings returns new instance of Parser implementation that parses string values.
 func Strings(s *[]string) Parser {
 	return &stringsParser{dest: s}
 }
@@ -24,9 +21,9 @@ func (sp *stringsParser) Parse(values []string) error {
 		o := value.String(&outs[i])
 		err := o.Set(v)
 		if err != nil {
-			return fmt.Errorf("parsing argument on position %d", i+1)
+			return fmt.Errorf("parsing string argument on position %d", i+1)
 		}
 	}
-	sp.dest = &outs
+	*sp.dest = outs
 	return nil
 }
