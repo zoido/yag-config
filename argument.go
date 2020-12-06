@@ -15,24 +15,23 @@ type ArgParser struct {
 }
 
 // Value registers new generic flag.Value implementation for parsing an argument.
-func (ap *ArgParser) Value(v flag.Value, name string, options ...ArgOption) {
-	ap.addArg(&wrapper{dest: v}, name, options...)
+func (ap *ArgParser) Value(v flag.Value, options ...ArgOption) {
+	ap.addArg(&wrapper{dest: v}, options...)
 }
 
 // String registers new string argument for parsing.
-func (ap *ArgParser) String(s *string, name string, options ...ArgOption) {
-	ap.Value(value.String(s), name, options...)
+func (ap *ArgParser) String(s *string, options ...ArgOption) {
+	ap.Value(value.String(s), options...)
 }
 
-// Strings TBD.
+// Strings tells parser to parse all of the leftover arguments as strings.
 func (ap *ArgParser) Strings(s *[]string) {
 	ap.parser = args.Strings(s)
 }
 
-func (ap *ArgParser) addArg(w *wrapper, name string, options ...ArgOption) {
+func (ap *ArgParser) addArg(w *wrapper, options ...ArgOption) {
 	a := &argument{
 		value: w,
-		name:  name,
 	}
 	for _, opt := range options {
 		opt.applyArg(a)
@@ -40,12 +39,13 @@ func (ap *ArgParser) addArg(w *wrapper, name string, options ...ArgOption) {
 	ap.args = append(ap.args, a)
 }
 
-func (ap *ArgParser) parse(values []string) error {
+// Parse parses the values according to the registered arguments.
+func (ap *ArgParser) Parse(values []string) error {
 	count := len(values)
-	var lastParsedIndex int
+	var nextToparse int
 	for i, a := range ap.args {
-		lastParsedIndex = i
-		if i+1 > count {
+		nextToparse = i + 1
+		if nextToparse > count {
 			break
 		}
 		v := values[i]
@@ -55,17 +55,20 @@ func (ap *ArgParser) parse(values []string) error {
 			return fmt.Errorf("parsing argument '%s' on position %d", a.name, i+1)
 		}
 	}
-	if lastParsedIndex < count {
-		ap.parser.Parse(values[lastParsedIndex:])
+	if (nextToparse < count) && (ap.parser != nil) {
+		ap.parser.Parse(values[nextToparse:])
 	}
 
 	return ap.validate()
 }
 
 func (ap *ArgParser) validate() error {
-	for _, a := range ap.args {
+	for i, a := range ap.args {
 		if a.required && !a.value.isSet() {
-			return fmt.Errorf("argument '%s' is required", a.name)
+			if a.name == "" {
+				return fmt.Errorf("an argument is required on position %d", i+1)
+			}
+			return fmt.Errorf("argument '%s' is required on position %d", a.name, i+1)
 		}
 	}
 	return nil
