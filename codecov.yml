@@ -1,7 +1,11 @@
+codecov:
+  require_ci_to_pass: yes
+  strict_yaml_branch: master
+
 coverage:
   precision: 2
   round: down
-  range: "50...75"
+  range: "75...90"
   status:
     project:
       target: 80%
