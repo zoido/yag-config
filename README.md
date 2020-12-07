@@ -1,9 +1,10 @@
 # Yet Another Golang Config Library
 
-![Go](https://github.com/zoido/yag-config/workflows/Go/badge.svg)
-[![codecov](https://codecov.io/gh/zoido/yag-config/branch/master/graph/badge.svg)](https://codecov.io/gh/zoido/yag-config)
-[![GoDoc](https://godoc.org/github.com/zoido/yag-config?status.svg)](https://godoc.org/github.com/zoido/yag-config)
-[![Go Report Card](https://goreportcard.com/badge/github.com/zoido/yag-config)](https://goreportcard.com/report/github.com/zoido/yag-config)
+<a href="https://pkg.go.dev/github.com/zoido/yag-config"><img src="https://pkg.go.dev/badge/github.com/zoido/yag-config"></a>
+<a href="https://github.com/zoido/yag-config/blob/master/LICENSE"><img src="https://img.shields.io/github/license/zoido/yag-config?style=flat-square"/></a>
+<img src="https://img.shields.io/github/workflow/status/zoido/yag-config/Go?style=flat-square&logoColor=white&logo=github"/>
+<a href="https://codecov.io/gh/zoido/yag-config"><img src="https://img.shields.io/codecov/c/github/zoido/yag-config?style=flat-square&logoColor=white&logo=codecov"/></a>
+<a href="https://goreportcard.com/report/github.com/zoido/yag-config"><img src="https://goreportcard.com/badge/github.com/zoido/yag-config?style=flat-square"></a>
 
 ## Overview
 
@@ -36,7 +37,7 @@ cfg := &config{
 y.String(&cfg.Str, "str", "sets Str")
 y.Bool(&cfg.Bool, "bool", "sets Bool")
 y.Duration(&cfg.Duration, "duration", "sets Duration", yag.FromEnv("MY_DURATION_VALUE"))
-y.Int(&cfg.Int, "int", "sets Qux")
+y.Int(&cfg.Int, "int", "sets Int")
 
 args := []string{"-str=str flag value"}
 
@@ -66,10 +67,12 @@ fmt.Printf("config.Duration: %v\n", cfg.Duration)
 ## Supported types
 
 - `str`
-- `int`
+- `int`, `int8`, `int16`, `int32`, `int64`
+- `uint`, `uint8`, `uint16`, `uint32`, `uint64`
+- `float32`, `float64`
 - `bool`
 - `time.Duration`
-- any `flag.Value` implementation (e.g.[(github.com/sgreben/flagvar](https://github.com/sgreben/flagvar))
+- any `flag.Value` implementation (e.g. [(github.com/sgreben/flagvar](https://github.com/sgreben/flagvar))
 - more to come…
 
 ## Credits

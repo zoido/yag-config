@@ -8,16 +8,14 @@ import (
 	"github.com/zoido/yag-config"
 )
 
+type config struct {
+	Str      string
+	Bool     bool
+	Int      int
+	Duration time.Duration
+}
+
 func Example() {
-	os.Clearenv()
-
-	type config struct {
-		Str      string
-		Bool     bool
-		Int      int
-		Duration time.Duration
-	}
-
 	y := yag.New(yag.WithEnvPrefix("MY_APP_"))
 	cfg := &config{
 		Str: "default str value",
@@ -27,7 +25,7 @@ func Example() {
 	y.String(&cfg.Str, "str", "sets Str")
 	y.Bool(&cfg.Bool, "bool", "sets Bool")
 	y.Duration(&cfg.Duration, "duration", "sets Duration", yag.FromEnv("MY_DURATION_VALUE"))
-	y.Int(&cfg.Int, "int", "sets Qux")
+	y.Int(&cfg.Int, "int", "sets Int")
 
 	args := []string{"-str=str flag value"}
 
