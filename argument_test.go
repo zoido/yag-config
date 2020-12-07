@@ -250,6 +250,57 @@ func (ts *ArgParserTestSuite) TestParse_Empty_Untouched() {
 	ts.Require().Equal([]string{"x", "y", "z"}, s)
 }
 
+func (ts *ArgParserTestSuite) TestParse_Error_SingleArgument() {
+	// Given
+	var a, b int
+
+	parser := yag.ArgParser{}
+	parser.Int(&a)
+	parser.Int(&b)
+
+	// When
+	err := parser.Parse([]string{"1", "x", "3", "4"})
+
+	// Then
+	ts.Require().Error(err)
+	ts.Require().Contains(err.Error(), "parsing argument on position 2")
+}
+
+func (ts *ArgParserTestSuite) TestParse_Error_SingleArgument_WithName() {
+	// Given
+	var a, b int
+
+	parser := yag.ArgParser{}
+	parser.Int(&a)
+	parser.Int(&b, yag.WithName("b_name"))
+
+	// When
+	err := parser.Parse([]string{"1", "x", "3", "4"})
+
+	// Then
+	ts.Require().Error(err)
+	ts.Require().Contains(err.Error(), "parsing argument 'b_name' on position 2")
+}
+
+func (ts *ArgParserTestSuite) TestParse_Error_MultipleArguments() {
+	// Given
+	var (
+		s string
+		i []int
+	)
+
+	parser := yag.ArgParser{}
+	parser.String(&s)
+	parser.Ints(&i)
+
+	// When
+	err := parser.Parse([]string{"1", "2", "x", "4"})
+
+	// Then
+	ts.Require().Error(err)
+	ts.Require().Contains(err.Error(), "parsing int argument on position 3")
+}
+
 func (ts *ArgParserTestSuite) TestParse_RequiredOption_FailsOnParse_WithPosition() {
 	// Given
 	var a, b string

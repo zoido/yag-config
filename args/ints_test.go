@@ -33,7 +33,10 @@ func TestInt_ParseError(t *testing.T) {
 	// Then
 	r := require.New(t)
 	r.Error(err)
-	r.Contains(err.Error(), "int argument on position 2")
+	pErr, ok := err.(args.ParsingError)
+	r.True(ok)
+	r.Equal(pErr.Position, 2)
+	r.Equal(pErr.Type, "int")
 }
 
 func TestInts_Empty(t *testing.T) {
@@ -75,7 +78,10 @@ func TestInt8_ParseError(t *testing.T) {
 	// Then
 	r := require.New(t)
 	r.Error(err)
-	r.Contains(err.Error(), "int8 argument on position 2")
+	pErr, ok := err.(args.ParsingError)
+	r.True(ok)
+	r.Equal(pErr.Position, 2)
+	r.Equal(pErr.Type, "int8")
 }
 
 func TestInt8s_Empty(t *testing.T) {
@@ -117,7 +123,10 @@ func TestInt16_ParseError(t *testing.T) {
 	// Then
 	r := require.New(t)
 	r.Error(err)
-	r.Contains(err.Error(), "int16 argument on position 2")
+	pErr, ok := err.(args.ParsingError)
+	r.True(ok)
+	r.Equal(pErr.Position, 2)
+	r.Equal(pErr.Type, "int16")
 }
 
 func TestInt16s_Empty(t *testing.T) {
@@ -159,7 +168,10 @@ func TestInt32_ParseError(t *testing.T) {
 	// Then
 	r := require.New(t)
 	r.Error(err)
-	r.Contains(err.Error(), "int32 argument on position 2")
+	pErr, ok := err.(args.ParsingError)
+	r.True(ok)
+	r.Equal(pErr.Position, 2)
+	r.Equal(pErr.Type, "int32")
 }
 
 func TestInt32s_Empty(t *testing.T) {
@@ -201,7 +213,10 @@ func TestInt64_ParseError(t *testing.T) {
 	// Then
 	r := require.New(t)
 	r.Error(err)
-	r.Contains(err.Error(), "int64 argument on position 2")
+	pErr, ok := err.(args.ParsingError)
+	r.True(ok)
+	r.Equal(pErr.Position, 2)
+	r.Equal(pErr.Type, "int64")
 }
 
 func TestInt64s_Empty(t *testing.T) {

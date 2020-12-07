@@ -1,8 +1,6 @@
 package args
 
 import (
-	"fmt"
-
 	"github.com/zoido/yag-config/value"
 )
 
@@ -21,7 +19,7 @@ func (sp *stringsParser) Parse(values []string) error {
 		o := value.String(&outs[i])
 		err := o.Set(v)
 		if err != nil {
-			return fmt.Errorf("parsing string argument on position %d", i+1)
+			return ParsingError{Err: err, Position: i + 1, Type: "string"}
 		}
 	}
 	*sp.dest = outs

@@ -1,8 +1,6 @@
 package args
 
 import (
-	"fmt"
-
 	"github.com/zoido/yag-config/value"
 )
 
@@ -21,7 +19,7 @@ func (sp *intsParser) Parse(values []string) error {
 		o := value.Int(&outs[i])
 		err := o.Set(v)
 		if err != nil {
-			return fmt.Errorf("parsing int argument on position %d", i+1)
+			return ParsingError{Err: err, Position: i + 1, Type: "int"}
 		}
 	}
 	*sp.dest = outs
@@ -43,7 +41,7 @@ func (sp *int8sParser) Parse(values []string) error {
 		o := value.Int8(&outs[i])
 		err := o.Set(v)
 		if err != nil {
-			return fmt.Errorf("parsing int8 argument on position %d", i+1)
+			return ParsingError{Err: err, Position: i + 1, Type: "int8"}
 		}
 	}
 	*sp.dest = outs
@@ -65,7 +63,7 @@ func (sp *int16sParser) Parse(values []string) error {
 		o := value.Int16(&outs[i])
 		err := o.Set(v)
 		if err != nil {
-			return fmt.Errorf("parsing int16 argument on position %d", i+1)
+			return ParsingError{Err: err, Position: i + 1, Type: "int16"}
 		}
 	}
 	*sp.dest = outs
@@ -87,7 +85,7 @@ func (sp *int32sParser) Parse(values []string) error {
 		o := value.Int32(&outs[i])
 		err := o.Set(v)
 		if err != nil {
-			return fmt.Errorf("parsing int32 argument on position %d", i+1)
+			return ParsingError{Err: err, Position: i + 1, Type: "int32"}
 		}
 	}
 	*sp.dest = outs
@@ -109,7 +107,7 @@ func (sp *int64sParser) Parse(values []string) error {
 		o := value.Int64(&outs[i])
 		err := o.Set(v)
 		if err != nil {
-			return fmt.Errorf("parsing int64 argument on position %d", i+1)
+			return ParsingError{Err: err, Position: i + 1, Type: "int64"}
 		}
 	}
 	*sp.dest = outs
