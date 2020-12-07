@@ -24,9 +24,59 @@ func (ap *ArgParser) String(s *string, options ...ArgOption) {
 	ap.Value(value.String(s), options...)
 }
 
-// Strings tells parser to parse all of the leftover arguments as strings.
+// Int registers new int argument for parsing.
+func (ap *ArgParser) Int(i *int, options ...ArgOption) {
+	ap.Value(value.Int(i), options...)
+}
+
+// Int8 registers new int8 argument for parsing.
+func (ap *ArgParser) Int8(i8 *int8, options ...ArgOption) {
+	ap.Value(value.Int8(i8), options...)
+}
+
+// Int16 registers new int16 argument for parsing.
+func (ap *ArgParser) Int16(i16 *int16, options ...ArgOption) {
+	ap.Value(value.Int16(i16), options...)
+}
+
+// Int32 registers new int32 argument for parsing.
+func (ap *ArgParser) Int32(i32 *int32, options ...ArgOption) {
+	ap.Value(value.Int32(i32), options...)
+}
+
+// Int64 registers new int64 argument for parsing.
+func (ap *ArgParser) Int64(i64 *int64, options ...ArgOption) {
+	ap.Value(value.Int64(i64), options...)
+}
+
+// Strings tells parser to parse all of the leftover arguments as string.
 func (ap *ArgParser) Strings(s *[]string) {
 	ap.parser = args.Strings(s)
+}
+
+// Ints tells parser to parse all of the leftover arguments as int.
+func (ap *ArgParser) Ints(i *[]int) {
+	ap.parser = args.Ints(i)
+}
+
+// Int8s tells parser to parse all of the leftover arguments as int8.
+func (ap *ArgParser) Int8s(i8 *[]int8) {
+	ap.parser = args.Int8s(i8)
+}
+
+// Int16s tells parser to parse all of the leftover arguments as int16.
+func (ap *ArgParser) Int16s(i16 *[]int16) {
+	ap.parser = args.Int16s(i16)
+}
+
+// Int32s tells parser to parse all of the leftover arguments as int32.
+func (ap *ArgParser) Int32s(i32 *[]int32) {
+	ap.parser = args.Int32s(i32)
+}
+
+// Int64s tells parser to parse all of the leftover arguments as int64.
+func (ap *ArgParser) Int64s(i64 *[]int64) {
+	ap.parser = args.Int64s(i64)
 }
 
 func (ap *ArgParser) addArg(w *wrapper, options ...ArgOption) {
