@@ -4,11 +4,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/require"
+	"github.com/stretchr/testify/suite"
 	"github.com/zoido/yag-config"
 )
 
-func TestString(t *testing.T) {
+type TypesTestSuite struct {
+	suite.Suite
+}
+
+func TestTypes(t *testing.T) {
+	suite.Run(t, new(TypesTestSuite))
+}
+
+func (ts *TypesTestSuite) TestString() {
 	// Given
 	var s string
 
@@ -19,12 +27,11 @@ func TestString(t *testing.T) {
 	err := y.Parse([]string{"-val=test_string"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal("test_string", s)
+	ts.Require().NoError(err)
+	ts.Require().Equal("test_string", s)
 }
 
-func TestInt(t *testing.T) {
+func (ts *TypesTestSuite) TestInt() {
 	// Given
 	var n int
 
@@ -35,12 +42,11 @@ func TestInt(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(8, n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(8, n)
 }
 
-func TestInt8(t *testing.T) {
+func (ts *TypesTestSuite) TestInt8() {
 	// Given
 	var n int8
 
@@ -51,12 +57,11 @@ func TestInt8(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(int8(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(int8(8), n)
 }
 
-func TestInt16(t *testing.T) {
+func (ts *TypesTestSuite) TestInt16() {
 	// Given
 	var n int16
 
@@ -67,12 +72,11 @@ func TestInt16(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(int16(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(int16(8), n)
 }
 
-func TestInt32(t *testing.T) {
+func (ts *TypesTestSuite) TestInt32() {
 	// Given
 	var n int32
 
@@ -83,12 +87,11 @@ func TestInt32(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(int32(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(int32(8), n)
 }
 
-func TestInt64(t *testing.T) {
+func (ts *TypesTestSuite) TestInt64() {
 	// Given
 	var n int64
 
@@ -99,12 +102,11 @@ func TestInt64(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(int64(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(int64(8), n)
 }
 
-func TestUint(t *testing.T) {
+func (ts *TypesTestSuite) TestUint() {
 	// Given
 	var n uint
 
@@ -115,12 +117,11 @@ func TestUint(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(uint(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(uint(8), n)
 }
 
-func TestUint8(t *testing.T) {
+func (ts *TypesTestSuite) TestUint8() {
 	// Given
 	var n uint8
 
@@ -131,12 +132,11 @@ func TestUint8(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(uint8(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(uint8(8), n)
 }
 
-func TestUint16(t *testing.T) {
+func (ts *TypesTestSuite) TestUint16() {
 	// Given
 	var n uint16
 
@@ -147,12 +147,11 @@ func TestUint16(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(uint16(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(uint16(8), n)
 }
 
-func TestUint32(t *testing.T) {
+func (ts *TypesTestSuite) TestUint32() {
 	// Given
 	var n uint32
 
@@ -163,12 +162,11 @@ func TestUint32(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(uint32(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(uint32(8), n)
 }
 
-func TestUint64(t *testing.T) {
+func (ts *TypesTestSuite) TestUint64() {
 	// Given
 	var n uint64
 
@@ -179,12 +177,11 @@ func TestUint64(t *testing.T) {
 	err := y.Parse([]string{"-val=8"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(uint64(8), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(uint64(8), n)
 }
 
-func TestFloat32(t *testing.T) {
+func (ts *TypesTestSuite) TestFloat32() {
 	// Given
 	var n float32
 
@@ -195,12 +192,11 @@ func TestFloat32(t *testing.T) {
 	err := y.Parse([]string{"-val=6.626E-34"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(float32(6.626e-34), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(float32(6.626e-34), n)
 }
 
-func TestFloat64(t *testing.T) {
+func (ts *TypesTestSuite) TestFloat64() {
 	// Given
 	var n float64
 
@@ -211,12 +207,11 @@ func TestFloat64(t *testing.T) {
 	err := y.Parse([]string{"-val=6.626E-34"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(float64(6.626e-34), n)
+	ts.Require().NoError(err)
+	ts.Require().Equal(float64(6.626e-34), n)
 }
 
-func TestDuration(t *testing.T) {
+func (ts *TypesTestSuite) TestDuration() {
 	// Given
 	var d time.Duration
 
@@ -227,12 +222,11 @@ func TestDuration(t *testing.T) {
 	err := y.Parse([]string{"-val=10h30m15s"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.Equal(float64(10*60*60+30*60+15), d.Seconds())
+	ts.Require().NoError(err)
+	ts.Require().Equal(float64(10*60*60+30*60+15), d.Seconds())
 }
 
-func TestBool(t *testing.T) {
+func (ts *TypesTestSuite) TestBool() {
 	// Given
 	var b bool
 
@@ -243,12 +237,11 @@ func TestBool(t *testing.T) {
 	err := y.Parse([]string{"-val=true"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.True(b)
+	ts.Require().NoError(err)
+	ts.Require().True(b)
 }
 
-func TestBool_BoolFlag(t *testing.T) {
+func (ts *TypesTestSuite) TestBool_BoolFlag() {
 	// Given
 	var b bool
 
@@ -259,12 +252,11 @@ func TestBool_BoolFlag(t *testing.T) {
 	err := y.Parse([]string{"-val"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.True(b)
+	ts.Require().NoError(err)
+	ts.Require().True(b)
 }
 
-func TestBool_False(t *testing.T) {
+func (ts *TypesTestSuite) TestBool_False() {
 	// Given
 	b := false
 
@@ -275,9 +267,8 @@ func TestBool_False(t *testing.T) {
 	err := y.Parse([]string{"-val=false"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.False(b)
+	ts.Require().NoError(err)
+	ts.Require().False(b)
 }
 
 type testFlagValue struct {
@@ -293,7 +284,7 @@ func (tfv *testFlagValue) String() string {
 	return "test_flag_value"
 }
 
-func TestValue(t *testing.T) {
+func (ts *TypesTestSuite) TestValue() {
 	// Given
 	val := &testFlagValue{}
 
@@ -304,8 +295,7 @@ func TestValue(t *testing.T) {
 	err := y.Parse([]string{"-val=test_string"})
 
 	// Then
-	r := require.New(t)
-	r.NoError(err)
-	r.True(val.called)
-	r.Equal("test_flag_value", val.String())
+	ts.Require().NoError(err)
+	ts.Require().True(val.called)
+	ts.Require().Equal("test_flag_value", val.String())
 }
