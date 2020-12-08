@@ -9,19 +9,19 @@ import (
 	"github.com/zoido/yag-config"
 )
 
-type YagTestSuite struct {
+type ParserTestSuite struct {
 	suite.Suite
 }
 
-func TestYagTestSuite(t *testing.T) {
-	suite.Run(t, new(YagTestSuite))
+func TestYag(t *testing.T) {
+	suite.Run(t, new(ParserTestSuite))
 }
 
-func (s *YagTestSuite) SetupTest() {
+func (ts *ParserTestSuite) SetupTest() {
 	os.Clearenv()
 }
 
-func (s *YagTestSuite) TestNew_Ok() {
+func (ts *ParserTestSuite) TestNew_Ok() {
 	// When
 	yag.New()
 
@@ -29,7 +29,7 @@ func (s *YagTestSuite) TestNew_Ok() {
 	// No failure should occur.
 }
 
-func (s *YagTestSuite) TestParse_Flags() {
+func (ts *ParserTestSuite) TestParse_Flags() {
 	// Given
 	str := "default value"
 
@@ -40,11 +40,11 @@ func (s *YagTestSuite) TestParse_Flags() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("flag value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("flag value", str)
 }
 
-func (s *YagTestSuite) TestParse_Env() {
+func (ts *ParserTestSuite) TestParse_Env() {
 	// Given
 	str := "default value"
 
@@ -56,11 +56,11 @@ func (s *YagTestSuite) TestParse_Env() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("env value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("env value", str)
 }
 
-func (s *YagTestSuite) TestParse_DefaultValue() {
+func (ts *ParserTestSuite) TestParse_DefaultValue() {
 	// Given
 	str := "default value"
 
@@ -71,11 +71,11 @@ func (s *YagTestSuite) TestParse_DefaultValue() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("default value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("default value", str)
 }
 
-func (s *YagTestSuite) TestParse_WithEnvPrefix_Effective() {
+func (ts *ParserTestSuite) TestParse_WithEnvPrefix_Effective() {
 	// Given
 	str := "default value"
 
@@ -88,11 +88,11 @@ func (s *YagTestSuite) TestParse_WithEnvPrefix_Effective() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("env with prefix", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("env with prefix", str)
 }
 
-func (s *YagTestSuite) TestParse_FromEnv_Effective() {
+func (ts *ParserTestSuite) TestParse_FromEnv_Effective() {
 	// Given
 	str := "default value"
 
@@ -105,11 +105,11 @@ func (s *YagTestSuite) TestParse_FromEnv_Effective() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("correct value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("correct value", str)
 }
 
-func (s *YagTestSuite) TestParseFlags() {
+func (ts *ParserTestSuite) TestParseFlags() {
 	// Given
 	var str1, str2 string
 
@@ -123,12 +123,12 @@ func (s *YagTestSuite) TestParseFlags() {
 	err := y.ParseFlags([]string{"-test_string1=flag value 1"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("flag value 1", str1)
-	s.Require().Equal("", str2)
+	ts.Require().NoError(err)
+	ts.Require().Equal("flag value 1", str1)
+	ts.Require().Equal("", str2)
 }
 
-func (s *YagTestSuite) TestParseEnv() {
+func (ts *ParserTestSuite) TestParseEnv() {
 	// Given
 	str := "default value"
 
@@ -140,11 +140,11 @@ func (s *YagTestSuite) TestParseEnv() {
 	err := y.ParseEnv()
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("env value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("env value", str)
 }
 
-func (s *YagTestSuite) TestParseEnv_WithEnvPrefix_Effective() {
+func (ts *ParserTestSuite) TestParseEnv_WithEnvPrefix_Effective() {
 	// Given
 	str := "default value"
 
@@ -157,11 +157,11 @@ func (s *YagTestSuite) TestParseEnv_WithEnvPrefix_Effective() {
 	err := y.ParseEnv()
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("env with prefix", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("env with prefix", str)
 }
 
-func (s *YagTestSuite) TestParse_FlagsTakePrecedence() {
+func (ts *ParserTestSuite) TestParse_FlagsTakePrecedence() {
 	// Given
 	str := "default value"
 
@@ -173,11 +173,11 @@ func (s *YagTestSuite) TestParse_FlagsTakePrecedence() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("flag value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("flag value", str)
 }
 
-func (s *YagTestSuite) TestParse_FlagsAlwaysTakePrecedence() {
+func (ts *ParserTestSuite) TestParse_FlagsAlwaysTakePrecedence() {
 	// Given
 	var str string
 
@@ -187,15 +187,15 @@ func (s *YagTestSuite) TestParse_FlagsAlwaysTakePrecedence() {
 
 	// When
 	err := y.ParseFlags([]string{"-test_string=flag value"})
-	s.Require().NoError(err)
+	ts.Require().NoError(err)
 	err = y.ParseEnv()
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("flag value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("flag value", str)
 }
 
-func (s *YagTestSuite) TestParse_Required_FailsOnParse() {
+func (ts *ParserTestSuite) TestParse_RequiredOption_FailsOnParse() {
 	// Given
 	var str string
 
@@ -206,12 +206,12 @@ func (s *YagTestSuite) TestParse_Required_FailsOnParse() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().Error(err)
-	s.Require().Contains(err.Error(), "required")
-	s.Require().Contains(err.Error(), "test_string")
+	ts.Require().Error(err)
+	ts.Require().Contains(err.Error(), "required")
+	ts.Require().Contains(err.Error(), "test_string")
 }
 
-func (s *YagTestSuite) TestParse_Required_EnvEnough() {
+func (ts *ParserTestSuite) TestParse_RequiredOption_EnvEnough() {
 	// Given
 	var str string
 
@@ -223,10 +223,10 @@ func (s *YagTestSuite) TestParse_Required_EnvEnough() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().NoError(err)
+	ts.Require().NoError(err)
 }
 
-func (s *YagTestSuite) TestParse_Required_FlagEnough() {
+func (ts *ParserTestSuite) TestParse_RequiredOption_FlagEnough() {
 	// Given
 	var str string
 
@@ -237,10 +237,10 @@ func (s *YagTestSuite) TestParse_Required_FlagEnough() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	s.Require().NoError(err)
+	ts.Require().NoError(err)
 }
 
-func (s *YagTestSuite) TestParseEnv_Required_FailsOnParse() {
+func (ts *ParserTestSuite) TestParseEnv_RequiredOption_FailsOnParse() {
 	// Given
 	var str string
 
@@ -251,10 +251,10 @@ func (s *YagTestSuite) TestParseEnv_Required_FailsOnParse() {
 	err := y.ParseEnv()
 
 	// Then
-	s.Require().Error(err)
+	ts.Require().Error(err)
 }
 
-func (s *YagTestSuite) TestParseFlags_Required_FailsOnParse() {
+func (ts *ParserTestSuite) TestParseFlags_RequiredOption_FailsOnParse() {
 	// Given
 	var str string
 
@@ -265,10 +265,10 @@ func (s *YagTestSuite) TestParseFlags_Required_FailsOnParse() {
 	err := y.ParseFlags([]string{})
 
 	// Then
-	s.Require().Error(err)
+	ts.Require().Error(err)
 }
 
-func (s *YagTestSuite) TestParse_NoFlag_EnvOk() {
+func (ts *ParserTestSuite) TestParse_NoFlagOption_EnvOk() {
 	// Given
 	var str string
 
@@ -281,11 +281,11 @@ func (s *YagTestSuite) TestParse_NoFlag_EnvOk() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("env value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("env value", str)
 }
 
-func (s *YagTestSuite) TestParse_NoFlag_FlagInvalid() {
+func (ts *ParserTestSuite) TestParse_NoFlagOption_FlagInvalid() {
 	// Given
 	var str string
 
@@ -296,10 +296,10 @@ func (s *YagTestSuite) TestParse_NoFlag_FlagInvalid() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	s.Require().Error(err)
+	ts.Require().Error(err)
 }
 
-func (s *YagTestSuite) TestParse_NoEnv_FlagOk() {
+func (ts *ParserTestSuite) TestParse_NoEnvOption_FlagOk() {
 	// Given
 	var str string
 
@@ -310,11 +310,11 @@ func (s *YagTestSuite) TestParse_NoEnv_FlagOk() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("flag value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("flag value", str)
 }
 
-func (s *YagTestSuite) TestParse_NoEnv_EnvIgnored() {
+func (ts *ParserTestSuite) TestParse_NoEnvOption_EnvIgnored() {
 	// Given
 	str := "default value"
 
@@ -327,11 +327,11 @@ func (s *YagTestSuite) TestParse_NoEnv_EnvIgnored() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().NoError(err)
-	s.Require().Equal("default value", str)
+	ts.Require().NoError(err)
+	ts.Require().Equal("default value", str)
 }
 
-func (s *YagTestSuite) TestParseFlags_ErrorNotSwallowed() {
+func (ts *ParserTestSuite) TestParseFlags_ErrorNotSwallowed() {
 	// Given
 	var str string
 
@@ -342,10 +342,10 @@ func (s *YagTestSuite) TestParseFlags_ErrorNotSwallowed() {
 	err := y.ParseFlags([]string{"--unknown_flag="})
 
 	// Then
-	s.Require().Error(err)
+	ts.Require().Error(err)
 }
 
-func (s *YagTestSuite) TestParseEnv_ErrorNotSwallowed() {
+func (ts *ParserTestSuite) TestParseEnv_ErrorNotSwallowed() {
 	// Given
 	var num int
 
@@ -357,10 +357,10 @@ func (s *YagTestSuite) TestParseEnv_ErrorNotSwallowed() {
 	err := y.ParseEnv()
 
 	// Then
-	s.Require().Error(err)
+	ts.Require().Error(err)
 }
 
-func (s *YagTestSuite) TestParse_Flags_ErrorNotSwallowed() {
+func (ts *ParserTestSuite) TestParse_Flags_ErrorNotSwallowed() {
 	// Given
 	var str string
 
@@ -371,10 +371,10 @@ func (s *YagTestSuite) TestParse_Flags_ErrorNotSwallowed() {
 	err := y.Parse([]string{"--unknown_flag="})
 
 	// Then
-	s.Require().Error(err)
+	ts.Require().Error(err)
 }
 
-func (s *YagTestSuite) TestParse_Env_ErrorNotSwallowed() {
+func (ts *ParserTestSuite) TestParse_Env_ErrorNotSwallowed() {
 	// Given
 	var num int
 
@@ -386,5 +386,5 @@ func (s *YagTestSuite) TestParse_Env_ErrorNotSwallowed() {
 	err := y.Parse([]string{})
 
 	// Then
-	s.Require().Error(err)
+	ts.Require().Error(err)
 }
