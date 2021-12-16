@@ -23,7 +23,6 @@ func ExampleWithEnvPrefix() {
 	_ = os.Setenv("FOO", "Foo from the variable without prefix")
 
 	err := y.Parse([]string{})
-
 	if err != nil {
 		os.Exit(2)
 	}
@@ -49,7 +48,6 @@ func ExampleFromEnv() {
 	_ = os.Setenv("FOO", "Foo from the default variable")
 
 	err := y.Parse([]string{})
-
 	if err != nil {
 		os.Exit(2)
 	}
@@ -59,7 +57,7 @@ func ExampleFromEnv() {
 	// Output: Foo from different variable
 }
 
-func ExampleRequired_first() {
+func ExampleRequired() {
 	os.Clearenv()
 
 	type config struct {
