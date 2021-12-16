@@ -1,7 +1,7 @@
 name: Go
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
 
 jobs:
@@ -14,34 +14,32 @@ jobs:
         with:
           go-version: 1.17
 
-      - name: cache linters
-        uses: actions/cache@v1
-        id: cachelinters
-        with:
-          path: ~/go/bin
-          key: ${{ runner.os }}-linters-01
-          restore-keys: |
-            ${{ runner.os }}-linters-01
+      - uses: actions/checkout@v2
 
-
-      - name: install linters
+      - id: go-cache-paths
         run: |
-          go get \
-            golang.org/x/tools/cmd/goimports \
-            github.com/mgechev/revive
-        if: steps.cachelinters.outputs.cache-hit != 'true'
+          echo "::set-output name=go-build::$(go env GOCACHE)"
+          echo "::set-output name=go-mod::$(go env GOMODCACHE)"
 
-      - name: check out code
-        uses: actions/checkout@v2
+      - name: Go Mod Cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.go-cache-paths.outputs.go-mod }}
+          key: ${{ runner.os }}-go-mod-${{ hashFiles('**/go.sum') }}
 
-      - name: goimports
-        run: goimports -d .
+      - name: formatting
+        run: |
+          go run golang.org/x/tools/cmd/goimports@v0.1.7 -w .
+          go run mvdan.cc/gofumpt@v0.2.1 -w .
+          [[ -z $(git status -s) ]] || (echo "::error::Formatting"; exit 1)
 
       - name: revive
-        run: revive -config ci/revive.toml ./...
+        uses: morphy2k/revive-action@v2
+        with:
+          config: ci/revive.toml
 
       - name: markdownlint
-        uses: nosborn/github-action-markdown-cli@v1.1.1
+        uses: nosborn/github-action-markdown-cli@v2
         with:
           files: .
 
@@ -49,57 +47,60 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/setup-go@v2
         with:
           go-version: 1.17
 
       - uses: actions/checkout@v2
 
-      - name: cache dependencies
-        uses: actions/cache@v1
-        id: cachedeps
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-
-      - name: get dependencies
-        if: steps.cachedeps.outputs.cache-hit != 'true'
+      - id: go-cache-paths
         run: |
-          go get -v -t -d ./...
+          echo "::set-output name=go-build::$(go env GOCACHE)"
+          echo "::set-output name=go-mod::$(go env GOMODCACHE)"
 
-      - name: build
-        run: go build -v .
+      - name: Go Build Cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.go-cache-paths.outputs.go-build }}
+          key: ${{ runner.os }}-go-build-${{ hashFiles('**/go.sum') }}
+
+      - name: Go Mod Cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.go-cache-paths.outputs.go-mod }}
+          key: ${{ runner.os }}-go-mod-${{ hashFiles('**/go.sum') }}
+
+      - run: |
+          go build -v .
 
   test:
     name: Test
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/setup-go@v2
         with:
           go-version: 1.17
 
       - uses: actions/checkout@v2
 
-      - name: cache dependencies
-        uses: actions/cache@v1
-        id: cachedeps
+      - id: go-cache-paths
+        run: |
+          echo "::set-output name=go-build::$(go env GOCACHE)"
+          echo "::set-output name=go-mod::$(go env GOMODCACHE)"
+
+      - name: Go Build Cache
+        uses: actions/cache@v2
         with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
+          path: ${{ steps.go-cache-paths.outputs.go-build }}
+          key: ${{ runner.os }}-go-build-${{ hashFiles('**/go.sum') }}
 
-      - name: get dependencies
-        if: steps.cachedeps.outputs.cache-hit != 'true'
-        run: |
-          go get -v -t -d ./...
+      - name: Go Mod Cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.go-cache-paths.outputs.go-mod }}
+          key: ${{ runner.os }}-go-mod-${{ hashFiles('**/go.sum') }}
 
-      - name: test
-        run: |
+      - run: |
           go test -v \
             -coverprofile=coverage.txt \
             -covermode=atomic \
@@ -107,7 +108,6 @@ jobs:
             ./...
 
       - name: collect code coverage
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
           file: ./coverage.txt

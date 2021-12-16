@@ -55,6 +55,7 @@ func TestIsBooleanFlag_NotBoolFlag(t *testing.T) {
 	// Then
 	require.False(t, result)
 }
+
 func TestIsBooleanFlag_BoolFlagFalse(t *testing.T) {
 	// When
 	result := value.IsBoolFlag(&booleanFlagReturningFalse{})
