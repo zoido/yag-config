@@ -1,6 +1,6 @@
 codecov:
   require_ci_to_pass: true
-  strict_yaml_branch: master
+  strict_yaml_branch: main
 
 coverage:
   precision: 2
