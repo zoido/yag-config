@@ -1,35 +1,21 @@
 package yag_test
 
 import (
-	"os"
 	"testing"
 
-	"github.com/stretchr/testify/suite"
-
+	"github.com/stretchr/testify/require"
 	"github.com/zoido/yag-config"
 )
 
-type ParserTestSuite struct {
-	suite.Suite
-}
-
-func TestYag(t *testing.T) {
-	suite.Run(t, new(ParserTestSuite))
-}
-
-func (ts *ParserTestSuite) SetupTest() {
-	os.Clearenv()
-}
-
-func (ts *ParserTestSuite) TestNew_Ok() {
+func TestNew_Ok(t *testing.T) {
 	// When
 	yag.New()
 
 	// Then
-	// No failure should occur.
+	// No panic.
 }
 
-func (ts *ParserTestSuite) TestParse_Flags() {
+func TestParse_Flags(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -40,27 +26,27 @@ func (ts *ParserTestSuite) TestParse_Flags() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("flag value", str)
+	require.NoError(t, err)
+	require.Equal(t, "flag value", str)
 }
 
-func (ts *ParserTestSuite) TestParse_Env() {
+func TestParse_Env(t *testing.T) {
 	// Given
 	str := "default value"
 
 	y := yag.New()
 	y.String(&str, "test_string", "sets test string value")
-	os.Setenv("TEST_STRING", "env value")
+	t.Setenv("TEST_STRING", "env value")
 
 	// When
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("env value", str)
+	require.NoError(t, err)
+	require.Equal(t, "env value", str)
 }
 
-func (ts *ParserTestSuite) TestParse_DefaultValue() {
+func TestParse_DefaultValue(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -71,45 +57,45 @@ func (ts *ParserTestSuite) TestParse_DefaultValue() {
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("default value", str)
+	require.NoError(t, err)
+	require.Equal(t, "default value", str)
 }
 
-func (ts *ParserTestSuite) TestParse_WithEnvPrefix_Effective() {
+func TestParse_WithEnvPrefix_Effective(t *testing.T) {
 	// Given
 	str := "default value"
 
 	y := yag.New(yag.WithEnvPrefix("MY_TEST_PREFIX_"))
 	y.String(&str, "test_string", "sets test string value")
-	os.Setenv("TEST_STRING", "env without prefix")
-	os.Setenv("MY_TEST_PREFIX_TEST_STRING", "env with prefix")
+	t.Setenv("TEST_STRING", "env without prefix")
+	t.Setenv("MY_TEST_PREFIX_TEST_STRING", "env with prefix")
 
 	// When
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("env with prefix", str)
+	require.NoError(t, err)
+	require.Equal(t, "env with prefix", str)
 }
 
-func (ts *ParserTestSuite) TestParse_FromEnv_Effective() {
+func TestParse_FromEnv_Effective(t *testing.T) {
 	// Given
 	str := "default value"
 
 	y := yag.New()
 	y.String(&str, "test_string", "sets test string value", yag.FromEnv("DIFFERENT_TEST_ENV"))
-	os.Setenv("TEST_STRING", "wrong env to look for")
-	os.Setenv("DIFFERENT_TEST_ENV", "correct value")
+	t.Setenv("TEST_STRING", "wrong env to look for")
+	t.Setenv("DIFFERENT_TEST_ENV", "correct value")
 
 	// When
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("correct value", str)
+	require.NoError(t, err)
+	require.Equal(t, "correct value", str)
 }
 
-func (ts *ParserTestSuite) TestParseFlags() {
+func TestParseFlags(t *testing.T) {
 	// Given
 	var str1, str2 string
 
@@ -118,84 +104,84 @@ func (ts *ParserTestSuite) TestParseFlags() {
 	y.String(&str1, "test_string2", "sets test string value 1")
 
 	// When
-	os.Setenv("TEST_STRING1", "env value 1")
-	os.Setenv("TEST_STRING2", "env value 2")
+	t.Setenv("TEST_STRING1", "env value 1")
+	t.Setenv("TEST_STRING2", "env value 2")
 	err := y.ParseFlags([]string{"-test_string1=flag value 1"})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("flag value 1", str1)
-	ts.Require().Equal("", str2)
+	require.NoError(t, err)
+	require.Equal(t, "flag value 1", str1)
+	require.Equal(t, "", str2)
 }
 
-func (ts *ParserTestSuite) TestParseEnv() {
+func TestParseEnv(t *testing.T) {
 	// Given
 	str := "default value"
 
 	y := yag.New()
 	y.String(&str, "test_string", "sets test string value")
-	os.Setenv("TEST_STRING", "env value")
+	t.Setenv("TEST_STRING", "env value")
 
 	// When
 	err := y.ParseEnv()
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("env value", str)
+	require.NoError(t, err)
+	require.Equal(t, "env value", str)
 }
 
-func (ts *ParserTestSuite) TestParseEnv_WithEnvPrefix_Effective() {
+func TestParseEnv_WithEnvPrefix_Effective(t *testing.T) {
 	// Given
 	str := "default value"
 
 	y := yag.New(yag.WithEnvPrefix("MY_TEST_PREFIX_"))
 	y.String(&str, "test_string", "sets test string value")
-	os.Setenv("TEST_STRING", "env without prefix")
-	os.Setenv("MY_TEST_PREFIX_TEST_STRING", "env with prefix")
+	t.Setenv("TEST_STRING", "env without prefix")
+	t.Setenv("MY_TEST_PREFIX_TEST_STRING", "env with prefix")
 
 	// When
 	err := y.ParseEnv()
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("env with prefix", str)
+	require.NoError(t, err)
+	require.Equal(t, "env with prefix", str)
 }
 
-func (ts *ParserTestSuite) TestParse_FlagsTakePrecedence() {
+func TestParse_FlagsTakePrecedence(t *testing.T) {
 	// Given
 	str := "default value"
 
 	y := yag.New()
 	y.String(&str, "test_string", "sets test string value")
-	os.Setenv("TEST_STRING", "env value")
+	t.Setenv("TEST_STRING", "env value")
 
 	// When
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("flag value", str)
+	require.NoError(t, err)
+	require.Equal(t, "flag value", str)
 }
 
-func (ts *ParserTestSuite) TestParse_FlagsAlwaysTakePrecedence() {
+func TestParse_FlagsAlwaysTakePrecedence(t *testing.T) {
 	// Given
 	var str string
 
 	y := yag.New()
 	y.String(&str, "test_string", "sets test string value")
-	os.Setenv("TEST_STRING", "env value")
+	t.Setenv("TEST_STRING", "env value")
 
 	// When
 	err := y.ParseFlags([]string{"-test_string=flag value"})
-	ts.Require().NoError(err)
+	require.NoError(t, err)
 	err = y.ParseEnv()
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("flag value", str)
+	require.NoError(t, err)
+	require.Equal(t, "flag value", str)
 }
 
-func (ts *ParserTestSuite) TestParse_RequiredOption_FailsOnParse() {
+func TestParse_RequiredOption_FailsOnParse(t *testing.T) {
 	// Given
 	var str string
 
@@ -206,27 +192,27 @@ func (ts *ParserTestSuite) TestParse_RequiredOption_FailsOnParse() {
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().Error(err)
-	ts.Require().Contains(err.Error(), "required")
-	ts.Require().Contains(err.Error(), "test_string")
+	require.Error(t, err)
+	require.Contains(t, err.Error(), "required")
+	require.Contains(t, err.Error(), "test_string")
 }
 
-func (ts *ParserTestSuite) TestParse_RequiredOption_EnvEnough() {
+func TestParse_RequiredOption_EnvEnough(t *testing.T) {
 	// Given
 	var str string
 
 	y := yag.New()
 	y.String(&str, "test_string", "sets test string value", yag.Required())
-	os.Setenv("TEST_STRING", "env value")
+	t.Setenv("TEST_STRING", "env value")
 
 	// When
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().NoError(err)
+	require.NoError(t, err)
 }
 
-func (ts *ParserTestSuite) TestParse_RequiredOption_FlagEnough() {
+func TestParse_RequiredOption_FlagEnough(t *testing.T) {
 	// Given
 	var str string
 
@@ -237,10 +223,10 @@ func (ts *ParserTestSuite) TestParse_RequiredOption_FlagEnough() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	ts.Require().NoError(err)
+	require.NoError(t, err)
 }
 
-func (ts *ParserTestSuite) TestParseEnv_RequiredOption_FailsOnParse() {
+func TestParseEnv_RequiredOption_FailsOnParse(t *testing.T) {
 	// Given
 	var str string
 
@@ -251,10 +237,10 @@ func (ts *ParserTestSuite) TestParseEnv_RequiredOption_FailsOnParse() {
 	err := y.ParseEnv()
 
 	// Then
-	ts.Require().Error(err)
+	require.Error(t, err)
 }
 
-func (ts *ParserTestSuite) TestParseFlags_RequiredOption_FailsOnParse() {
+func TestParseFlags_RequiredOption_FailsOnParse(t *testing.T) {
 	// Given
 	var str string
 
@@ -265,27 +251,27 @@ func (ts *ParserTestSuite) TestParseFlags_RequiredOption_FailsOnParse() {
 	err := y.ParseFlags([]string{})
 
 	// Then
-	ts.Require().Error(err)
+	require.Error(t, err)
 }
 
-func (ts *ParserTestSuite) TestParse_NoFlagOption_EnvOk() {
+func TestParse_NoFlagOption_EnvOk(t *testing.T) {
 	// Given
 	var str string
 
 	y := yag.New()
 	y.String(&str, "test_string", "sets test string value", yag.NoFlag())
 
-	os.Setenv("TEST_STRING", "env value")
+	t.Setenv("TEST_STRING", "env value")
 
 	// When
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("env value", str)
+	require.NoError(t, err)
+	require.Equal(t, "env value", str)
 }
 
-func (ts *ParserTestSuite) TestParse_NoFlagOption_FlagInvalid() {
+func TestParse_NoFlagOption_FlagInvalid(t *testing.T) {
 	// Given
 	var str string
 
@@ -296,10 +282,10 @@ func (ts *ParserTestSuite) TestParse_NoFlagOption_FlagInvalid() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	ts.Require().Error(err)
+	require.Error(t, err)
 }
 
-func (ts *ParserTestSuite) TestParse_NoEnvOption_FlagOk() {
+func TestParse_NoEnvOption_FlagOk(t *testing.T) {
 	// Given
 	var str string
 
@@ -310,28 +296,28 @@ func (ts *ParserTestSuite) TestParse_NoEnvOption_FlagOk() {
 	err := y.Parse([]string{"-test_string=flag value"})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("flag value", str)
+	require.NoError(t, err)
+	require.Equal(t, "flag value", str)
 }
 
-func (ts *ParserTestSuite) TestParse_NoEnvOption_EnvIgnored() {
+func TestParse_NoEnvOption_EnvIgnored(t *testing.T) {
 	// Given
 	str := "default value"
 
 	y := yag.New()
 	y.String(&str, "test_string", "sets test string value", yag.NoEnv())
 
-	os.Setenv("TEST_STRING", "env value")
+	t.Setenv("TEST_STRING", "env value")
 
 	// When
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().NoError(err)
-	ts.Require().Equal("default value", str)
+	require.NoError(t, err)
+	require.Equal(t, "default value", str)
 }
 
-func (ts *ParserTestSuite) TestParseFlags_ErrorNotSwallowed() {
+func TestParseFlags_ErrorNotSwallowed(t *testing.T) {
 	// Given
 	var str string
 
@@ -342,25 +328,25 @@ func (ts *ParserTestSuite) TestParseFlags_ErrorNotSwallowed() {
 	err := y.ParseFlags([]string{"--unknown_flag="})
 
 	// Then
-	ts.Require().Error(err)
+	require.Error(t, err)
 }
 
-func (ts *ParserTestSuite) TestParseEnv_ErrorNotSwallowed() {
+func TestParseEnv_ErrorNotSwallowed(t *testing.T) {
 	// Given
 	var num int
 
 	y := yag.New()
 	y.Int(&num, "test_num", "sets test num value")
-	os.Setenv("TEST_NUM", "invalid num value")
+	t.Setenv("TEST_NUM", "invalid num value")
 
 	// When
 	err := y.ParseEnv()
 
 	// Then
-	ts.Require().Error(err)
+	require.Error(t, err)
 }
 
-func (ts *ParserTestSuite) TestParse_Flags_ErrorNotSwallowed() {
+func TestParse_Flags_ErrorNotSwallowed(t *testing.T) {
 	// Given
 	var str string
 
@@ -371,20 +357,20 @@ func (ts *ParserTestSuite) TestParse_Flags_ErrorNotSwallowed() {
 	err := y.Parse([]string{"--unknown_flag="})
 
 	// Then
-	ts.Require().Error(err)
+	require.Error(t, err)
 }
 
-func (ts *ParserTestSuite) TestParse_Env_ErrorNotSwallowed() {
+func TestParse_Env_ErrorNotSwallowed(t *testing.T) {
 	// Given
 	var num int
 
 	y := yag.New()
 	y.Int(&num, "test_num", "sets test num value")
-	os.Setenv("TEST_NUM", "invalid num value")
+	t.Setenv("TEST_NUM", "invalid num value")
 
 	// When
 	err := y.Parse([]string{})
 
 	// Then
-	ts.Require().Error(err)
+	require.Error(t, err)
 }
