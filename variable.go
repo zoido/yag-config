@@ -1,6 +1,8 @@
 package yag
 
-import "strings"
+import (
+	"strings"
+)
 
 type variable struct {
 	flag *wrapper
@@ -15,7 +17,7 @@ type variable struct {
 }
 
 func (v *variable) usage() string {
-	u := []string{"\t"}
+	u := make([]string, 0, 10)
 	if v.parseFlag {
 		u = append(u, "-", v.name)
 	}
