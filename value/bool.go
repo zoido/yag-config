@@ -25,13 +25,6 @@ func IsBoolFlag(v flag.Value) bool {
 	return false
 }
 
-// optional interface to indicate boolean flags that can be
-// supplied without "=value" text
-type boolFlag interface {
-	flag.Value
-	IsBoolFlag() bool
-}
-
 type boolValue struct {
 	dest *bool
 }

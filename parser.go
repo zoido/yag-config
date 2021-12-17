@@ -193,9 +193,9 @@ func (y *Parser) Parse(args []string) error {
 
 // Usage returns formatted string with usage help.
 func (y *Parser) Usage() string {
-	u := make([]string, 0, len(y.vars))
-	for _, v := range y.vars {
-		u = append(u, v.usage())
+	u := make([]string, len(y.vars))
+	for i, v := range y.vars {
+		u[i] = v.usage()
 	}
 	return strings.Join(u, "\n")
 }
