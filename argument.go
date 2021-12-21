@@ -108,16 +108,8 @@ func (ap *ArgParser) Parse(values []string) error {
 		}
 	}
 	if (nextToparse < count) && (ap.parser != nil) {
-		if err := ap.parser.Parse(values[nextToparse:]); err != nil {
-			if pErr, ok := err.(args.ParsingError); ok {
-				return fmt.Errorf(
-					"parsing %s argument on position %d: %w",
-					pErr.Type,
-					pErr.Position+nextToparse,
-					pErr.Err,
-				)
-			}
-			return err
+		if n, err := ap.parser.Parse(values[nextToparse:]); err != nil {
+			return fmt.Errorf("parsing argument on position %d: %w", nextToparse+n+1, err)
 		}
 	}
 

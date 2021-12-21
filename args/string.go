@@ -13,15 +13,15 @@ type stringsParser struct {
 	dest *[]string
 }
 
-func (sp *stringsParser) Parse(values []string) error {
+func (sp *stringsParser) Parse(values []string) (int, error) {
+	var n int
 	outs := make([]string, len(values))
 	for i, v := range values {
+		n = i + 1
 		o := value.String(&outs[i])
-		err := o.Set(v)
-		if err != nil {
-			return ParsingError{Err: err, Position: i + 1, Type: "string"}
-		}
+		// Cannot return error.
+		_ = o.Set(v)
 	}
 	*sp.dest = outs
-	return nil
+	return n, nil
 }

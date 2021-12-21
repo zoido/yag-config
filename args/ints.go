@@ -13,17 +13,18 @@ type intsParser struct {
 	dest *[]int
 }
 
-func (sp *intsParser) Parse(values []string) error {
+func (ip *intsParser) Parse(values []string) (int, error) {
+	var n int
 	outs := make([]int, len(values))
 	for i, v := range values {
+		n = i + 1
 		o := value.Int(&outs[i])
-		err := o.Set(v)
-		if err != nil {
-			return ParsingError{Err: err, Position: i + 1, Type: "int"}
+		if err := o.Set(v); err != nil {
+			return i, err
 		}
 	}
-	*sp.dest = outs
-	return nil
+	*ip.dest = outs
+	return n, nil
 }
 
 // Int8s returns new instance of Parser implementation that parses int8 values.
@@ -35,17 +36,18 @@ type int8sParser struct {
 	dest *[]int8
 }
 
-func (sp *int8sParser) Parse(values []string) error {
+func (ip *int8sParser) Parse(values []string) (int, error) {
+	var n int
 	outs := make([]int8, len(values))
 	for i, v := range values {
+		n = i + 1
 		o := value.Int8(&outs[i])
-		err := o.Set(v)
-		if err != nil {
-			return ParsingError{Err: err, Position: i + 1, Type: "int8"}
+		if err := o.Set(v); err != nil {
+			return i, err
 		}
 	}
-	*sp.dest = outs
-	return nil
+	*ip.dest = outs
+	return n, nil
 }
 
 // Int16s returns new instance of Parser implementation that parses int16 values.
@@ -57,17 +59,18 @@ type int16sParser struct {
 	dest *[]int16
 }
 
-func (sp *int16sParser) Parse(values []string) error {
+func (ip *int16sParser) Parse(values []string) (int, error) {
+	var n int
 	outs := make([]int16, len(values))
 	for i, v := range values {
+		n = i + 1
 		o := value.Int16(&outs[i])
-		err := o.Set(v)
-		if err != nil {
-			return ParsingError{Err: err, Position: i + 1, Type: "int16"}
+		if err := o.Set(v); err != nil {
+			return i, err
 		}
 	}
-	*sp.dest = outs
-	return nil
+	*ip.dest = outs
+	return n, nil
 }
 
 // Int32s returns new instance of Parser implementation that parses int32 values.
@@ -79,17 +82,18 @@ type int32sParser struct {
 	dest *[]int32
 }
 
-func (sp *int32sParser) Parse(values []string) error {
+func (ip *int32sParser) Parse(values []string) (int, error) {
+	var n int
 	outs := make([]int32, len(values))
 	for i, v := range values {
+		n = i + 1
 		o := value.Int32(&outs[i])
-		err := o.Set(v)
-		if err != nil {
-			return ParsingError{Err: err, Position: i + 1, Type: "int32"}
+		if err := o.Set(v); err != nil {
+			return i, err
 		}
 	}
-	*sp.dest = outs
-	return nil
+	*ip.dest = outs
+	return n, nil
 }
 
 // Int64s returns new instance of Parser implementation that parses int64 values.
@@ -101,15 +105,16 @@ type int64sParser struct {
 	dest *[]int64
 }
 
-func (sp *int64sParser) Parse(values []string) error {
+func (ip *int64sParser) Parse(values []string) (int, error) {
+	var n int
 	outs := make([]int64, len(values))
 	for i, v := range values {
+		n = i + 1
 		o := value.Int64(&outs[i])
-		err := o.Set(v)
-		if err != nil {
-			return ParsingError{Err: err, Position: i + 1, Type: "int64"}
+		if err := o.Set(v); err != nil {
+			return i, err
 		}
 	}
-	*sp.dest = outs
-	return nil
+	*ip.dest = outs
+	return n, nil
 }

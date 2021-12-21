@@ -285,11 +285,13 @@ func TestArg_Parse_Error_MultipleArguments(t *testing.T) {
 	parser.Ints(&i)
 
 	// When
-	err := parser.Parse([]string{"1", "2", "x", "4"})
+	err := parser.Parse([]string{"1", "2", "3.14", "4"})
 
 	// Then
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "parsing int argument on position 3")
+	r := require.New(t)
+	r.Error(err)
+	r.Contains(err.Error(), "on position 3")
+	r.Contains(err.Error(), "3.14")
 }
 
 func TestArg_Parse_RequiredOption_FailsOnParse_WithPosition(t *testing.T) {
