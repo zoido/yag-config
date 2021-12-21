@@ -13,21 +13,10 @@ type ArgOption interface {
 	applyArg(a *argument)
 }
 
-// ArgsParserOption configures handling of registered non-flag leftover arguments.
-type ArgsParserOption interface {
-	applyArgs(p *leftOverParser)
-}
-
-// ArgsOption configures handling of registered non-flag arguments including the leftovers.
-type ArgsOption interface {
-	ArgOption
-	ArgsParserOption
-}
-
-// ArgsVarOption configures handling of registered variables or registered non-flag arguments.
-type ArgsVarOption interface {
+// ArgVarOption configures handling of registered variables or registered non-flag arguments.
+type ArgVarOption interface {
 	VarOption
-	ArgsOption
+	ArgOption
 }
 
 // WithEnvPrefix configures the prefix of the environment variable names that will be used for the
@@ -55,7 +44,7 @@ func (feo *fromEnvOption) applyVar(v *variable) {
 
 // Required sets the variable as required. Parsing will fail when the variable is not set via flags
 // nor environment.
-func Required() ArgsVarOption {
+func Required() ArgVarOption {
 	return &requiredOption{}
 }
 
@@ -68,10 +57,6 @@ func (*requiredOption) applyVar(v *variable) {
 
 func (*requiredOption) applyArg(a *argument) {
 	a.required = true
-}
-
-func (*requiredOption) applyArgs(p *leftOverParser) {
-	p.required = true
 }
 
 // NoEnv disables looking up of the variable value in the environment variables.
@@ -119,9 +104,5 @@ type withPlaceholder struct {
 }
 
 func (wp *withPlaceholder) applyArg(a *argument) {
-	a.placeholder = wp.name
-}
-
-func (wp *withPlaceholder) applyArgs(a *leftOverParser) {
 	a.placeholder = wp.name
 }
