@@ -48,6 +48,7 @@ func Required() Option {
 	return &requiredOption{}
 }
 
+// Required option implementation.
 type requiredOption struct{}
 
 func (*requiredOption) applyVar(v *variable) {
@@ -88,8 +89,6 @@ func WithName(name string) ArgOption {
 	return &withNameOption{name: name}
 }
 
-// Required option implementation.
-
 // WithName option implementation.
 type withNameOption struct {
 	name string
@@ -97,4 +96,13 @@ type withNameOption struct {
 
 func (wno *withNameOption) applyArg(a *argument) {
 	a.name = wno.name
+	a.placeholder = wno.name
+}
+
+type withPlaceholder struct {
+	name string
+}
+
+func (wno *withPlaceholder) applyArg(a *argument) {
+	a.placeholder = wno.name
 }

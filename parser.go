@@ -209,5 +209,8 @@ func (y *Parser) Usage() string {
 	for i, v := range y.vars {
 		u[i] = v.usage()
 	}
+	if len(y.argParser.args) > 0 {
+		u = append([]string{y.argParser.usage()}, u...)
+	}
 	return strings.Join(u, "\n")
 }

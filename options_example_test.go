@@ -184,11 +184,22 @@ func ExampleWithName_error() {
 	var intArg int
 
 	y := yag.New()
-	y.Args().Int(&intArg, yag.WithName("string argument"), yag.Required())
+	y.Args().Int(&intArg, yag.WithName("int argument"), yag.Required())
 
 	err := y.Parse([]string{})
 
 	fmt.Print(err)
 
-	// Output: argument "string argument" is required on position 1
+	// Output: argument "int argument" is required on position 1
+}
+
+func ExampleWithName_usage() {
+	var intArg int
+
+	y := yag.New()
+	y.Args().Int(&intArg, yag.WithName("int argument"), yag.Required())
+
+	fmt.Print(y.Usage())
+
+	// Output: <int argument>
 }
