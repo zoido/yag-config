@@ -11,80 +11,73 @@ import (
 
 // ArgParser registers and parses non-flag arguments.
 type ArgParser struct {
-	args              []*argument
-	parser            args.Parser
-	parserPlaceholder string
+	args     []*argument
+	leftOver *leftOverParser
 }
 
 // Value registers new generic flag.Value implementation for parsing an argument.
 func (ap *ArgParser) Value(v flag.Value, options ...ArgOption) {
-	ap.addArg(&wrapper{dest: v}, optionsWithPlaceholder("arg", options)...)
+	ap.addArg(&wrapper{dest: v}, argWithPlaceholder("arg", options)...)
 }
 
 // String registers new string argument for parsing.
 func (ap *ArgParser) String(s *string, options ...ArgOption) {
-	ap.Value(value.String(s), optionsWithPlaceholder("string", options)...)
+	ap.Value(value.String(s), argWithPlaceholder("string", options)...)
 }
 
 // Int registers new int argument for parsing.
 func (ap *ArgParser) Int(i *int, options ...ArgOption) {
-	ap.Value(value.Int(i), optionsWithPlaceholder("int", options)...)
+	ap.Value(value.Int(i), argWithPlaceholder("int", options)...)
 }
 
 // Int8 registers new int8 argument for parsing.
 func (ap *ArgParser) Int8(i8 *int8, options ...ArgOption) {
-	ap.Value(value.Int8(i8), optionsWithPlaceholder("int8", options)...)
+	ap.Value(value.Int8(i8), argWithPlaceholder("int8", options)...)
 }
 
 // Int16 registers new int16 argument for parsing.
 func (ap *ArgParser) Int16(i16 *int16, options ...ArgOption) {
-	ap.Value(value.Int16(i16), optionsWithPlaceholder("int16", options)...)
+	ap.Value(value.Int16(i16), argWithPlaceholder("int16", options)...)
 }
 
 // Int32 registers new int32 argument for parsing.
 func (ap *ArgParser) Int32(i32 *int32, options ...ArgOption) {
-	ap.Value(value.Int32(i32), optionsWithPlaceholder("int32", options)...)
+	ap.Value(value.Int32(i32), argWithPlaceholder("int32", options)...)
 }
 
 // Int64 registers new int64 argument for parsing.
 func (ap *ArgParser) Int64(i64 *int64, options ...ArgOption) {
-	ap.Value(value.Int64(i64), optionsWithPlaceholder("int64", options)...)
+	ap.Value(value.Int64(i64), argWithPlaceholder("int64", options)...)
 }
 
 // Strings tells parser to parse all of the leftover arguments as string.
-func (ap *ArgParser) Strings(s *[]string) {
-	ap.parser = args.Strings(s)
-	ap.parserPlaceholder = "[string, ...]"
+func (ap *ArgParser) Strings(s *[]string, options ...ArgsParserOption) {
+	ap.addArgsParser(args.Strings(s), leftoverWithPlaceholder("[string, ...]", options)...)
 }
 
 // Ints tells parser to parse all of the leftover arguments as int.
-func (ap *ArgParser) Ints(i *[]int) {
-	ap.parser = args.Ints(i)
-	ap.parserPlaceholder = "[int, ...]"
+func (ap *ArgParser) Ints(i *[]int, options ...ArgsParserOption) {
+	ap.addArgsParser(args.Ints(i), leftoverWithPlaceholder("[int, ...]", options)...)
 }
 
 // Int8s tells parser to parse all of the leftover arguments as int8.
-func (ap *ArgParser) Int8s(i8 *[]int8) {
-	ap.parser = args.Int8s(i8)
-	ap.parserPlaceholder = "[int8, ...]"
+func (ap *ArgParser) Int8s(i8 *[]int8, options ...ArgsParserOption) {
+	ap.addArgsParser(args.Int8s(i8), leftoverWithPlaceholder("[int8, ...]", options)...)
 }
 
 // Int16s tells parser to parse all of the leftover arguments as int16.
-func (ap *ArgParser) Int16s(i16 *[]int16) {
-	ap.parser = args.Int16s(i16)
-	ap.parserPlaceholder = "[int16, ...]"
+func (ap *ArgParser) Int16s(i16 *[]int16, options ...ArgsParserOption) {
+	ap.addArgsParser(args.Int16s(i16), leftoverWithPlaceholder("[in16, ...]", options)...)
 }
 
 // Int32s tells parser to parse all of the leftover arguments as int32.
-func (ap *ArgParser) Int32s(i32 *[]int32) {
-	ap.parser = args.Int32s(i32)
-	ap.parserPlaceholder = "[int32, ...]"
+func (ap *ArgParser) Int32s(i32 *[]int32, options ...ArgsParserOption) {
+	ap.addArgsParser(args.Int32s(i32), leftoverWithPlaceholder("[int32, ...]", options)...)
 }
 
 // Int64s tells parser to parse all of the leftover arguments as int64.
-func (ap *ArgParser) Int64s(i64 *[]int64) {
-	ap.parser = args.Int64s(i64)
-	ap.parserPlaceholder = "[int64, ...]"
+func (ap *ArgParser) Int64s(i64 *[]int64, options ...ArgsParserOption) {
+	ap.addArgsParser(args.Int64s(i64), leftoverWithPlaceholder("[int64, ...]", options)...)
 }
 
 func (ap *ArgParser) addArg(w *wrapper, options ...ArgOption) {
@@ -95,6 +88,16 @@ func (ap *ArgParser) addArg(w *wrapper, options ...ArgOption) {
 		opt.applyArg(a)
 	}
 	ap.args = append(ap.args, a)
+}
+
+func (ap *ArgParser) addArgsParser(p args.Parser, options ...ArgsParserOption) {
+	leftOver := &leftOverParser{
+		parser: p,
+	}
+	for _, opt := range options {
+		opt.applyArgs(leftOver)
+	}
+	ap.leftOver = leftOver
 }
 
 func (ap *ArgParser) parse(values []string) error {
@@ -114,8 +117,8 @@ func (ap *ArgParser) parse(values []string) error {
 			return fmt.Errorf("parsing argument '%s' on position %d: %w", a.name, i+1, err)
 		}
 	}
-	if (nextToparse < count) && (ap.parser != nil) {
-		if n, err := ap.parser.Parse(values[nextToparse:]); err != nil {
+	if (nextToparse < count) && (ap.leftOver != nil) {
+		if n, err := ap.leftOver.parser.Parse(values[nextToparse:]); err != nil {
 			return fmt.Errorf("parsing argument on position %d: %w", nextToparse+n+1, err)
 		}
 	}
@@ -140,7 +143,9 @@ func (ap *ArgParser) usage() string {
 	for i, a := range ap.args {
 		u[i] = a.usage()
 	}
-	u = append(u, ap.parserPlaceholder)
+	if ap.leftOver != nil {
+		u = append(u, ap.leftOver.usage())
+	}
 	return strings.Join(u, " ")
 }
 
@@ -166,6 +171,20 @@ func (a argument) usage() string {
 	return placeholder
 }
 
-func optionsWithPlaceholder(placeholder string, options []ArgOption) []ArgOption {
+type leftOverParser struct {
+	parser      args.Parser
+	placeholder string
+	required    bool
+}
+
+func (lp leftOverParser) usage() string {
+	return lp.placeholder
+}
+
+func argWithPlaceholder(placeholder string, options []ArgOption) []ArgOption {
 	return append([]ArgOption{&withPlaceholder{placeholder}}, options...)
+}
+
+func leftoverWithPlaceholder(placeholder string, options []ArgsParserOption) []ArgsParserOption {
+	return append([]ArgsParserOption{&withPlaceholder{placeholder}}, options...)
 }
