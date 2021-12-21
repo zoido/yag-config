@@ -15,7 +15,8 @@
 - option define environment variable prefix
 - option to override the environment variable name
 - option to mark options as required
-- option get option only from environment variable (e.g. for secrets) or only from flag
+- option get option only from environment variable (e.g. for secrets)
+  or only from flag
 - ability to parse command arguments
 
 ## Example
