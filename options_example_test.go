@@ -165,3 +165,30 @@ func ExampleNoEnv() {
 
 	// Output: Default Foo value
 }
+
+func ExampleRequired_argument() {
+	var strArg1, strArg2 string
+
+	y := yag.New()
+	y.Args().String(&strArg1)
+	y.Args().String(&strArg2, yag.Required())
+
+	err := y.Parse([]string{"str arg value"})
+
+	fmt.Print(err)
+
+	// Output: an argument is required on position 2
+}
+
+func ExampleWithName_error() {
+	var intArg int
+
+	y := yag.New()
+	y.Args().Int(&intArg, yag.WithName("string argument"), yag.Required())
+
+	err := y.Parse([]string{})
+
+	fmt.Print(err)
+
+	// Output: argument "string argument" is required on position 1
+}

@@ -324,5 +324,5 @@ func TestArg_Parse_RequiredOption_FailsOnParse_WithName(t *testing.T) {
 	// Then
 	require.Error(t, err)
 	require.Contains(t, err.Error(), "on position 2")
-	require.Contains(t, err.Error(), "'b_option' is required")
+	require.Contains(t, err.Error(), "\"b_option\" is required")
 }

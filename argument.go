@@ -122,7 +122,7 @@ func (ap *ArgParser) validate() error {
 			if a.name == "" {
 				return fmt.Errorf("an argument is required on position %d", i+1)
 			}
-			return fmt.Errorf("argument '%s' is required on position %d", a.name, i+1)
+			return fmt.Errorf("argument %q is required on position %d", a.name, i+1)
 		}
 	}
 	return nil
