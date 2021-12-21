@@ -18,9 +18,10 @@ func TestArg_String(t *testing.T) {
 	err := y.Parse([]string{"a", "b", "c", "d"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, "a", a)
-	require.Equal(t, "b", b)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("a", a)
+	r.Equal("b", b)
 }
 
 func TestArg_Strings(t *testing.T) {
@@ -38,9 +39,10 @@ func TestArg_Strings(t *testing.T) {
 	err := y.Parse([]string{"a", "b", "c", "d"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, "a", a)
-	require.Equal(t, []string{"b", "c", "d"}, s)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("a", a)
+	r.Equal([]string{"b", "c", "d"}, s)
 }
 
 func TestArg_Int(t *testing.T) {
@@ -54,9 +56,10 @@ func TestArg_Int(t *testing.T) {
 	err := y.Parse([]string{"10", "20"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, 10, a)
-	require.Equal(t, 20, b)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(10, a)
+	r.Equal(20, b)
 }
 
 func TestArg_Ints(t *testing.T) {
@@ -74,9 +77,10 @@ func TestArg_Ints(t *testing.T) {
 	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, "a", s)
-	require.Equal(t, []int{1, 2, 3}, i)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("a", s)
+	r.Equal([]int{1, 2, 3}, i)
 }
 
 func TestArg_Int8(t *testing.T) {
@@ -90,9 +94,10 @@ func TestArg_Int8(t *testing.T) {
 	err := y.Parse([]string{"10", "20"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, int8(10), a)
-	require.Equal(t, int8(20), b)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(int8(10), a)
+	r.Equal(int8(20), b)
 }
 
 func TestArg_Int8s(t *testing.T) {
@@ -110,9 +115,10 @@ func TestArg_Int8s(t *testing.T) {
 	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, "a", s)
-	require.Equal(t, []int8{1, 2, 3}, i)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("a", s)
+	r.Equal([]int8{1, 2, 3}, i)
 }
 
 func TestArg_Int16(t *testing.T) {
@@ -126,9 +132,10 @@ func TestArg_Int16(t *testing.T) {
 	err := y.Parse([]string{"10", "20"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, int16(10), a)
-	require.Equal(t, int16(20), b)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(int16(10), a)
+	r.Equal(int16(20), b)
 }
 
 func TestArg_Int16s(t *testing.T) {
@@ -146,9 +153,10 @@ func TestArg_Int16s(t *testing.T) {
 	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, "a", s)
-	require.Equal(t, []int16{1, 2, 3}, i)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("a", s)
+	r.Equal([]int16{1, 2, 3}, i)
 }
 
 func TestArg_Int32(t *testing.T) {
@@ -162,9 +170,10 @@ func TestArg_Int32(t *testing.T) {
 	err := y.Parse([]string{"10", "20"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, int32(10), a)
-	require.Equal(t, int32(20), b)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(int32(10), a)
+	r.Equal(int32(20), b)
 }
 
 func TestArg_Int32s(t *testing.T) {
@@ -182,9 +191,10 @@ func TestArg_Int32s(t *testing.T) {
 	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, "a", s)
-	require.Equal(t, []int32{1, 2, 3}, i)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("a", s)
+	r.Equal([]int32{1, 2, 3}, i)
 }
 
 func TestArg_Int64(t *testing.T) {
@@ -198,9 +208,10 @@ func TestArg_Int64(t *testing.T) {
 	err := y.Parse([]string{"10", "20"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, int64(10), a)
-	require.Equal(t, int64(20), b)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal(int64(10), a)
+	r.Equal(int64(20), b)
 }
 
 func TestArg_Int64s(t *testing.T) {
@@ -218,9 +229,10 @@ func TestArg_Int64s(t *testing.T) {
 	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, "a", s)
-	require.Equal(t, []int64{1, 2, 3}, i)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("a", s)
+	r.Equal([]int64{1, 2, 3}, i)
 }
 
 func TestArg_Parse_Empty_Untouched(t *testing.T) {
@@ -236,9 +248,10 @@ func TestArg_Parse_Empty_Untouched(t *testing.T) {
 	err := y.Parse([]string{"a"})
 
 	// Then
-	require.NoError(t, err)
-	require.Equal(t, "a", a)
-	require.Equal(t, []string{"x", "y", "z"}, s)
+	r := require.New(t)
+	r.NoError(err)
+	r.Equal("a", a)
+	r.Equal([]string{"x", "y", "z"}, s)
 }
 
 func TestArg_Parse_Error_SingleArgument(t *testing.T) {
@@ -322,7 +335,8 @@ func TestArg_Parse_RequiredOption_FailsOnParse_WithName(t *testing.T) {
 	err := y.Parse([]string{"a"})
 
 	// Then
-	require.Error(t, err)
-	require.Contains(t, err.Error(), "on position 2")
-	require.Contains(t, err.Error(), "\"b_option\" is required")
+	r := require.New(t)
+	r.Error(err)
+	r.Contains(err.Error(), "on position 2")
+	r.Contains(err.Error(), "\"b_option\" is required")
 }
