@@ -7,7 +7,7 @@ import (
 	"github.com/zoido/yag-config"
 )
 
-func Test_Arg_String(t *testing.T) {
+func TestArg_String(t *testing.T) {
 	// Given
 	var a, b string
 	parser := yag.ArgParser{}
@@ -23,7 +23,7 @@ func Test_Arg_String(t *testing.T) {
 	require.Equal(t, "b", b)
 }
 
-func Test_Arg_Strings(t *testing.T) {
+func TestArg_Strings(t *testing.T) {
 	// Given
 	var (
 		a string
@@ -43,7 +43,7 @@ func Test_Arg_Strings(t *testing.T) {
 	require.Equal(t, []string{"b", "c", "d"}, s)
 }
 
-func Test_Arg_Int(t *testing.T) {
+func TestArg_Int(t *testing.T) {
 	// Given
 	var a, b int
 	parser := yag.ArgParser{}
@@ -59,7 +59,7 @@ func Test_Arg_Int(t *testing.T) {
 	require.Equal(t, 20, b)
 }
 
-func Test_Arg_Ints(t *testing.T) {
+func TestArg_Ints(t *testing.T) {
 	// Given
 	var (
 		s string
@@ -79,7 +79,7 @@ func Test_Arg_Ints(t *testing.T) {
 	require.Equal(t, []int{1, 2, 3}, i)
 }
 
-func Test_Arg_Int8(t *testing.T) {
+func TestArg_Int8(t *testing.T) {
 	// Given
 	var a, b int8
 	parser := yag.ArgParser{}
@@ -95,7 +95,7 @@ func Test_Arg_Int8(t *testing.T) {
 	require.Equal(t, int8(20), b)
 }
 
-func Test_Arg_Int8s(t *testing.T) {
+func TestArg_Int8s(t *testing.T) {
 	// Given
 	var (
 		s string
@@ -115,7 +115,7 @@ func Test_Arg_Int8s(t *testing.T) {
 	require.Equal(t, []int8{1, 2, 3}, i)
 }
 
-func Test_Arg_Int16(t *testing.T) {
+func TestArg_Int16(t *testing.T) {
 	// Given
 	var a, b int16
 	parser := yag.ArgParser{}
@@ -131,7 +131,7 @@ func Test_Arg_Int16(t *testing.T) {
 	require.Equal(t, int16(20), b)
 }
 
-func Test_Arg_Int16s(t *testing.T) {
+func TestArg_Int16s(t *testing.T) {
 	// Given
 	var (
 		s string
@@ -151,7 +151,7 @@ func Test_Arg_Int16s(t *testing.T) {
 	require.Equal(t, []int16{1, 2, 3}, i)
 }
 
-func Test_Arg_Int32(t *testing.T) {
+func TestArg_Int32(t *testing.T) {
 	// Given
 	var a, b int32
 	parser := yag.ArgParser{}
@@ -167,7 +167,7 @@ func Test_Arg_Int32(t *testing.T) {
 	require.Equal(t, int32(20), b)
 }
 
-func Test_Arg_Int32s(t *testing.T) {
+func TestArg_Int32s(t *testing.T) {
 	// Given
 	var (
 		s string
@@ -187,7 +187,7 @@ func Test_Arg_Int32s(t *testing.T) {
 	require.Equal(t, []int32{1, 2, 3}, i)
 }
 
-func Test_Arg_Int64(t *testing.T) {
+func TestArg_Int64(t *testing.T) {
 	// Given
 	var a, b int64
 	parser := yag.ArgParser{}
@@ -203,7 +203,7 @@ func Test_Arg_Int64(t *testing.T) {
 	require.Equal(t, int64(20), b)
 }
 
-func Test_Arg_Int64s(t *testing.T) {
+func TestArg_Int64s(t *testing.T) {
 	// Given
 	var (
 		s string
@@ -223,7 +223,7 @@ func Test_Arg_Int64s(t *testing.T) {
 	require.Equal(t, []int64{1, 2, 3}, i)
 }
 
-func Test_Arg_Parse_Empty_Untouched(t *testing.T) {
+func TestArg_Parse_Empty_Untouched(t *testing.T) {
 	// Given
 	var a string
 	s := []string{"x", "y", "z"}
@@ -241,7 +241,7 @@ func Test_Arg_Parse_Empty_Untouched(t *testing.T) {
 	require.Equal(t, []string{"x", "y", "z"}, s)
 }
 
-func Test_Arg_Parse_Error_SingleArgument(t *testing.T) {
+func TestArg_Parse_Error_SingleArgument(t *testing.T) {
 	// Given
 	var a, b int
 
@@ -257,7 +257,7 @@ func Test_Arg_Parse_Error_SingleArgument(t *testing.T) {
 	require.Contains(t, err.Error(), "parsing argument on position 2")
 }
 
-func Test_Arg_Parse_Error_SingleArgument_WithName(t *testing.T) {
+func TestArg_Parse_Error_SingleArgument_WithName(t *testing.T) {
 	// Given
 	var a, b int
 
@@ -273,7 +273,7 @@ func Test_Arg_Parse_Error_SingleArgument_WithName(t *testing.T) {
 	require.Contains(t, err.Error(), "parsing argument 'b_name' on position 2")
 }
 
-func Test_Arg_Parse_Error_MultipleArguments(t *testing.T) {
+func TestArg_Parse_Error_MultipleArguments(t *testing.T) {
 	// Given
 	var (
 		s string
@@ -292,7 +292,7 @@ func Test_Arg_Parse_Error_MultipleArguments(t *testing.T) {
 	require.Contains(t, err.Error(), "parsing int argument on position 3")
 }
 
-func Test_Arg_Parse_RequiredOption_FailsOnParse_WithPosition(t *testing.T) {
+func TestArg_Parse_RequiredOption_FailsOnParse_WithPosition(t *testing.T) {
 	// Given
 	var a, b string
 
@@ -308,7 +308,7 @@ func Test_Arg_Parse_RequiredOption_FailsOnParse_WithPosition(t *testing.T) {
 	require.Contains(t, err.Error(), "on position 2")
 }
 
-func Test_Arg_Parse_RequiredOption_FailsOnParse_WithName(t *testing.T) {
+func TestArg_Parse_RequiredOption_FailsOnParse_WithName(t *testing.T) {
 	// Given
 	var a, b string
 
