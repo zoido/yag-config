@@ -126,7 +126,7 @@ func (y *Parser) addVar(w *wrapper, name, help string, options ...VarOption) {
 		parseFlag: true,
 	}
 	for _, opt := range options {
-		opt(v)
+		opt.applyVar(v)
 	}
 	y.vars = append(y.vars, v)
 	if v.parseFlag {
