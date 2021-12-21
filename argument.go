@@ -89,8 +89,7 @@ func (ap *ArgParser) addArg(w *wrapper, options ...ArgOption) {
 	ap.args = append(ap.args, a)
 }
 
-// Parse parses the values according to the registered arguments.
-func (ap *ArgParser) Parse(values []string) error {
+func (ap *ArgParser) parse(values []string) error {
 	count := len(values)
 	var nextToparse int
 	for i, a := range ap.args {

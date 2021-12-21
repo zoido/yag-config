@@ -10,12 +10,12 @@ import (
 func TestArg_String(t *testing.T) {
 	// Given
 	var a, b string
-	parser := yag.ArgParser{}
-	parser.String(&a)
-	parser.String(&b)
+	y := yag.New()
+	y.Args().String(&a)
+	y.Args().String(&b)
 
 	// When
-	err := parser.Parse([]string{"a", "b", "c", "d"})
+	err := y.Parse([]string{"a", "b", "c", "d"})
 
 	// Then
 	require.NoError(t, err)
@@ -30,12 +30,12 @@ func TestArg_Strings(t *testing.T) {
 		s []string
 	)
 
-	parser := yag.ArgParser{}
-	parser.String(&a)
-	parser.Strings(&s)
+	y := yag.New()
+	y.Args().String(&a)
+	y.Args().Strings(&s)
 
 	// When
-	err := parser.Parse([]string{"a", "b", "c", "d"})
+	err := y.Parse([]string{"a", "b", "c", "d"})
 
 	// Then
 	require.NoError(t, err)
@@ -46,12 +46,12 @@ func TestArg_Strings(t *testing.T) {
 func TestArg_Int(t *testing.T) {
 	// Given
 	var a, b int
-	parser := yag.ArgParser{}
-	parser.Int(&a)
-	parser.Int(&b)
+	y := yag.New()
+	y.Args().Int(&a)
+	y.Args().Int(&b)
 
 	// When
-	err := parser.Parse([]string{"10", "20"})
+	err := y.Parse([]string{"10", "20"})
 
 	// Then
 	require.NoError(t, err)
@@ -66,12 +66,12 @@ func TestArg_Ints(t *testing.T) {
 		i []int
 	)
 
-	parser := yag.ArgParser{}
-	parser.String(&s)
-	parser.Ints(&i)
+	y := yag.New()
+	y.Args().String(&s)
+	y.Args().Ints(&i)
 
 	// When
-	err := parser.Parse([]string{"a", "1", "2", "3"})
+	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
 	require.NoError(t, err)
@@ -82,12 +82,12 @@ func TestArg_Ints(t *testing.T) {
 func TestArg_Int8(t *testing.T) {
 	// Given
 	var a, b int8
-	parser := yag.ArgParser{}
-	parser.Int8(&a)
-	parser.Int8(&b)
+	y := yag.New()
+	y.Args().Int8(&a)
+	y.Args().Int8(&b)
 
 	// When
-	err := parser.Parse([]string{"10", "20"})
+	err := y.Parse([]string{"10", "20"})
 
 	// Then
 	require.NoError(t, err)
@@ -102,12 +102,12 @@ func TestArg_Int8s(t *testing.T) {
 		i []int8
 	)
 
-	parser := yag.ArgParser{}
-	parser.String(&s)
-	parser.Int8s(&i)
+	y := yag.New()
+	y.Args().String(&s)
+	y.Args().Int8s(&i)
 
 	// When
-	err := parser.Parse([]string{"a", "1", "2", "3"})
+	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
 	require.NoError(t, err)
@@ -118,12 +118,12 @@ func TestArg_Int8s(t *testing.T) {
 func TestArg_Int16(t *testing.T) {
 	// Given
 	var a, b int16
-	parser := yag.ArgParser{}
-	parser.Int16(&a)
-	parser.Int16(&b)
+	y := yag.New()
+	y.Args().Int16(&a)
+	y.Args().Int16(&b)
 
 	// When
-	err := parser.Parse([]string{"10", "20"})
+	err := y.Parse([]string{"10", "20"})
 
 	// Then
 	require.NoError(t, err)
@@ -138,12 +138,12 @@ func TestArg_Int16s(t *testing.T) {
 		i []int16
 	)
 
-	parser := yag.ArgParser{}
-	parser.String(&s)
-	parser.Int16s(&i)
+	y := yag.New()
+	y.Args().String(&s)
+	y.Args().Int16s(&i)
 
 	// When
-	err := parser.Parse([]string{"a", "1", "2", "3"})
+	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
 	require.NoError(t, err)
@@ -154,12 +154,12 @@ func TestArg_Int16s(t *testing.T) {
 func TestArg_Int32(t *testing.T) {
 	// Given
 	var a, b int32
-	parser := yag.ArgParser{}
-	parser.Int32(&a)
-	parser.Int32(&b)
+	y := yag.New()
+	y.Args().Int32(&a)
+	y.Args().Int32(&b)
 
 	// When
-	err := parser.Parse([]string{"10", "20"})
+	err := y.Parse([]string{"10", "20"})
 
 	// Then
 	require.NoError(t, err)
@@ -174,12 +174,12 @@ func TestArg_Int32s(t *testing.T) {
 		i []int32
 	)
 
-	parser := yag.ArgParser{}
-	parser.String(&s)
-	parser.Int32s(&i)
+	y := yag.New()
+	y.Args().String(&s)
+	y.Args().Int32s(&i)
 
 	// When
-	err := parser.Parse([]string{"a", "1", "2", "3"})
+	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
 	require.NoError(t, err)
@@ -190,12 +190,12 @@ func TestArg_Int32s(t *testing.T) {
 func TestArg_Int64(t *testing.T) {
 	// Given
 	var a, b int64
-	parser := yag.ArgParser{}
-	parser.Int64(&a)
-	parser.Int64(&b)
+	y := yag.New()
+	y.Args().Int64(&a)
+	y.Args().Int64(&b)
 
 	// When
-	err := parser.Parse([]string{"10", "20"})
+	err := y.Parse([]string{"10", "20"})
 
 	// Then
 	require.NoError(t, err)
@@ -210,12 +210,12 @@ func TestArg_Int64s(t *testing.T) {
 		i []int64
 	)
 
-	parser := yag.ArgParser{}
-	parser.String(&s)
-	parser.Int64s(&i)
+	y := yag.New()
+	y.Args().String(&s)
+	y.Args().Int64s(&i)
 
 	// When
-	err := parser.Parse([]string{"a", "1", "2", "3"})
+	err := y.Parse([]string{"a", "1", "2", "3"})
 
 	// Then
 	require.NoError(t, err)
@@ -228,12 +228,12 @@ func TestArg_Parse_Empty_Untouched(t *testing.T) {
 	var a string
 	s := []string{"x", "y", "z"}
 
-	parser := yag.ArgParser{}
-	parser.String(&a)
-	parser.Strings(&s)
+	y := yag.New()
+	y.Args().String(&a)
+	y.Args().Strings(&s)
 
 	// When
-	err := parser.Parse([]string{"a"})
+	err := y.Parse([]string{"a"})
 
 	// Then
 	require.NoError(t, err)
@@ -245,12 +245,12 @@ func TestArg_Parse_Error_SingleArgument(t *testing.T) {
 	// Given
 	var a, b int
 
-	parser := yag.ArgParser{}
-	parser.Int(&a)
-	parser.Int(&b)
+	y := yag.New()
+	y.Args().Int(&a)
+	y.Args().Int(&b)
 
 	// When
-	err := parser.Parse([]string{"1", "x", "3", "4"})
+	err := y.Parse([]string{"1", "x", "3", "4"})
 
 	// Then
 	require.Error(t, err)
@@ -261,12 +261,12 @@ func TestArg_Parse_Error_SingleArgument_WithName(t *testing.T) {
 	// Given
 	var a, b int
 
-	parser := yag.ArgParser{}
-	parser.Int(&a)
-	parser.Int(&b, yag.WithName("b_name"))
+	y := yag.New()
+	y.Args().Int(&a)
+	y.Args().Int(&b, yag.WithName("b_name"))
 
 	// When
-	err := parser.Parse([]string{"1", "x", "3", "4"})
+	err := y.Parse([]string{"1", "x", "3", "4"})
 
 	// Then
 	require.Error(t, err)
@@ -280,12 +280,12 @@ func TestArg_Parse_Error_MultipleArguments(t *testing.T) {
 		i []int
 	)
 
-	parser := yag.ArgParser{}
-	parser.String(&s)
-	parser.Ints(&i)
+	y := yag.New()
+	y.Args().String(&s)
+	y.Args().Ints(&i)
 
 	// When
-	err := parser.Parse([]string{"1", "2", "3.14", "4"})
+	err := y.Parse([]string{"1", "2", "3.14", "4"})
 
 	// Then
 	r := require.New(t)
@@ -298,12 +298,12 @@ func TestArg_Parse_RequiredOption_FailsOnParse_WithPosition(t *testing.T) {
 	// Given
 	var a, b string
 
-	parser := yag.ArgParser{}
-	parser.String(&a)
-	parser.String(&b, yag.Required())
+	y := yag.New()
+	y.Args().String(&a)
+	y.Args().String(&b, yag.Required())
 
 	// When
-	err := parser.Parse([]string{"a"})
+	err := y.Parse([]string{"a"})
 
 	// Then
 	require.Error(t, err)
@@ -314,12 +314,12 @@ func TestArg_Parse_RequiredOption_FailsOnParse_WithName(t *testing.T) {
 	// Given
 	var a, b string
 
-	parser := yag.ArgParser{}
-	parser.String(&a)
-	parser.String(&b, yag.Required(), yag.WithName("b_option"))
+	y := yag.New()
+	y.Args().String(&a)
+	y.Args().String(&b, yag.Required(), yag.WithName("b_option"))
 
 	// When
-	err := parser.Parse([]string{"a"})
+	err := y.Parse([]string{"a"})
 
 	// Then
 	require.Error(t, err)

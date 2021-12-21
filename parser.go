@@ -200,7 +200,7 @@ func (y *Parser) Args() *ArgParser {
 }
 
 func (y *Parser) doParseArgs() error {
-	return y.argParser.Parse(y.flagSet.Args())
+	return y.argParser.parse(y.flagSet.Args())
 }
 
 // Usage returns formatted string with usage help.
