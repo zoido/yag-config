@@ -13,6 +13,11 @@ func ExampleParser_Usage() {
 		NoFlagOption    string
 		NoEnvOption     string
 	}
+	var arg int64
+	var requiredArg int32
+	var argWithName int16
+	var requiredArgWithName int8
+	var stringArgs []string
 
 	y := yag.New(yag.WithEnvPrefix("MY_APP_"))
 	cfg := &config{}
@@ -26,10 +31,16 @@ func ExampleParser_Usage() {
 	)
 	y.String(&cfg.NoFlagOption, "no_flag_option", "sets np flag option", yag.NoFlag())
 	y.String(&cfg.NoFlagOption, "no_env_option", "sets no env option", yag.NoEnv())
+	y.Args().Int32(&requiredArg, yag.Required())
+	y.Args().Int8(&requiredArgWithName, yag.WithName("my int8 argument"), yag.Required())
+	y.Args().Int64(&arg)
+	y.Args().Int16(&argWithName, yag.WithName("my int16 argument"))
+	y.Args().Strings(&stringArgs)
 
 	fmt.Print(y.Usage())
 
 	// Output:
+	//  int32 <my int8 argument> [int64] [my int16 argument] [string, ...]
 	// 	-required_option ($MY_APP_REQUIRED_OPTION) [required]
 	// 		sets required option
 	// 	-custom_env_option ($MY_OPTION_TWO)
