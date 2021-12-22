@@ -15,7 +15,7 @@ func TestNew_Ok(t *testing.T) {
 	// No panic.
 }
 
-func TestParse_Flags(t *testing.T) {
+func TestParser_Parse_Flags(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -30,7 +30,7 @@ func TestParse_Flags(t *testing.T) {
 	require.Equal(t, "flag value", str)
 }
 
-func TestParse_Env(t *testing.T) {
+func TestParser_Parse_Env(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -46,7 +46,7 @@ func TestParse_Env(t *testing.T) {
 	require.Equal(t, "env value", str)
 }
 
-func TestParse_DefaultValue(t *testing.T) {
+func TestParser_Parse_DefaultValue(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -61,7 +61,7 @@ func TestParse_DefaultValue(t *testing.T) {
 	require.Equal(t, "default value", str)
 }
 
-func TestParse_WithEnvPrefix_Effective(t *testing.T) {
+func TestParser_Parse_WithEnvPrefix_Effective(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -78,7 +78,7 @@ func TestParse_WithEnvPrefix_Effective(t *testing.T) {
 	require.Equal(t, "env with prefix", str)
 }
 
-func TestParse_FromEnv_Effective(t *testing.T) {
+func TestParser_Parse_FromEnv_Effective(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -95,7 +95,7 @@ func TestParse_FromEnv_Effective(t *testing.T) {
 	require.Equal(t, "correct value", str)
 }
 
-func TestParseFlags(t *testing.T) {
+func TestParser_ParseFlags(t *testing.T) {
 	// Given
 	var str1, str2 string
 
@@ -114,7 +114,7 @@ func TestParseFlags(t *testing.T) {
 	require.Equal(t, "", str2)
 }
 
-func TestParseEnv(t *testing.T) {
+func TestParser_ParseEnv(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -130,7 +130,7 @@ func TestParseEnv(t *testing.T) {
 	require.Equal(t, "env value", str)
 }
 
-func TestParseEnv_WithEnvPrefix_Effective(t *testing.T) {
+func TestParser_ParseEnv_WithEnvPrefix_Effective(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -147,7 +147,7 @@ func TestParseEnv_WithEnvPrefix_Effective(t *testing.T) {
 	require.Equal(t, "env with prefix", str)
 }
 
-func TestParse_FlagsTakePrecedence(t *testing.T) {
+func TestParser_Parse_FlagsTakePrecedence(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -163,7 +163,7 @@ func TestParse_FlagsTakePrecedence(t *testing.T) {
 	require.Equal(t, "flag value", str)
 }
 
-func TestParse_FlagsAlwaysTakePrecedence(t *testing.T) {
+func TestParser_Parse_FlagsAlwaysTakePrecedence(t *testing.T) {
 	// Given
 	var str string
 
@@ -181,7 +181,7 @@ func TestParse_FlagsAlwaysTakePrecedence(t *testing.T) {
 	require.Equal(t, "flag value", str)
 }
 
-func TestParse_RequiredOption_FailsOnParse(t *testing.T) {
+func TestParser_Parse_RequiredOption_FailsOnParse(t *testing.T) {
 	// Given
 	var str string
 
@@ -197,7 +197,7 @@ func TestParse_RequiredOption_FailsOnParse(t *testing.T) {
 	require.Contains(t, err.Error(), "test_string")
 }
 
-func TestParse_RequiredOption_EnvEnough(t *testing.T) {
+func TestParser_Parse_RequiredOption_EnvEnough(t *testing.T) {
 	// Given
 	var str string
 
@@ -212,7 +212,7 @@ func TestParse_RequiredOption_EnvEnough(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestParse_RequiredOption_FlagEnough(t *testing.T) {
+func TestParser_Parse_RequiredOption_FlagEnough(t *testing.T) {
 	// Given
 	var str string
 
@@ -226,7 +226,7 @@ func TestParse_RequiredOption_FlagEnough(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestParseEnv_RequiredOption_FailsOnParse(t *testing.T) {
+func TestParser_ParseEnv_RequiredOption_FailsOnParse(t *testing.T) {
 	// Given
 	var str string
 
@@ -240,7 +240,7 @@ func TestParseEnv_RequiredOption_FailsOnParse(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestParseFlags_RequiredOption_FailsOnParse(t *testing.T) {
+func TestParser_ParseFlags_RequiredOption_FailsOnParse(t *testing.T) {
 	// Given
 	var str string
 
@@ -254,7 +254,7 @@ func TestParseFlags_RequiredOption_FailsOnParse(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestParse_NoFlagOption_EnvOk(t *testing.T) {
+func TestParser_Parse_NoFlagOption_EnvOk(t *testing.T) {
 	// Given
 	var str string
 
@@ -271,7 +271,7 @@ func TestParse_NoFlagOption_EnvOk(t *testing.T) {
 	require.Equal(t, "env value", str)
 }
 
-func TestParse_NoFlagOption_FlagInvalid(t *testing.T) {
+func TestParser_Parse_NoFlagOption_FlagInvalid(t *testing.T) {
 	// Given
 	var str string
 
@@ -285,7 +285,7 @@ func TestParse_NoFlagOption_FlagInvalid(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestParse_NoEnvOption_FlagOk(t *testing.T) {
+func TestParser_Parse_NoEnvOption_FlagOk(t *testing.T) {
 	// Given
 	var str string
 
@@ -300,7 +300,7 @@ func TestParse_NoEnvOption_FlagOk(t *testing.T) {
 	require.Equal(t, "flag value", str)
 }
 
-func TestParse_NoEnvOption_EnvIgnored(t *testing.T) {
+func TestParser_Parse_NoEnvOption_EnvIgnored(t *testing.T) {
 	// Given
 	str := "default value"
 
@@ -317,7 +317,7 @@ func TestParse_NoEnvOption_EnvIgnored(t *testing.T) {
 	require.Equal(t, "default value", str)
 }
 
-func TestParseFlags_ErrorNotSwallowed(t *testing.T) {
+func TestParser_ParseFlags_ErrorNotSwallowed(t *testing.T) {
 	// Given
 	var str string
 
@@ -331,7 +331,7 @@ func TestParseFlags_ErrorNotSwallowed(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestParseEnv_ErrorNotSwallowed(t *testing.T) {
+func TestParser_ParseEnv_ErrorNotSwallowed(t *testing.T) {
 	// Given
 	var num int
 
@@ -346,7 +346,7 @@ func TestParseEnv_ErrorNotSwallowed(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestParse_Flags_ErrorNotSwallowed(t *testing.T) {
+func TestParser_Parse_Flags_ErrorNotSwallowed(t *testing.T) {
 	// Given
 	var str string
 
@@ -360,7 +360,7 @@ func TestParse_Flags_ErrorNotSwallowed(t *testing.T) {
 	require.Error(t, err)
 }
 
-func TestParse_Env_ErrorNotSwallowed(t *testing.T) {
+func TestParser_Parse_Env_ErrorNotSwallowed(t *testing.T) {
 	// Given
 	var num int
 
