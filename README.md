@@ -15,6 +15,9 @@
 - option define environment variable prefix
 - option to override the environment variable name
 - option to mark options as required
+- option get option only from environment variable (e.g. for secrets)
+  or only from flag
+- ability to parse command arguments
 
 ## Example
 
@@ -39,7 +42,12 @@ y.Bool(&cfg.Bool, "bool", "sets Bool")
 y.Duration(&cfg.Duration, "duration", "sets Duration", yag.FromEnv("MY_DURATION_VALUE"))
 y.Int(&cfg.Int, "int", "sets Int")
 
-args := []string{"-str=str flag value"}
+var strArg string
+var intArgs []int
+y.Args().String(&strArg)
+y.Args().Ints(&intArgs)
+
+args := []string{"-str=str flag value", "str arg value", "3", "2", "1"}
 
 _ = os.Setenv("MY_APP_STR", "str env value")
 _ = os.Setenv("MY_APP_INT", "4")
@@ -60,6 +68,9 @@ fmt.Printf("config.Duration: %v\n", cfg.Duration)
 // config.Int: 4
 // config.Bool: false
 // config.Duration: 1h0m0s
+// str arg: str arg value
+// int args: [3 2 1]
+
 ```
 
 <!-- markdownlint-enable MD010 -->
@@ -73,7 +84,6 @@ fmt.Printf("config.Duration: %v\n", cfg.Duration)
 - `bool`
 - `time.Duration`
 - any `flag.Value` implementation (e.g. [(github.com/sgreben/flagvar](https://github.com/sgreben/flagvar))
-- more to come…
 
 ## Credits
 
