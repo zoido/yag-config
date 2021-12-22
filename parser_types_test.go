@@ -8,7 +8,7 @@ import (
 	"github.com/zoido/yag-config"
 )
 
-func TestString(t *testing.T) {
+func TestParser_String(t *testing.T) {
 	// Given
 	var s string
 
@@ -23,7 +23,7 @@ func TestString(t *testing.T) {
 	require.Equal(t, "test_string", s)
 }
 
-func TestInt(t *testing.T) {
+func TestParser_Int(t *testing.T) {
 	// Given
 	var n int
 
@@ -38,7 +38,7 @@ func TestInt(t *testing.T) {
 	require.Equal(t, 8, n)
 }
 
-func TestInt8(t *testing.T) {
+func TestParser_Int8(t *testing.T) {
 	// Given
 	var n int8
 
@@ -53,7 +53,7 @@ func TestInt8(t *testing.T) {
 	require.Equal(t, int8(8), n)
 }
 
-func TestInt16(t *testing.T) {
+func TestParser_Int16(t *testing.T) {
 	// Given
 	var n int16
 
@@ -68,7 +68,7 @@ func TestInt16(t *testing.T) {
 	require.Equal(t, int16(8), n)
 }
 
-func TestInt32(t *testing.T) {
+func TestParser_Int32(t *testing.T) {
 	// Given
 	var n int32
 
@@ -83,7 +83,7 @@ func TestInt32(t *testing.T) {
 	require.Equal(t, int32(8), n)
 }
 
-func TestInt64(t *testing.T) {
+func TestParser_Int64(t *testing.T) {
 	// Given
 	var n int64
 
@@ -98,7 +98,7 @@ func TestInt64(t *testing.T) {
 	require.Equal(t, int64(8), n)
 }
 
-func TestUint(t *testing.T) {
+func TestParser_Uint(t *testing.T) {
 	// Given
 	var n uint
 
@@ -113,7 +113,7 @@ func TestUint(t *testing.T) {
 	require.Equal(t, uint(8), n)
 }
 
-func TestUint8(t *testing.T) {
+func TestParser_Uint8(t *testing.T) {
 	// Given
 	var n uint8
 
@@ -128,7 +128,7 @@ func TestUint8(t *testing.T) {
 	require.Equal(t, uint8(8), n)
 }
 
-func TestUint16(t *testing.T) {
+func TestParser_Uint16(t *testing.T) {
 	// Given
 	var n uint16
 
@@ -143,7 +143,7 @@ func TestUint16(t *testing.T) {
 	require.Equal(t, uint16(8), n)
 }
 
-func TestUint32(t *testing.T) {
+func TestParser_Uint32(t *testing.T) {
 	// Given
 	var n uint32
 
@@ -158,7 +158,7 @@ func TestUint32(t *testing.T) {
 	require.Equal(t, uint32(8), n)
 }
 
-func TestUint64(t *testing.T) {
+func TestParser_Uint64(t *testing.T) {
 	// Given
 	var n uint64
 
@@ -173,7 +173,7 @@ func TestUint64(t *testing.T) {
 	require.Equal(t, uint64(8), n)
 }
 
-func TestFloat32(t *testing.T) {
+func TestParser_Float32(t *testing.T) {
 	// Given
 	var n float32
 
@@ -188,7 +188,7 @@ func TestFloat32(t *testing.T) {
 	require.Equal(t, float32(6.626e-34), n)
 }
 
-func TestFloat64(t *testing.T) {
+func TestParser_Float64(t *testing.T) {
 	// Given
 	var n float64
 
@@ -203,7 +203,7 @@ func TestFloat64(t *testing.T) {
 	require.Equal(t, float64(6.626e-34), n)
 }
 
-func TestDuration(t *testing.T) {
+func TestParser_Duration(t *testing.T) {
 	// Given
 	var d time.Duration
 
@@ -218,7 +218,7 @@ func TestDuration(t *testing.T) {
 	require.Equal(t, float64(10*60*60+30*60+15), d.Seconds())
 }
 
-func TestBool(t *testing.T) {
+func TestParser_Bool(t *testing.T) {
 	// Given
 	var b bool
 
@@ -233,7 +233,7 @@ func TestBool(t *testing.T) {
 	require.True(t, b)
 }
 
-func TestBool_BoolFlag(t *testing.T) {
+func TestParser_Bool_BoolFlag(t *testing.T) {
 	// Given
 	var b bool
 
@@ -248,7 +248,7 @@ func TestBool_BoolFlag(t *testing.T) {
 	require.True(t, b)
 }
 
-func TestBool_False(t *testing.T) {
+func TestParser_Bool_False(t *testing.T) {
 	// Given
 	b := false
 
@@ -276,7 +276,7 @@ func (tfv *testFlagValue) String() string {
 	return "test_flag_value"
 }
 
-func TestValue(t *testing.T) {
+func TestParser_Value(t *testing.T) {
 	// Given
 	val := &testFlagValue{}
 
