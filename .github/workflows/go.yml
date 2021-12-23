@@ -39,7 +39,7 @@ jobs:
         if: ${{ always() }}
         shell: bash {0}  # don't fail fast
         run: |
-          FINDINGS=$(go run github.com/mgechev/revive@v1.1.2 -config revive.toml --formatter json ./...)
+          FINDINGS=$(go run github.com/mgechev/revive@v1.1.2 -config ci/revive.toml --formatter json ./...)
           code=$?
           echo "::set-output name=findings::${FINDINGS}"
           exit $code
