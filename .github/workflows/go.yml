@@ -58,6 +58,7 @@ jobs:
           echo "::endgroup::"
 
       - name: markdownlint
+        if: ${{ always() }}
         uses: nosborn/github-action-markdown-cli@v2
         with:
           files: .
