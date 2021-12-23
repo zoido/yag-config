@@ -25,18 +25,37 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.go-cache-paths.outputs.go-mod }}
-          key: ${{ runner.os }}-go-mod-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-mod-lint-${{ hashFiles('.github/workflows/go.yml') }}
 
       - name: formatting
+        if: ${{ always() }}
         run: |
           go run golang.org/x/tools/cmd/goimports@v0.1.7 -w .
           go run mvdan.cc/gofumpt@v0.2.1 -w .
           [[ -z $(git status -s) ]] || (echo "::error::Formatting"; exit 1)
 
-      - name: revive
-        uses: morphy2k/revive-action@v2
-        with:
-          config: ci/revive.toml
+      - name: revive (run)
+        id: revive_lint
+        if: ${{ always() }}
+        shell: bash {0}  # don't fail fast
+        run: |
+          FINDINGS=$(go run github.com/mgechev/revive@v1.1.2 -config revive.toml --formatter json ./...)
+          code=$?
+          echo "::set-output name=findings::${FINDINGS}"
+          exit $code
+      - name: revive (report)
+        if: ${{ always() && fromJSON(steps.revive_lint.outputs.findings)[0] != null }}
+        run: |
+          echo "::group::Failures"
+          while read -r line; do
+            eval "$(echo ${line} | jq -r '@sh "severity=\(.Severity) failure=\(.Failure) file=\(.Position.Start.Filename) l=\(.Position.Start.Line) col=\(.Position.Start.Column)"')"
+            echo "::${severity} file=$file,line=$l,col=$col::${failure}"
+          done < <(
+            jq -c '.[]' <<-EOF
+            ${{ steps.revive_lint.outputs.findings }}
+          EOF
+          )
+          echo "::endgroup::"
 
       - name: markdownlint
         uses: nosborn/github-action-markdown-cli@v2
