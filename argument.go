@@ -9,10 +9,9 @@ import (
 	"github.com/zoido/yag-config/value"
 )
 
-// ArgParser registers and parses non-flag arguments.
 type ArgParser struct {
 	args                []*argument
-	leftOver            args.Parser
+	leftOver      args.Parser
 	leftoverPlaceholder string
 }
 
