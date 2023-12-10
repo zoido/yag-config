@@ -7,7 +7,7 @@ import (
 	"github.com/zoido/yag-config"
 )
 
-func TestNew_Ok(t *testing.T) {
+func TestNew_Ok(_ *testing.T) {
 	// When
 	yag.New()
 

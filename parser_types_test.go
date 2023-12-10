@@ -267,12 +267,12 @@ type testFlagValue struct {
 	called bool
 }
 
-func (tfv *testFlagValue) Set(val string) error {
+func (tfv *testFlagValue) Set(_ string) error {
 	tfv.called = true
 	return nil
 }
 
-func (tfv *testFlagValue) String() string {
+func (*testFlagValue) String() string {
 	return "test_flag_value"
 }
 

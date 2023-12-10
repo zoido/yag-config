@@ -24,7 +24,8 @@ func ExampleWithEnvPrefix() {
 
 	err := y.Parse([]string{})
 	if err != nil {
-		os.Exit(2)
+		fmt.Printf("Error: %v\n", err)
+		return
 	}
 
 	fmt.Printf(cfg.Foo)
@@ -49,7 +50,8 @@ func ExampleFromEnv() {
 
 	err := y.Parse([]string{})
 	if err != nil {
-		os.Exit(2)
+		fmt.Printf("Error: %v\n", err)
+		return
 	}
 
 	fmt.Printf(cfg.Foo)
@@ -90,7 +92,8 @@ func ExampleRequired_flagOk() {
 
 	err := y.Parse([]string{"-foo=foo_value"})
 	if err != nil {
-		os.Exit(2)
+		fmt.Printf("Error: %v\n", err)
+		return
 	}
 
 	fmt.Print(cfg.Foo)
@@ -114,7 +117,8 @@ func ExampleRequired_envOnlyOk() {
 
 	err := y.Parse([]string{})
 	if err != nil {
-		os.Exit(2)
+		fmt.Printf("Error: %v\n", err)
+		return
 	}
 
 	fmt.Print(cfg.Foo)
@@ -158,7 +162,8 @@ func ExampleNoEnv() {
 	_ = os.Setenv("FOO", "Foo from the environment variable ")
 	err := y.Parse([]string{})
 	if err != nil {
-		os.Exit(2)
+		fmt.Printf("Error: %v\n", err)
+		return
 	}
 
 	fmt.Printf(cfg.Foo)

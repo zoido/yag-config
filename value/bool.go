@@ -13,7 +13,7 @@ func Bool(dest *bool) flag.Value {
 // IsBoolFlag returns true if the flag.Value implementation has an IsBoolFlag() bool
 // method returning true.
 // This is used by the flag package commandline-parser for flags that can be supplied
-//  without "=value" text
+// without "=value" text.
 func IsBoolFlag(v flag.Value) bool {
 	type boolFlag interface {
 		flag.Value
