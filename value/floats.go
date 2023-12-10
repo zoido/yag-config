@@ -43,10 +43,10 @@ func (iv *float64Value) Set(val string) error {
 		return err
 	}
 
-	*iv.dest = float64(num)
+	*iv.dest = num
 	return nil
 }
 
 func (iv *float64Value) String() string {
-	return strconv.FormatFloat(float64(*iv.dest), 'G', -1, 64)
+	return strconv.FormatFloat(*iv.dest, 'G', -1, 64)
 }

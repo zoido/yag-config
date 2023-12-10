@@ -11,7 +11,7 @@ import (
 )
 
 // ErrHelp is the error returned if the -help or -h flag is invoked but no such flag is defined.
-// Alias for flag.ErrHelp
+// Alias for flag.ErrHelp.
 var ErrHelp = flag.ErrHelp
 
 // Parser registers and parses configuration values.

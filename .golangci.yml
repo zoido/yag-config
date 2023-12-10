@@ -1,11 +1,15 @@
 linters:
-  # Disable all default linters and enable only revive and formatters before
-  # new findings by default linters are addressed.
-  disable-all: true
   enable:
+    - dupword
+    - errcheck
+    - errname
+    - godot
     - gofumpt
     - goimports
+    - misspell
     - revive
+    - unconvert
+    - unused
 
 issues:
   exclude-use-default: false
