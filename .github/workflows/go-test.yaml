@@ -1,0 +1,50 @@
+name: "Go: Test"
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v4
+        with:
+          cache: false
+          go-version-file: go.mod
+
+      - uses: actions/checkout@v4
+
+      - name: Determine Go Cache Paths
+        id: go-cache-paths
+        run: |
+          echo "go-build=$(go env GOCACHE)" >> $GITHUB_OUTPUT
+          echo "go-mod=$(go env GOMODCACHE)" >> $GITHUB_OUTPUT
+
+          mkdir -p "$(go env GOMODCACHE)"
+          mkdir -p "$(go env GOCACHE)"
+
+      - name: Go Build Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.go-cache-paths.outputs.go-build }}
+          key: ${{ runner.os }}-gobuild-test-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-gobuild-test
+
+      - name: Go Mod Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.go-cache-paths.outputs.go-mod }}
+          key: ${{ runner.os }}-gomod-test-${{ hashFiles('**/go.sum') }}
+
+      - run: |
+          go test -v \
+            -coverprofile=coverage.txt \
+            -covermode=atomic \
+            -coverpkg=./... \
+            ./...
+
+      - name: Collect Code Coverage
+        uses: codecov/codecov-action@v2
+        with:
+          file: ./coverage.txt

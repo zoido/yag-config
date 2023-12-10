@@ -1,0 +1,20 @@
+name: Go
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    uses: ./.github/workflows/go-lint.yaml
+
+  build:
+    name: Build
+    uses: ./.github/workflows/go-build.yaml
+
+  test:
+    name: Test
+    uses: ./.github/workflows/go-test.yaml
+
+    secrets: inherit
