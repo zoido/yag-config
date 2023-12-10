@@ -54,3 +54,19 @@ func ExampleErrHelp() {
 
 	// Output: --help flag passed
 }
+
+func ExampleParser_Args() {
+	var foo string
+
+	y := yag.New()
+
+	y.String(&foo, "foo", "sets Foo")
+	err := y.Parse([]string{"--foo", "x", "arg1", "arg2", "arg3"})
+	if err != nil {
+		fmt.Printf("error: %s", err)
+	}
+
+	fmt.Printf("foo: %q, args: %v", foo, y.Args())
+
+	// Output: foo: "x", args: [arg1 arg2 arg3]
+}

@@ -199,3 +199,8 @@ func (y *Parser) Usage() string {
 	}
 	return strings.Join(u, "\n")
 }
+
+// Args returns non-flag arguments left over after parsing.
+func (y *Parser) Args() []string {
+	return y.flagSet.Args()
+}
