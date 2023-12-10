@@ -1,10 +1,6 @@
 name: "Markdown: Lint"
 on:
-  workflow_dispatch: {}
-
-
-
-
+  workflow_call: {}
 
 jobs:
   lint:
