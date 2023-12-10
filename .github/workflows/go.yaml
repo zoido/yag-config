@@ -14,7 +14,7 @@ jobs:
     uses: ./.github/workflows/go-build.yaml
 
   test:
-    name: "Go: Build"
+    name: "Go: Test`"
     uses: ./.github/workflows/go-test.yaml
 
     secrets: inherit
