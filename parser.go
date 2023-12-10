@@ -16,7 +16,6 @@ var ErrHelp = flag.ErrHelp
 
 // Parser registers and parses configuration values.
 type Parser struct {
-	argParser ArgParser
 	envPrefix string
 	flagSet   *flag.FlagSet
 
@@ -25,7 +24,11 @@ type Parser struct {
 
 // New returns new instance of the Yag.
 func New(options ...ParserOption) *Parser {
-	y := &Parser{}
+	vars := make([]*variable, 0, 10)
+
+	y := &Parser{
+		vars: vars,
+	}
 	for _, opt := range options {
 		opt(y)
 	}
@@ -123,7 +126,7 @@ func (y *Parser) addVar(w *wrapper, name, help string, options ...VarOption) {
 		parseFlag: true,
 	}
 	for _, opt := range options {
-		opt.applyVar(v)
+		opt(v)
 	}
 	y.vars = append(y.vars, v)
 	if v.parseFlag {
@@ -145,10 +148,7 @@ func (y *Parser) ParseFlags(args []string) error {
 	if err := y.doParseFlags(args); err != nil {
 		return err
 	}
-	if err := y.validate(); err != nil {
-		return err
-	}
-	return y.doParseArgs()
+	return y.validate()
 }
 
 func (y *Parser) doParseFlags(args []string) error {
@@ -188,19 +188,7 @@ func (y *Parser) Parse(args []string) error {
 	if err := y.doParseEnv(); err != nil {
 		return err
 	}
-	if err := y.doParseArgs(); err != nil {
-		return err
-	}
 	return y.validate()
-}
-
-// Args returns parser of the non-flag arguments.
-func (y *Parser) Args() *ArgParser {
-	return &y.argParser
-}
-
-func (y *Parser) doParseArgs() error {
-	return y.argParser.parse(y.flagSet.Args())
 }
 
 // Usage returns formatted string with usage help.
@@ -208,9 +196,6 @@ func (y *Parser) Usage() string {
 	u := make([]string, len(y.vars))
 	for i, v := range y.vars {
 		u[i] = v.usage()
-	}
-	if len(y.argParser.args) > 0 {
-		u = append([]string{y.argParser.usage()}, u...)
 	}
 	return strings.Join(u, "\n")
 }
