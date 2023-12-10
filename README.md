@@ -2,7 +2,7 @@
 
 [![go reference](https://pkg.go.dev/badge/github.com/zoido/yag-config)](https://pkg.go.dev/github.com/zoido/yag-config)
 [![licence](https://img.shields.io/github/license/zoido/yag-config?style=flat-square)](https://github.com/zoido/yag-config/blob/master/LICENSE)
-![build](https://img.shields.io/github/actions/workflow/status/zoido/yag-config/go.yml?style=flat-square&logoColor=white&logo=github)
+![CI](https://img.shields.io/github/actions/workflow/status/zoido/yag-config/go.yaml?style=flat-square&logoColor=white&logo=github)
 [![coverage](https://img.shields.io/codecov/c/github/zoido/yag-config?style=flat-square&logoColor=white&logo=codecov)](https://codecov.io/gh/zoido/yag-config)
 [![go report](https://goreportcard.com/badge/github.com/zoido/yag-config?style=flat-square)](https://goreportcard.com/report/github.com/zoido/yag-config)
 
@@ -71,7 +71,6 @@ fmt.Printf("config.Duration: %v", cfg.Duration)
 - `bool`
 - `time.Duration`
 - any `flag.Value` implementation (e.g. [(github.com/sgreben/flagvar](https://github.com/sgreben/flagvar))
-- more to come…
 
 ## Credits
 
