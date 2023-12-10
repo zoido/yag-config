@@ -74,7 +74,7 @@ func TestIsBooleanFlag_BoolFlagTrue(t *testing.T) {
 
 type normalFlagValue struct{}
 
-func (*normalFlagValue) Set(v string) error {
+func (*normalFlagValue) Set(_ string) error {
 	return nil
 }
 

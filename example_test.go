@@ -35,19 +35,15 @@ func Example() {
 
 	err := y.Parse(args)
 	if err != nil {
-		os.Exit(2)
+		fmt.Printf("Error: %v\n", err)
+		return
 	}
 
-	fmt.Printf("config.Str: %v\n", cfg.Str)
-	fmt.Printf("config.Int: %v\n", cfg.Int)
-	fmt.Printf("config.Bool %v\n", cfg.Bool)
-	fmt.Printf("config.Duration: %v\n", cfg.Duration)
+	fmt.Printf("config.Str: %v, ", cfg.Str)
+	fmt.Printf("config.Int: %v, ", cfg.Int)
+	fmt.Printf("config.Bool: %v, ", cfg.Bool)
+	fmt.Printf("config.Duration: %v", cfg.Duration)
 
 	// Output:
-	// config.Str: str flag value
-	// config.Int: 4
-	// config.Bool: false
-	// config.Duration: 1h0m0s
-
-	//
+	// config.Str: str flag value, config.Int: 4, config.Bool: false, config.Duration: 1h0m0s
 }
