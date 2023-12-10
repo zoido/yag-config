@@ -14,7 +14,7 @@ func WithEnvPrefix(prefix string) ParserOption {
 // VarOption configures handling of registered variables.
 type VarOption func(v *variable)
 
-// FromEnv overrides the environment variable name thad will be used to obtain the set value of the
+// FromEnv overrides the environment variable name thay will be used to obtain the set value of the
 // registered variable.
 func FromEnv(envName string) VarOption {
 	return func(v *variable) {

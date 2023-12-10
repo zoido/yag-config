@@ -50,7 +50,6 @@ func ExampleErrHelp() {
 	err := y.Parse([]string{"--help"})
 	if err == yag.ErrHelp {
 		fmt.Printf("--help flag passed")
-
 	}
 
 	// Output: --help flag passed

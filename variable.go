@@ -15,7 +15,8 @@ type variable struct {
 }
 
 func (v *variable) usage() string {
-	u := []string{"\t"}
+	u := make([]string, 1, 10)
+	u[0] = "\t"
 	if v.parseFlag {
 		u = append(u, "-", v.name)
 	}
