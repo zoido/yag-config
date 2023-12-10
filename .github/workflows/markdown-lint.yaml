@@ -13,4 +13,5 @@ jobs:
       - name: markdownlint
         uses: nosborn/github-action-markdown-cli@v3
         with:
-            files: .
+          files: .
+          ignore_files: CHANGELOG.md
