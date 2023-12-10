@@ -1,0 +1,14 @@
+name: "Markdown: Lint"
+on:
+  workflow_call: {}
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: markdownlint
+        uses: nosborn/github-action-markdown-cli@v2
+        with:
+            files: .
