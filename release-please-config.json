@@ -12,5 +12,6 @@
   "plugins": [
     "sentence-case"
   ],
+  "bootstrap-sha": "311a1c6bd7873ce087c0f1f1fac399f96af86e86",
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json"
 }
