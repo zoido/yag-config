@@ -18,7 +18,7 @@
 
 ## Example
 
-<!-- markdownlint-disable MD010 -->
+<!-- markdownlint-disable MD010 MD013 -->
 
 ```go
 type config struct {
@@ -60,7 +60,7 @@ fmt.Printf("config.Duration: %v", cfg.Duration)
 // config.Str: str flag value, config.Int: 4, config.Bool: false, config.Duration: 1h0m0s
 ```
 
-<!-- markdownlint-enable MD010 -->
+<!-- markdownlint-enable MD010 MD013 -->
 
 ## Supported types
 
