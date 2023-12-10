@@ -4,7 +4,7 @@ on:
 
 jobs:
   lint:
-    name: Build
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

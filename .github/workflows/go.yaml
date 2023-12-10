@@ -6,15 +6,15 @@ on:
 
 jobs:
   lint:
-    name: Lint
+    name: "Go: Lint"
     uses: ./.github/workflows/go-lint.yaml
 
   build:
-    name: Build
+    name: "Go: Build"
     uses: ./.github/workflows/go-build.yaml
 
   test:
-    name: Test
+    name: "Go: Build"
     uses: ./.github/workflows/go-test.yaml
 
     secrets: inherit
