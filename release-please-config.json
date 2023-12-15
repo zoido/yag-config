@@ -3,8 +3,7 @@
     ".": {
       "changelog-path": "CHANGELOG.md",
       "release-type": "go",
-      "draft-pull-request": true,
-      "release-as": "1.0.0"
+      "draft-pull-request": true
     }
   },
   "pull-request-title-pattern": "chore: 🔖 release${component} ${version}",
