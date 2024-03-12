@@ -9,7 +9,7 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "fix: ⬆️ "
-    reviewers: ["@zoido"]
+    reviewers: ["zoido"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
@@ -17,4 +17,4 @@ updates:
       interval: "daily"
     commit-message:
       prefix: "ci: ⬆️ "
-    reviewers: ["@zoido"]
+    reviewers: ["zoido"]
