@@ -24,7 +24,7 @@ jobs:
           mkdir -p "$(go env GOCACHE)"
 
       - name: Go Build Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.go-cache-paths.outputs.go-build }}
           key: ${{ runner.os }}-gobuild-build-${{ github.sha }}
@@ -32,7 +32,7 @@ jobs:
             ${{ runner.os }}-gobuild-build
 
       - name: Go Mod Cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.go-cache-paths.outputs.go-mod }}
           key: ${{ runner.os }}-gomod-build-${{ hashFiles('**/go.sum') }}
