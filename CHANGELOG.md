@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/zoido/yag-config/compare/v1.0.0...v1.0.1) (2024-03-12)
+
+
+### Bug Fixes
+
+* ⬆️ bump github.com/stretchr/testify from 1.8.4 to 1.9.0 ([#69](https://github.com/zoido/yag-config/issues/69)) ([71c9fe0](https://github.com/zoido/yag-config/commit/71c9fe07ef7e305b91f7f899b318748386b33ca8))
+
 ## [1.0.0](https://github.com/zoido/yag-config/compare/v0.5.0-alpha1...v1.0.0) (2023-12-10)
 
 
