@@ -28,7 +28,7 @@ func ExampleWithEnvPrefix() {
 		return
 	}
 
-	fmt.Printf(cfg.Foo)
+	fmt.Print(cfg.Foo)
 
 	// Output: Foo from the variable with prefix
 }
@@ -54,7 +54,7 @@ func ExampleFromEnv() {
 		return
 	}
 
-	fmt.Printf(cfg.Foo)
+	fmt.Print(cfg.Foo)
 
 	// Output: Foo from different variable
 }
@@ -166,7 +166,7 @@ func ExampleNoEnv() {
 		return
 	}
 
-	fmt.Printf(cfg.Foo)
+	fmt.Print(cfg.Foo)
 
 	// Output: Default Foo value
 }
