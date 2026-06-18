@@ -12,7 +12,7 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           cache: false
-          go-version-file: go.mod
+          go-version: 'stable'
 
 
       - name: Determine Go Cache Paths
@@ -46,6 +46,6 @@ jobs:
             ./...
 
       - name: Collect Code Coverage
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           file: ./coverage.txt
