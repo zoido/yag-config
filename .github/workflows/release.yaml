@@ -10,6 +10,8 @@ on:
 concurrency:
   group: release-please-${{ github.ref }}
 
+permissions: {}
+
 jobs:
   release-please:
     name: Release Please
@@ -19,6 +21,7 @@ jobs:
 
     permissions:
       contents: write
+      issues: write
       pull-requests: write
 
     steps:
