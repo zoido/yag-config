@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.1](https://github.com/zoido/yag-config/compare/v1.0.0...v1.0.1) (2026-10-28)
+
+
+### Bug Fixes
+
+* ⬆️ bump github.com/stretchr/testify from 1.10.0 to 1.11.1 ([#84](https://github.com/zoido/yag-config/issues/84)) ([08eea69](https://github.com/zoido/yag-config/commit/08eea69533743537691c3a29cc767915a5ab9d12))
+* ⬆️ bump github.com/stretchr/testify from 1.11.1 to 1.12.1 ([#95](https://github.com/zoido/yag-config/issues/95)) ([7413c57](https://github.com/zoido/yag-config/commit/7413c57bfbaefec27e00f5bde04c296b453f3960))
+* ⬆️ bump github.com/stretchr/testify from 1.9.0 to 1.10.0 ([#78](https://github.com/zoido/yag-config/issues/78)) ([2ee5730](https://github.com/zoido/yag-config/commit/2ee5730acf140aed1404557eeb7adf73330e29b7))
+
 ## [1.0.0](https://github.com/zoido/yag-config/compare/v0.5.0-alpha1...v1.0.0) (2023-12-10)
 
 
